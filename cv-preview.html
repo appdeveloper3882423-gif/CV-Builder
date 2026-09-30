@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CV Preview - CVBuilder</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="preview-header">
+
+    <div class="preview-brand">
+      <div class="preview-logo">CV</div>
+      <div>
+        <h2>CVBuilder</h2>
+        <span>Professional CV Preview</span>
+      </div>
+    </div>
+
+    <div class="preview-actions">
+      <button class="preview-btn secondary" onclick="editCV()">
+        ✏️ Edit CV
+      </button>
+
+      <button class="preview-btn primary" onclick="downloadPDF()">
+        📄 Download PDF
+      </button>
+
+      <button class="preview-btn save" onclick="saveCV()">
+        💾 Save CV
+      </button>
+    </div>
+
+  </header>
+
+
+  <!-- MAIN -->
+  <main class="preview-main">
+
+    <div class="preview-info-bar">
+      <div>
+        <strong id="categoryName">CV</strong>
+        <span id="templateName">Professional Template</span>
+      </div>
+
+      <div class="preview-status" id="saveStatus">
+        Ready
+      </div>
+    </div>
+
+
+    <!-- ACTUAL CV -->
+    <div id="cvDocument" class="cv-document">
+
+      <!-- LEFT SIDE -->
+      <aside class="cv-sidebar">
+
+        <div class="cv-profile">
+          <div class="cv-avatar" id="cvAvatar">
+            <span id="avatarInitial">U</span>
+          </div>
+
+          <h1 id="cvName">Your Name</h1>
+          <p id="cvTitle">Professional Title</p>
+        </div>
+
+
+        <!-- CONTACT -->
+        <section class="cv-side-section">
+
+          <h3>CONTACT</h3>
+
+          <div class="cv-contact-item">
+            <span>✉</span>
+            <span id="cvEmail">email@example.com</span>
+          </div>
+
+          <div class="cv-contact-item">
+            <span>☎</span>
+            <span id="cvPhone">+00 000 0000000</span>
+          </div>
+
+          <div class="cv-contact-item">
+            <span>📍</span>
+            <span id="cvLocation">Your Location</span>
+          </div>
+
+          <div class="cv-contact-item" id="websiteRow">
+            <span>🌐</span>
+            <span id="cvWebsite">website.com</span>
+          </div>
+
+        </section>
+
+
+        <!-- SKILLS -->
+        <section class="cv-side-section">
+
+          <h3>SKILLS</h3>
+
+          <div id="cvSkills" class="cv-skills">
+            <span>Professional Skills</span>
+            <span>Communication</span>
+            <span>Teamwork</span>
+          </div>
+
+        </section>
+
+
+        <!-- LANGUAGES -->
+        <section class="cv-side-section">
+
+          <h3>LANGUAGES</h3>
+
+          <div id="cvLanguages">
+            <div class="language-row">
+              <span>English</span>
+              <span>Professional</span>
+            </div>
+
+            <div class="language-row">
+              <span>Urdu</span>
+              <span>Native</span>
+            </div>
+          </div>
+
+        </section>
+
+      </aside>
+
+
+      <!-- RIGHT SIDE -->
+      <section class="cv-content">
+
+        <!-- SUMMARY -->
+        <section class="cv-section" id="summarySection">
+
+          <h2>PROFILE</h2>
+
+          <p id="cvSummary">
+            Your professional summary will appear here.
+          </p>
+
+        </section>
+
+
+        <!-- CATEGORY INFORMATION -->
+        <section class="cv-section" id="categorySection">
+
+          <h2 id="categorySectionTitle">PROFESSIONAL INFORMATION</h2>
+
+          <div id="categoryContent">
+            <p>Your professional information will appear here.</p>
+          </div>
+
+        </section>
+
+
+        <!-- EXPERIENCE -->
+        <section class="cv-section" id="experienceSection">
+
+          <h2>WORK EXPERIENCE</h2>
+
+          <div id="cvExperience">
+
+            <div class="cv-experience-item">
+
+              <div class="cv-date">
+                2024 - Present
+              </div>
+
+              <div>
+                <h3>Professional Position</h3>
+                <h4>Company Name</h4>
+
+                <p>
+                  Your work experience details will appear here.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- EDUCATION -->
+        <section class="cv-section" id="educationSection">
+
+          <h2>EDUCATION</h2>
+
+          <div id="cvEducation">
+
+            <div class="cv-education-item">
+
+              <div class="cv-date">
+                2022 - 2025
+              </div>
+
+              <div>
+                <h3>Degree / Qualification</h3>
+                <h4>Institute Name</h4>
+
+                <p>
+                  Education details will appear here.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <div class="cv-footer">
+          Created with CVBuilder
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    /* ===============================
+       LOAD CV DATA
+    =============================== */
+
+    const cvData = JSON.parse(
+      localStorage.getItem("currentCV")
+    ) || {};
+
+    const category =
+      localStorage.getItem("selectedCVCategory") ||
+      "Other";
+
+    const template =
+      localStorage.getItem("selectedCVTemplate") ||
+      "Professional";
+
+
+    /* ===============================
+       BASIC INFORMATION
+    =============================== */
+
+    const name =
+      cvData.fullName ||
+      cvData.name ||
+      "Your Name";
+
+    const title =
+      cvData.professionalTitle ||
+      cvData.title ||
+      "Professional Title";
+
+    const email =
+      cvData.email ||
+      "email@example.com";
+
+    const phone =
+      cvData.phone ||
+      "+00 000 0000000";
+
+    const location =
+      cvData.location ||
+      "Your Location";
+
+    const website =
+      cvData.website ||
+      "";
+
+    const summary =
+      cvData.summary ||
+      "Your professional summary will appear here.";
+
+
+    /* ===============================
+       DISPLAY BASIC DATA
+    =============================== */
+
+    document.getElementById("cvName").textContent = name;
+
+    document.getElementById("cvTitle").textContent = title;
+
+    document.getElementById("cvEmail").textContent = email;
+
+    document.getElementById("cvPhone").textContent = phone;
+
+    document.getElementById("cvLocation").textContent = location;
+
+    document.getElementById("cvSummary").textContent = summary;
+
+    document.getElementById("categoryName").textContent =
+      category;
+
+    document.getElementById("templateName").textContent =
+      template;
+
+
+    /* ===============================
+       AVATAR INITIAL
+    =============================== */
+
+    const initial =
+      name.trim().charAt(0).toUpperCase() || "U";
+
+    document.getElementById("avatarInitial").textContent =
+      initial;
+
+
+    /* ===============================
+       WEBSITE
+    =============================== */
+
+    const websiteRow =
+      document.getElementById("websiteRow");
+
+    if (website) {
+
+      document.getElementById("cvWebsite").textContent =
+        website;
+
+    } else {
+
+      websiteRow.style.display = "none";
+
+    }
+
+
+    /* ===============================
+       SKILLS
+    =============================== */
+
+    function loadSkills() {
+
+      const container =
+        document.getElementById("cvSkills");
+
+      container.innerHTML = "";
+
+      let skills = [];
+
+      if (Array.isArray(cvData.skills)) {
+
+        skills = cvData.skills;
+
+      } else if (typeof cvData.skills === "string") {
+
+        skills = cvData.skills
+          .split(",")
+          .map(skill => skill.trim())
+          .filter(Boolean);
+
+      }
+
+      if (skills.length === 0) {
+
+        skills = [
+          "Communication",
+          "Teamwork",
+          "Problem Solving"
+        ];
+
+      }
+
+      skills.forEach(skill => {
+
+        const span =
+          document.createElement("span");
+
+        span.textContent = skill;
+
+        container.appendChild(span);
+
+      });
+
+    }
+
+    loadSkills();
+
+
+    /* ===============================
+       LANGUAGES
+    =============================== */
+
+    function loadLanguages() {
+
+      const container =
+        document.getElementById("cvLanguages");
+
+      container.innerHTML = "";
+
+      let languages = [];
+
+      if (Array.isArray(cvData.languages)) {
+
+        languages = cvData.languages;
+
+      } else if (typeof cvData.languages === "string") {
+
+        languages = cvData.languages
+          .split(",")
+          .map(language => language.trim())
+          .filter(Boolean);
+
+      }
+
+      if (languages.length === 0) {
+
+        languages = [
+          "English",
+          "Urdu"
+        ];
+
+      }
+
+      languages.forEach(language => {
+
+        const row =
+          document.createElement("div");
+
+        row.className = "language-row";
+
+        row.innerHTML = `
+          <span>${escapeHTML(language)}</span>
+          <span>Professional</span>
+        `;
+
+        container.appendChild(row);
+
+      });
+
+    }
+
+    loadLanguages();
+
+
+    /* ===============================
+       EXPERIENCE
+    =============================== */
+
+    function loadExperience() {
+
+      const container =
+        document.getElementById("cvExperience");
+
+      container.innerHTML = "";
+
+      const experience =
+        Array.isArray(cvData.experience)
+          ? cvData.experience
+          : [];
+
+      if (experience.length === 0) {
+
+        container.innerHTML = `
+          <div class="cv-empty-section">
+            No work experience added.
+          </div>
+        `;
+
+        return;
+      }
+
+      experience.forEach(item => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "cv-experience-item";
+
+        div.innerHTML = `
+
+          <div class="cv-date">
+            ${escapeHTML(
+              item.date ||
+              item.duration ||
+              ""
+            )}
+          </div>
+
+          <div>
+
+            <h3>
+              ${escapeHTML(
+                item.position ||
+                item.jobTitle ||
+                "Position"
+              )}
+            </h3>
+
+            <h4>
+              ${escapeHTML(
+                item.company ||
+                "Company"
+              )}
+            </h4>
+
+            <p>
+              ${escapeHTML(
+                item.description ||
+                ""
+              )}
+            </p>
+
+          </div>
+
+        `;
+
+        container.appendChild(div);
+
+      });
+
+    }
+
+    loadExperience();
+
+
+    /* ===============================
+       EDUCATION
+    =============================== */
+
+    function loadEducation() {
+
+      const container =
+        document.getElementById("cvEducation");
+
+      container.innerHTML = "";
+
+      const education =
+        Array.isArray(cvData.education)
+          ? cvData.education
+          : [];
+
+      if (education.length === 0) {
+
+        container.innerHTML = `
+          <div class="cv-empty-section">
+            No education details added.
+          </div>
+        `;
+
+        return;
+      }
+
+      education.forEach(item => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "cv-education-item";
+
+        div.innerHTML = `
+
+          <div class="cv-date">
+            ${escapeHTML(
+              item.date ||
+              item.duration ||
+              ""
+            )}
+          </div>
+
+          <div>
+
+            <h3>
+              ${escapeHTML(
+                item.degree ||
+                item.qualification ||
+                "Degree / Qualification"
+              )}
+            </h3>
+
+            <h4>
+              ${escapeHTML(
+                item.institute ||
+                item.school ||
+                "Institute"
+              )}
+            </h4>
+
+            <p>
+              ${escapeHTML(
+                item.description ||
+                ""
+              )}
+            </p>
+
+          </div>
+
+        `;
+
+        container.appendChild(div);
+
+      });
+
+    }
+
+    loadEducation();
+
+
+    /* ===============================
+       CATEGORY INFORMATION
+    =============================== */
+
+    function loadCategoryInformation() {
+
+      const content =
+        document.getElementById(
+          "categoryContent"
+        );
+
+      const title =
+        document.getElementById(
+          "categorySectionTitle"
+        );
+
+      content.innerHTML = "";
+
+      let fields = {};
+
+      switch (category) {
+
+        case "IT / Software":
+
+          title.textContent =
+            "TECHNICAL INFORMATION";
+
+          fields = {
+
+            "Programming Languages":
+              cvData.programmingLanguages,
+
+            "Frameworks & Technologies":
+              cvData.frameworks,
+
+            "GitHub":
+              cvData.github,
+
+            "Technical Level":
+              cvData.technicalLevel,
+
+            "Projects":
+              cvData.projects
+
+          };
+
+          break;
+
+
+        case "Business":
+
+          title.textContent =
+            "BUSINESS INFORMATION";
+
+          fields = {
+
+            "Business Area":
+              cvData.businessArea,
+
+            "Industry":
+              cvData.industry,
+
+            "Leadership Experience":
+              cvData.leadershipExperience,
+
+            "Management Skills":
+              cvData.managementSkills
+
+          };
+
+          break;
+
+
+        case "Banking & Finance":
+
+          title.textContent =
+            "FINANCE INFORMATION";
+
+          fields = {
+
+            "Finance Skills":
+              cvData.financeSkills,
+
+            "Banking Experience":
+              cvData.bankingExperience,
+
+            "Accounting Software":
+              cvData.accountingSoftware,
+
+            "Certifications":
+              cvData.certifications
+
+          };
+
+          break;
+
+
+        case "Medical":
+
+          title.textContent =
+            "MEDICAL INFORMATION";
+
+          fields = {
+
+            "Qualification":
+              cvData.qualification,
+
+            "Specialization":
+              cvData.specialization,
+
+            "Clinical Experience":
+              cvData.clinicalExperience,
+
+            "Certifications":
+              cvData.certifications
+
+          };
+
+          break;
+
+
+        case "Teaching":
+
+          title.textContent =
+            "TEACHING INFORMATION";
+
+          fields = {
+
+            "Subjects":
+              cvData.subjects,
+
+            "Teaching Level":
+              cvData.teachingLevel,
+
+            "Teaching Experience":
+              cvData.teachingExperience,
+
+            "Teaching Certifications":
+              cvData.teachingCertifications
+
+          };
+
+          break;
+
+
+        case "Graphic Design":
+
+          title.textContent =
+            "DESIGN INFORMATION";
+
+          fields = {
+
+            "Design Software":
+              cvData.designSoftware,
+
+            "Design Specialization":
+              cvData.designSpecialization,
+
+            "Portfolio":
+              cvData.portfolio,
+
+            "Creative Skills":
+              cvData.creativeSkills
+
+          };
+
+          break;
+
+
+        case "Engineering":
+
+          title.textContent =
+            "ENGINEERING INFORMATION";
+
+          fields = {
+
+            "Engineering Discipline":
+              cvData.engineeringDiscipline,
+
+            "Technical Software":
+              cvData.technicalSoftware,
+
+            "Engineering Skills":
+              cvData.engineeringSkills,
+
+            "Projects":
+              cvData.projects
+
+          };
+
+          break;
+
+
+        case "Student / Fresh Graduate":
+
+          title.textContent =
+            "ACADEMIC INFORMATION";
+
+          fields = {
+
+            "Field of Study":
+              cvData.fieldOfStudy,
+
+            "Graduation Year":
+              cvData.graduationYear,
+
+            "Academic Achievement":
+              cvData.academicAchievement,
+
+            "Internship":
+              cvData.internship,
+
+            "Projects":
+              cvData.projects
+
+          };
+
+          break;
+
+
+        case "Marketing & Sales":
+
+          title.textContent =
+            "MARKETING INFORMATION";
+
+          fields = {
+
+            "Marketing Skills":
+              cvData.marketingSkills,
+
+            "Sales Experience":
+              cvData.salesExperience,
+
+            "Digital Platforms":
+              cvData.digitalPlatforms,
+
+            "Campaign Experience":
+              cvData.campaignExperience
+
+          };
+
+          break;
+
+
+        default:
+
+          title.textContent =
+            "PROFESSIONAL INFORMATION";
+
+          fields = {
+
+            "Professional Field":
+              cvData.professionalField,
+
+            "Professional Skills":
+              cvData.professionalSkills,
+
+            "Certifications":
+              cvData.certifications,
+
+            "Achievements":
+              cvData.achievements
+
+          };
+
+      }
+
+
+      let hasData = false;
+
+      Object.entries(fields).forEach(
+        ([label, value]) => {
+
+          if (
+            value !== undefined &&
+            value !== null &&
+            String(value).trim() !== ""
+          ) {
+
+            hasData = true;
+
+            const div =
+              document.createElement("div");
+
+            div.className =
+              "category-info-row";
+
+            div.innerHTML = `
+
+              <strong>
+                ${escapeHTML(label)}
+              </strong>
+
+              <span>
+                ${escapeHTML(String(value))}
+              </span>
+
+            `;
+
+            content.appendChild(div);
+
+          }
+
+        }
+      );
+
+
+      if (!hasData) {
+
+        content.innerHTML = `
+          <p class="cv-empty-section">
+            No additional information added.
+          </p>
+        `;
+
+      }
+
+    }
+
+    loadCategoryInformation();
+
+
+    /* ===============================
+       ESCAPE HTML
+    =============================== */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ===============================
+       EDIT CV
+    =============================== */
+
+    function editCV() {
+
+      window.location.href =
+        "cv-form.html";
+
+    }
+
+
+    /* ===============================
+       DOWNLOAD PDF
+    =============================== */
+
+    function downloadPDF() {
+
+      const element =
+        document.getElementById(
+          "cvDocument"
+        );
+
+      const safeName =
+        name
+          .replace(/[^a-z0-9]/gi, "_")
+          .substring(0, 40);
+
+      const options = {
+
+        margin: 0,
+
+        filename:
+          `${safeName}_CV.pdf`,
+
+        image: {
+          type: "jpeg",
+          quality: 0.98
+        },
+
+        html2canvas: {
+          scale: 2,
+          useCORS: true
+        },
+
+        jsPDF: {
+          unit: "mm",
+          format: "a4",
+          orientation: "portrait"
+        }
+
+      };
+
+      document.getElementById(
+        "saveStatus"
+      ).textContent =
+        "Generating PDF...";
+
+      html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+
+          document.getElementById(
+            "saveStatus"
+          ).textContent =
+            "PDF downloaded";
+
+        });
+
+    }
+
+
+    /* ===============================
+       SAVE CV
+    =============================== */
+
+    function saveCV() {
+
+      let savedCVs =
+        JSON.parse(
+          localStorage.getItem("savedCVs")
+        ) || [];
+
+      const cvToSave = {
+
+        ...cvData,
+
+        category: category,
+
+        template: template,
+
+        savedAt:
+          new Date().toISOString()
+
+      };
+
+      savedCVs.push(cvToSave);
+
+      localStorage.setItem(
+        "savedCVs",
+        JSON.stringify(savedCVs)
+      );
+
+      document.getElementById(
+        "saveStatus"
+      ).textContent =
+        "CV saved successfully";
+
+    }
+
+  </script>
+
+</body>
+</html>
