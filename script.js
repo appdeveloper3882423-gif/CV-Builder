@@ -1,495 +1,303 @@
-/* =====================================================
-   CV BUILDER — MAIN JAVASCRIPT
-   ===================================================== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
+// ===============================
+// FIREBASE CONFIG
+// ===============================
+const firebaseConfig = {
+  apiKey: "AIzaSyBlz6jMOYuJzWVd7pLTyAR8lkBJbAHYq40",
+  authDomain: "cvbuilder-13804.firebaseapp.com",
+  projectId: "cvbuilder-13804",
+  storageBucket: "cvbuilder-13804.firebasestorage.app",
+  messagingSenderId: "419200286217",
+  appId: "1:419200286217:web:97f273a6b15db78f8342d8"
+};
+
+// ===============================
+// INITIALIZE FIREBASE
+// ===============================
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+// ===============================
+// DOM
+// ===============================
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===================================================
-     ELEMENTS
-     =================================================== */
-
   const authModal = document.getElementById("authModal");
-  const modalOverlay = document.getElementById("modalOverlay");
-  const closeModal = document.getElementById("closeModal");
-
-  const loginBtn = document.getElementById("loginBtn");
-  const signupBtn = document.getElementById("signupBtn");
-
-  const heroCreateBtn = document.getElementById("heroCreateBtn");
-  const heroLoginBtn = document.getElementById("heroLoginBtn");
-  const ctaBtn = document.getElementById("ctaBtn");
-
-  const footerLogin = document.getElementById("footerLogin");
-  const footerSignup = document.getElementById("footerSignup");
 
   const loginForm = document.getElementById("loginForm");
   const signupForm = document.getElementById("signupForm");
 
-  const authTitle = document.getElementById("authTitle");
-  const authSubtitle = document.getElementById("authSubtitle");
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
 
-  const switchText = document.getElementById("switchText");
-  const switchAuth = document.getElementById("switchAuth");
+  const signupName = document.getElementById("signupName");
+  const signupEmail = document.getElementById("signupEmail");
+  const signupPassword = document.getElementById("signupPassword");
+  const signupConfirm = document.getElementById("signupConfirm");
 
   const googleLogin = document.getElementById("googleLogin");
   const facebookLogin = document.getElementById("facebookLogin");
 
-  const themeToggle = document.getElementById("themeToggle");
-
-  const categoryCards =
-    document.querySelectorAll(".category-card");
-
-
-  /* ===================================================
-     AUTH MODAL
-     =================================================== */
-
-  function openAuth(mode = "login") {
-
-    authModal.classList.add("show");
-
-    document.body.style.overflow = "hidden";
-
-    setAuthMode(mode);
+  // ===============================
+  // OPEN / CLOSE MODAL
+  // ===============================
+  function openAuth() {
+    if (authModal) {
+      authModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
   }
-
 
   function closeAuth() {
-
-    authModal.classList.remove("show");
-
-    document.body.style.overflow = "";
-  }
-
-
-  function setAuthMode(mode) {
-
-    if (mode === "signup") {
-
-      loginForm.classList.add("hidden");
-      signupForm.classList.remove("hidden");
-
-      authTitle.textContent = "Create Your Account";
-
-      authSubtitle.textContent =
-        "Create an account to save and manage your CVs.";
-
-      switchText.textContent =
-        "Already have an account?";
-
-      switchAuth.textContent =
-        "Login";
-
-      switchAuth.dataset.mode = "login";
-
-    } else {
-
-      signupForm.classList.add("hidden");
-      loginForm.classList.remove("hidden");
-
-      authTitle.textContent = "Welcome Back";
-
-      authSubtitle.textContent =
-        "Login to continue building your CV.";
-
-      switchText.textContent =
-        "Don't have an account?";
-
-      switchAuth.textContent =
-        "Create Account";
-
-      switchAuth.dataset.mode = "signup";
+    if (authModal) {
+      authModal.classList.remove("active");
+      document.body.style.overflow = "";
     }
   }
 
-
-  loginBtn?.addEventListener("click", () => {
-    openAuth("login");
-  });
-
-
-  heroLoginBtn?.addEventListener("click", () => {
-    openAuth("login");
-  });
-
-
-  signupBtn?.addEventListener("click", () => {
-    openAuth("signup");
-  });
-
-
-  footerLogin?.addEventListener("click", () => {
-    openAuth("login");
-  });
-
-
-  footerSignup?.addEventListener("click", () => {
-    openAuth("signup");
-  });
-
-
-  heroCreateBtn?.addEventListener("click", () => {
-    openAuth("signup");
-  });
-
-
-  ctaBtn?.addEventListener("click", () => {
-    openAuth("signup");
-  });
-
-
-  switchAuth?.addEventListener("click", () => {
-
-    const mode =
-      switchAuth.dataset.mode || "signup";
-
-    setAuthMode(mode);
-  });
-
-
-  closeModal?.addEventListener("click", closeAuth);
-
-  modalOverlay?.addEventListener("click", closeAuth);
-
-
-  document.addEventListener("keydown", (event) => {
-
-    if (
-      event.key === "Escape" &&
-      authModal.classList.contains("show")
-    ) {
-      closeAuth();
+  document.querySelectorAll(
+    "#loginBtn, #heroLogin, #createAccountBtn, #heroCreate"
+  ).forEach(button => {
+    if (button) {
+      button.addEventListener("click", openAuth);
     }
-
   });
 
-
-  /* ===================================================
-     DEMO EMAIL LOGIN
-     =================================================== */
-
-  loginForm?.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-    const email =
-      document.getElementById("loginEmail").value.trim();
-
-    const password =
-      document.getElementById("loginPassword").value;
-
-
-    if (!email || !password) {
-
-      alert("Please enter your email and password.");
-
-      return;
-    }
-
-
-    /*
-      Firebase Authentication will be connected here.
-
-      Example future flow:
-
-      signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-    */
-
-
-    alert(
-      "Login system is ready for Firebase connection."
-    );
-
-  });
-
-
-  /* ===================================================
-     DEMO ACCOUNT CREATION
-     =================================================== */
-
-  signupForm?.addEventListener("submit", (event) => {
-
-    event.preventDefault();
-
-    const name =
-      document.getElementById("signupName").value.trim();
-
-    const email =
-      document.getElementById("signupEmail").value.trim();
-
-    const password =
-      document.getElementById("signupPassword").value;
-
-    const confirmPassword =
-      document.getElementById("signupConfirm").value;
-
-
-    if (!name || !email || !password || !confirmPassword) {
-
-      alert("Please fill in all fields.");
-
-      return;
-    }
-
-
-    if (password.length < 6) {
-
-      alert(
-        "Password must contain at least 6 characters."
-      );
-
-      return;
-    }
-
-
-    if (password !== confirmPassword) {
-
-      alert("Passwords do not match.");
-
-      return;
-    }
-
-
-    /*
-      Firebase Authentication will be connected here.
-
-      Future:
-
-      createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      )
-    */
-
-
-    alert(
-      "Account system is ready for Firebase connection."
-    );
-
-  });
-
-
-  /* ===================================================
-     GOOGLE LOGIN
-     =================================================== */
-
-  googleLogin?.addEventListener("click", () => {
-
-    /*
-      Firebase Google Authentication
-      will be connected here.
-
-      After configuration:
-
-      const provider = new GoogleAuthProvider();
-
-      signInWithPopup(auth, provider);
-    */
-
-    alert(
-      "Google Login will be activated after Firebase setup."
-    );
-
-  });
-
-
-  /* ===================================================
-     FACEBOOK LOGIN
-     =================================================== */
-
-  facebookLogin?.addEventListener("click", () => {
-
-    /*
-      Firebase Facebook Authentication
-      will be connected here.
-
-      After configuration:
-
-      const provider = new FacebookAuthProvider();
-
-      signInWithPopup(auth, provider);
-    */
-
-    alert(
-      "Facebook Login will be activated after Firebase setup."
-    );
-
-  });
-
-
-  /* ===================================================
-     CATEGORY SELECTION
-     =================================================== */
-
-  categoryCards.forEach((card) => {
+  const closeBtn = document.querySelector(".auth-close");
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeAuth);
+  }
+
+  if (authModal) {
+    authModal.addEventListener("click", e => {
+      if (e.target === authModal) {
+        closeAuth();
+      }
+    });
+  }
+
+  // ===============================
+  // LOGIN / SIGNUP SWITCH
+  // ===============================
+  const showSignup = document.getElementById("showSignup");
+  const showLogin = document.getElementById("showLogin");
+
+  if (showSignup) {
+    showSignup.addEventListener("click", e => {
+      e.preventDefault();
+
+      loginForm.style.display = "none";
+      signupForm.style.display = "block";
+    });
+  }
+
+  if (showLogin) {
+    showLogin.addEventListener("click", e => {
+      e.preventDefault();
+
+      signupForm.style.display = "none";
+      loginForm.style.display = "block";
+    });
+  }
+
+  // ===============================
+  // EMAIL LOGIN
+  // ===============================
+  if (loginForm) {
+    loginForm.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const email = loginEmail.value.trim();
+      const password = loginPassword.value;
+
+      try {
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        alert("Login successful!");
+        closeAuth();
+
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+        console.error(error);
+
+        if (error.code === "auth/invalid-credential") {
+          alert("Email ya password incorrect hai.");
+        } else if (error.code === "auth/too-many-requests") {
+          alert("Too many attempts. Thori der baad try karo.");
+        } else {
+          alert(error.message);
+        }
+      }
+    });
+  }
+
+  // ===============================
+  // CREATE ACCOUNT
+  // ===============================
+  if (signupForm) {
+    signupForm.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const name = signupName.value.trim();
+      const email = signupEmail.value.trim();
+      const password = signupPassword.value;
+      const confirmPassword = signupConfirm.value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords match nahi karte.");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password kam az kam 6 characters ka hona chahiye.");
+        return;
+      }
+
+      try {
+        const userCredential =
+          await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+        const user = userCredential.user;
+
+        alert(`Account created successfully! Welcome ${name}`);
+
+        closeAuth();
+
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+        console.error(error);
+
+        if (error.code === "auth/email-already-in-use") {
+          alert("Ye email pehle se registered hai.");
+        } else if (error.code === "auth/invalid-email") {
+          alert("Email address valid nahi hai.");
+        } else {
+          alert(error.message);
+        }
+      }
+    });
+  }
+
+  // ===============================
+  // GOOGLE LOGIN
+  // ===============================
+  if (googleLogin) {
+    googleLogin.addEventListener("click", async () => {
+
+      try {
+        const result = await signInWithPopup(
+          auth,
+          googleProvider
+        );
+
+        const user = result.user;
+
+        alert(`Welcome ${user.displayName || "User"}!`);
+
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+        console.error(error);
+
+        if (error.code === "auth/popup-closed-by-user") {
+          alert("Google login cancel kar diya gaya.");
+        } else {
+          alert(error.message);
+        }
+      }
+    });
+  }
+
+  // ===============================
+  // FACEBOOK
+  // ===============================
+  if (facebookLogin) {
+    facebookLogin.addEventListener("click", () => {
+      alert("Facebook Login abhi setup nahi hua. Isay baad mein enable karenge.");
+    });
+  }
+
+  // ===============================
+  // CATEGORY BUTTONS
+  // ===============================
+  document.querySelectorAll("[data-category]").forEach(card => {
 
     card.addEventListener("click", () => {
 
-      const category =
-        card.dataset.category;
+      const category = card.dataset.category;
 
-      /*
-        Later this will open the category-specific
-        CV format selection page.
+      localStorage.setItem(
+        "selectedCVCategory",
+        category
+      );
 
-        Example:
+      alert(`Selected category: ${category}`);
 
-        IT
-        → ATS Developer
-        → Modern Tech
-        → Software Engineer
+      // Category system next step mein dashboard se connect hoga.
+    });
 
-        Teaching
-        → Academic
-        → Modern Educator
-        → Professional Teacher
-      */
+  });
 
-      alert(
-        `Selected category: ${category}\n\nCategory-specific CV formats will appear here.`
+  // ===============================
+  // THEME
+  // ===============================
+  const themeToggle = document.getElementById("themeToggle");
+
+  if (themeToggle) {
+
+    const savedTheme =
+      localStorage.getItem("cvbuilder-theme");
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+
+    themeToggle.addEventListener("click", () => {
+
+      document.body.classList.toggle("dark-mode");
+
+      localStorage.setItem(
+        "cvbuilder-theme",
+        document.body.classList.contains("dark-mode")
+          ? "dark"
+          : "light"
       );
 
     });
-
-  });
-
-
-  /* ===================================================
-     THEME
-     =================================================== */
-
-  let darkMode =
-    localStorage.getItem("cvbuilder-theme") === "dark";
-
-
-  function applyTheme() {
-
-    if (darkMode) {
-
-      document.body.classList.add("dark-mode");
-
-      if (themeToggle) {
-        themeToggle.textContent = "☀️";
-      }
-
-    } else {
-
-      document.body.classList.remove("dark-mode");
-
-      if (themeToggle) {
-        themeToggle.textContent = "🌙";
-      }
-    }
   }
 
+  // ===============================
+  // AUTH STATE
+  // ===============================
+  onAuthStateChanged(auth, user => {
 
-  themeToggle?.addEventListener("click", () => {
-
-    darkMode = !darkMode;
-
-    localStorage.setItem(
-      "cvbuilder-theme",
-      darkMode ? "dark" : "light"
-    );
-
-    applyTheme();
-
-  });
-
-
-  applyTheme();
-
-
-  /* ===================================================
-     SCROLL REVEAL
-     =================================================== */
-
-  const revealElements =
-    document.querySelectorAll(
-      ".feature-card, .category-card, .step-card"
-    );
-
-
-  const observer =
-    new IntersectionObserver(
-      (entries) => {
-
-        entries.forEach((entry) => {
-
-          if (entry.isIntersecting) {
-
-            entry.target.classList.add(
-              "visible"
-            );
-
-            observer.unobserve(
-              entry.target
-            );
-
-          }
-
-        });
-
-      },
-      {
-        threshold: 0.12
-      }
-    );
-
-
-  revealElements.forEach((element) => {
-
-    element.classList.add("reveal");
-
-    observer.observe(element);
-
-  });
-
-
-  /* ===================================================
-     ACTIVE NAVIGATION
-     =================================================== */
-
-  const navLinks =
-    document.querySelectorAll(".nav-links a");
-
-
-  navLinks.forEach((link) => {
-
-    link.addEventListener("click", () => {
-
-      navLinks.forEach((item) => {
-        item.classList.remove("active");
-      });
-
-      link.classList.add("active");
-
-    });
-
-  });
-
-
-  /* ===================================================
-     PREVENT EMPTY HASH JUMP
-     =================================================== */
-
-  document.querySelectorAll('a[href="#"]').forEach((link) => {
-
-    link.addEventListener("click", (event) => {
-
-      event.preventDefault();
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-
-    });
+    if (user) {
+      console.log("Logged in:", user.email);
+    } else {
+      console.log("No user logged in.");
+    }
 
   });
 
