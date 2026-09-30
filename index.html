@@ -4,20 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CVBuilder — Create Your Professional CV</title>
-  <meta name="description" content="Create professional, modern and ATS-friendly CVs in minutes.">
+  <title>CVBuilder — Create a Professional CV</title>
+  <meta
+    name="description"
+    content="Create professional, modern and ATS-friendly CVs with CVBuilder."
+  >
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- ================= HEADER ================= -->
-  <header class="header">
-    <div class="container nav">
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+  <header class="navbar">
+    <div class="nav-container">
 
-      <a href="#" class="logo">
-        CV<span>Builder</span>
+      <a href="index.html" class="brand">
+        <div class="brand-logo">CV</div>
+        <div class="brand-text">
+          <strong>CVBuilder</strong>
+          <span>Professional Resume Builder</span>
+        </div>
       </a>
 
       <nav class="nav-links">
@@ -26,12 +35,12 @@
         <a href="#how-it-works">How It Works</a>
       </nav>
 
-      <div class="nav-buttons">
-        <button class="btn btn-outline" id="loginBtn">
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="loginButton">
           Login
         </button>
 
-        <button class="btn btn-primary" id="signupBtn">
+        <button class="btn btn-primary" id="signupButton">
           Create Account
         </button>
       </div>
@@ -40,126 +49,154 @@
   </header>
 
 
-  <!-- ================= HERO ================= -->
+  <!-- =========================
+       HERO
+  ========================== -->
   <main>
 
     <section class="hero">
-      <div class="container hero-grid">
+      <div class="hero-container">
 
         <div class="hero-content">
 
           <div class="hero-badge">
-            ✨ Smart Professional CV Builder
+            <span class="badge-dot"></span>
+            Build your career with confidence
           </div>
 
           <h1>
-            Build a CV that
-            <span>gets noticed.</span>
+            Create a
+            <span>Professional CV</span>
+            in Minutes
           </h1>
 
-          <p>
-            Create a professional CV in minutes. Choose your career
-            category, select a suitable format, add your information
-            and download your finished CV.
+          <p class="hero-description">
+            Build a modern, professional and ATS-friendly CV designed
+            specifically for your career field. Choose a category,
+            select a template, add your information and download your CV.
           </p>
 
           <div class="hero-actions">
 
-            <button class="btn btn-primary btn-large" id="heroCreateBtn">
+            <button class="btn btn-primary btn-large" id="heroCreateButton">
               Create My CV
               <span>→</span>
             </button>
 
-            <button class="btn btn-outline btn-large" id="heroLoginBtn">
-              Login
+            <button class="btn btn-light btn-large" id="heroLoginButton">
+              Login to Account
             </button>
 
           </div>
 
           <div class="hero-trust">
-            <span>✓ Professional Templates</span>
-            <span>✓ ATS Friendly</span>
-            <span>✓ PDF Download</span>
+
+            <div class="trust-item">
+              <strong>10+</strong>
+              <span>Career Categories</span>
+            </div>
+
+            <div class="trust-item">
+              <strong>40+</strong>
+              <span>Professional Templates</span>
+            </div>
+
+            <div class="trust-item">
+              <strong>PDF</strong>
+              <span>Ready to Download</span>
+            </div>
+
           </div>
 
         </div>
 
 
-        <!-- CV PREVIEW -->
-        <div class="hero-preview">
+        <!-- HERO CV PREVIEW -->
+        <div class="hero-visual">
 
-          <div class="preview-window">
+          <div class="floating-card floating-card-one">
+            <span class="floating-icon">✓</span>
+            <div>
+              <strong>ATS Friendly</strong>
+              <small>Professional formatting</small>
+            </div>
+          </div>
 
-            <div class="preview-top">
+          <div class="cv-preview-card">
+
+            <div class="cv-preview-top">
+              <div class="preview-avatar"></div>
+
+              <div class="preview-heading">
+                <div class="preview-line preview-name"></div>
+                <div class="preview-line preview-title"></div>
+              </div>
+            </div>
+
+            <div class="preview-contact">
               <span></span>
               <span></span>
               <span></span>
             </div>
 
-            <div class="cv-paper">
+            <div class="preview-section">
+              <div class="preview-section-title"></div>
 
-              <div class="cv-preview-header">
-                <div class="cv-avatar"></div>
+              <div class="preview-line long"></div>
+              <div class="preview-line long"></div>
+              <div class="preview-line medium"></div>
+            </div>
 
-                <div>
-                  <div class="cv-name"></div>
-                  <div class="cv-job"></div>
-                </div>
+            <div class="preview-section">
+
+              <div class="preview-section-title"></div>
+
+              <div class="preview-experience">
+
+                <div class="preview-experience-title"></div>
+                <div class="preview-line medium"></div>
+
+                <div class="preview-line long"></div>
+                <div class="preview-line long"></div>
+                <div class="preview-line short"></div>
+
               </div>
 
-              <div class="cv-preview-body">
+              <div class="preview-experience">
 
-                <div class="cv-column">
+                <div class="preview-experience-title"></div>
+                <div class="preview-line medium"></div>
 
-                  <div class="cv-section">
-                    <div class="cv-title"></div>
-
-                    <div class="cv-line large"></div>
-                    <div class="cv-line"></div>
-                    <div class="cv-line"></div>
-                  </div>
-
-                  <div class="cv-section">
-                    <div class="cv-title"></div>
-
-                    <div class="cv-line large"></div>
-                    <div class="cv-line"></div>
-                    <div class="cv-line"></div>
-                  </div>
-
-                  <div class="cv-section">
-                    <div class="cv-title"></div>
-
-                    <div class="cv-line large"></div>
-                    <div class="cv-line"></div>
-                  </div>
-
-                </div>
-
-                <div class="cv-sidebar">
-
-                  <div class="cv-section">
-                    <div class="cv-title"></div>
-
-                    <div class="cv-line"></div>
-                    <div class="cv-line"></div>
-                    <div class="cv-line"></div>
-                  </div>
-
-                  <div class="cv-section">
-                    <div class="cv-title"></div>
-
-                    <div class="skill"></div>
-                    <div class="skill"></div>
-                    <div class="skill"></div>
-                  </div>
-
-                </div>
+                <div class="preview-line long"></div>
+                <div class="preview-line medium"></div>
 
               </div>
 
             </div>
 
+            <div class="preview-section">
+
+              <div class="preview-section-title"></div>
+
+              <div class="preview-skills">
+
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="floating-card floating-card-two">
+            <span class="floating-icon">PDF</span>
+            <div>
+              <strong>Ready to Download</strong>
+              <small>High-quality document</small>
+            </div>
           </div>
 
         </div>
@@ -168,74 +205,113 @@
     </section>
 
 
-    <!-- ================= FEATURES ================= -->
+    <!-- =========================
+         FEATURES
+    ========================== -->
     <section class="section" id="features">
 
-      <div class="container">
+      <div class="section-container">
 
         <div class="section-heading">
-          <div class="section-badge">FEATURES</div>
+
+          <span class="section-label">FEATURES</span>
 
           <h2>
-            Everything you need to create
-            <span>a great CV.</span>
+            Everything You Need to Build a Great CV
           </h2>
 
           <p>
-            A simple CV-building experience designed for students,
-            fresh graduates and professionals.
+            CVBuilder gives you the tools to create, customize,
+            save and download your professional CV.
           </p>
+
         </div>
 
 
         <div class="feature-grid">
 
-          <div class="feature-card">
-            <div class="feature-icon">🎯</div>
+          <article class="feature-card">
 
-            <h3>Career Specific</h3>
-
-            <p>
-              Select your career category and get CV formats
-              designed specifically for your field.
-            </p>
-          </div>
-
-
-          <div class="feature-card">
-            <div class="feature-icon">🎨</div>
+            <div class="feature-icon">✦</div>
 
             <h3>Professional Templates</h3>
 
             <p>
-              Choose from modern, professional, minimal,
-              creative and ATS-friendly designs.
+              Choose from professionally designed CV templates
+              created for different career fields.
             </p>
-          </div>
+
+          </article>
 
 
-          <div class="feature-card">
-            <div class="feature-icon">⚡</div>
+          <article class="feature-card">
 
-            <h3>Easy & Fast</h3>
+            <div class="feature-icon">⌕</div>
+
+            <h3>ATS-Friendly Designs</h3>
 
             <p>
-              Enter your information once and see your CV
-              update with a live preview.
+              Create clean and structured CVs that are easy
+              for applicant tracking systems to read.
             </p>
-          </div>
+
+          </article>
 
 
-          <div class="feature-card">
-            <div class="feature-icon">📄</div>
+          <article class="feature-card">
+
+            <div class="feature-icon">⚡</div>
+
+            <h3>Fast CV Creation</h3>
+
+            <p>
+              Enter your information once and generate a
+              professional CV in just a few simple steps.
+            </p>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">☁</div>
+
+            <h3>Save Your CVs</h3>
+
+            <p>
+              Keep your CVs securely connected to your account
+              and access them whenever you need them.
+            </p>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">▣</div>
 
             <h3>PDF Download</h3>
 
             <p>
-              Generate your finished CV and download it
-              as a professional PDF.
+              Generate a clean, print-ready PDF version
+              of your completed CV.
             </p>
-          </div>
+
+          </article>
+
+
+          <article class="feature-card">
+
+            <div class="feature-icon">◈</div>
+
+            <h3>Career-Specific Fields</h3>
+
+            <p>
+              Get information fields designed around your
+              selected profession and career category.
+            </p>
+
+          </article>
 
         </div>
 
@@ -244,22 +320,24 @@
     </section>
 
 
-    <!-- ================= CATEGORIES ================= -->
-    <section class="section categories-section" id="categories">
+    <!-- =========================
+         CATEGORIES
+    ========================== -->
+    <section class="section section-alt" id="categories">
 
-      <div class="container">
+      <div class="section-container">
 
         <div class="section-heading">
 
-          <div class="section-badge">CAREER CATEGORIES</div>
+          <span class="section-label">CAREER CATEGORIES</span>
 
           <h2>
-            CVs for <span>every career.</span>
+            Build a CV for Your Career
           </h2>
 
           <p>
-            Choose your field and we'll show you the formats
-            relevant to your career.
+            Select your professional field and get templates
+            and information fields designed for that category.
           </p>
 
         </div>
@@ -267,74 +345,74 @@
 
         <div class="category-grid">
 
-          <button class="category-card" data-category="it">
-            <span>💻</span>
-            <strong>IT & Software</strong>
-            <small>Developers & IT Professionals</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">💻</div>
+            <h3>IT / Software</h3>
+            <p>Developers, programmers and IT professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="business">
-            <span>💼</span>
-            <strong>Business</strong>
-            <small>Business & Management</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">💼</div>
+            <h3>Business</h3>
+            <p>Business, management and administration</p>
+          </div>
 
 
-          <button class="category-card" data-category="banking">
-            <span>🏦</span>
-            <strong>Banking & Finance</strong>
-            <small>Finance & Banking</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">🏦</div>
+            <h3>Banking & Finance</h3>
+            <p>Banking, accounting and finance professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="medical">
-            <span>🩺</span>
-            <strong>Medical</strong>
-            <small>Healthcare Professionals</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">⚕</div>
+            <h3>Medical</h3>
+            <p>Doctors, healthcare and medical professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="teaching">
-            <span>👨‍🏫</span>
-            <strong>Teaching</strong>
-            <small>Teachers & Educators</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">🎓</div>
+            <h3>Teaching</h3>
+            <p>Teachers, lecturers and academic professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="design">
-            <span>🎨</span>
-            <strong>Graphic Design</strong>
-            <small>Designers & Creatives</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">🎨</div>
+            <h3>Graphic Design</h3>
+            <p>Designers, creatives and visual professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="engineering">
-            <span>⚙️</span>
-            <strong>Engineering</strong>
-            <small>Engineers & Technical</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">⚙</div>
+            <h3>Engineering</h3>
+            <p>Engineers and technical professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="student">
-            <span>🎓</span>
-            <strong>Student / Fresh Graduate</strong>
-            <small>Students & Beginners</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">🎒</div>
+            <h3>Student / Fresh Graduate</h3>
+            <p>Students, interns and fresh graduates</p>
+          </div>
 
 
-          <button class="category-card" data-category="marketing">
-            <span>📈</span>
-            <strong>Marketing & Sales</strong>
-            <small>Marketing & Sales</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">📈</div>
+            <h3>Marketing & Sales</h3>
+            <p>Marketing, sales and digital professionals</p>
+          </div>
 
 
-          <button class="category-card" data-category="other">
-            <span>📋</span>
-            <strong>Other</strong>
-            <small>Other professions</small>
-          </button>
+          <div class="category-card">
+            <div class="category-icon">✚</div>
+            <h3>Other</h3>
+            <p>For professionals from other career fields</p>
+          </div>
 
         </div>
 
@@ -343,19 +421,25 @@
     </section>
 
 
-    <!-- ================= HOW IT WORKS ================= -->
+    <!-- =========================
+         HOW IT WORKS
+    ========================== -->
     <section class="section" id="how-it-works">
 
-      <div class="container">
+      <div class="section-container">
 
         <div class="section-heading">
 
-          <div class="section-badge">HOW IT WORKS</div>
+          <span class="section-label">HOW IT WORKS</span>
 
           <h2>
-            Create your CV in
-            <span>4 simple steps.</span>
+            Create Your CV in 4 Simple Steps
           </h2>
+
+          <p>
+            No complicated process. Just enter your information,
+            choose your design and download your CV.
+          </p>
 
         </div>
 
@@ -363,27 +447,74 @@
         <div class="steps-grid">
 
           <div class="step-card">
+
             <div class="step-number">01</div>
-            <h3>Choose Category</h3>
-            <p>Select your career or profession.</p>
+
+            <div class="step-content">
+
+              <h3>Create Your Account</h3>
+
+              <p>
+                Sign up using your email or Google account
+                to securely manage your CVs.
+              </p>
+
+            </div>
+
           </div>
 
+
           <div class="step-card">
+
             <div class="step-number">02</div>
-            <h3>Choose Format</h3>
-            <p>Get templates designed for your category.</p>
+
+            <div class="step-content">
+
+              <h3>Choose Your Category</h3>
+
+              <p>
+                Select your career field so we can show
+                relevant templates and information fields.
+              </p>
+
+            </div>
+
           </div>
 
+
           <div class="step-card">
+
             <div class="step-number">03</div>
-            <h3>Add Information</h3>
-            <p>Enter your education, skills and experience.</p>
+
+            <div class="step-content">
+
+              <h3>Enter Your Information</h3>
+
+              <p>
+                Add your personal details, education,
+                experience, skills and career information.
+              </p>
+
+            </div>
+
           </div>
 
+
           <div class="step-card">
+
             <div class="step-number">04</div>
-            <h3>Download CV</h3>
-            <p>Generate and download your professional CV.</p>
+
+            <div class="step-content">
+
+              <h3>Preview & Download</h3>
+
+              <p>
+                Review your CV, save it to your account
+                and download a professional PDF.
+              </p>
+
+            </div>
+
           </div>
 
         </div>
@@ -393,31 +524,33 @@
     </section>
 
 
-    <!-- ================= CTA ================= -->
+    <!-- =========================
+         CTA
+    ========================== -->
     <section class="cta-section">
 
-      <div class="container">
+      <div class="cta-container">
 
-        <div class="cta-box">
+        <div>
 
-          <div>
-            <div class="section-badge">READY TO START?</div>
+          <span class="section-label">
+            START YOUR CV
+          </span>
 
-            <h2>
-              Create your professional CV today.
-            </h2>
+          <h2>
+            Ready to Build Your Professional CV?
+          </h2>
 
-            <p>
-              Build a CV that represents your skills,
-              education and experience.
-            </p>
-          </div>
-
-          <button class="btn btn-light btn-large" id="ctaBtn">
-            Create My CV →
-          </button>
+          <p>
+            Create your account and start building your CV today.
+          </p>
 
         </div>
+
+        <button class="btn btn-white btn-large" id="ctaCreateButton">
+          Create My CV
+          <span>→</span>
+        </button>
 
       </div>
 
@@ -426,56 +559,84 @@
   </main>
 
 
-  <!-- ================= FOOTER ================= -->
+  <!-- =========================
+       FOOTER
+  ========================== -->
   <footer class="footer">
 
-    <div class="container footer-grid">
+    <div class="footer-container">
 
-      <div>
-        <a href="#" class="logo">
-          CV<span>Builder</span>
+      <div class="footer-brand">
+
+        <a href="index.html" class="brand">
+
+          <div class="brand-logo">CV</div>
+
+          <div class="brand-text">
+            <strong>CVBuilder</strong>
+            <span>Professional Resume Builder</span>
+          </div>
+
         </a>
 
         <p>
-          Build professional CVs easily and confidently.
+          Create professional CVs designed for your career.
         </p>
+
       </div>
 
 
-      <div>
+      <div class="footer-column">
+
         <h4>Product</h4>
+
         <a href="#features">Features</a>
         <a href="#categories">Categories</a>
         <a href="#how-it-works">How It Works</a>
+
       </div>
 
 
-      <div>
+      <div class="footer-column">
+
         <h4>Account</h4>
-        <button id="footerLogin">Login</button>
-        <button id="footerSignup">Create Account</button>
+
+        <button class="footer-button" id="footerLoginButton">
+          Login
+        </button>
+
+        <button class="footer-button" id="footerSignupButton">
+          Create Account
+        </button>
+
       </div>
 
     </div>
 
 
     <div class="footer-bottom">
+
       <p>
         © 2026 CVBuilder. All rights reserved.
       </p>
+
+      <p>
+        Build your career. Build your future.
+      </p>
+
     </div>
 
   </footer>
 
 
-  <!-- ================= LOGIN MODAL ================= -->
-  <div class="modal" id="authModal">
+  <!-- =========================
+       AUTH MODAL
+  ========================== -->
+  <div class="modal-overlay" id="authModal">
 
-    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="auth-modal">
 
-    <div class="auth-box">
-
-      <button class="close-modal" id="closeModal">
+      <button class="modal-close" id="closeAuthModal">
         ×
       </button>
 
@@ -483,141 +644,123 @@
       <div class="auth-header">
 
         <div class="auth-logo">
-          CV<span>Builder</span>
+          CV
         </div>
 
         <h2 id="authTitle">
-          Welcome Back
+          Create Your Account
         </h2>
 
         <p id="authSubtitle">
-          Login to continue building your CV.
+          Start building your professional CV today.
         </p>
 
       </div>
 
 
-      <!-- LOGIN FORM -->
-      <form id="loginForm" class="auth-form">
+      <!-- AUTH FORM -->
 
-        <label>Email</label>
+      <form id="authForm">
 
-        <input
-          type="email"
-          id="loginEmail"
-          placeholder="Enter your email"
-          required
+        <div class="form-group">
+
+          <label for="authEmail">
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            id="authEmail"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="authPassword">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="authPassword"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+            required
+          >
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary auth-submit"
+          id="authSubmitButton"
         >
-
-
-        <label>Password</label>
-
-        <input
-          type="password"
-          id="loginPassword"
-          placeholder="Enter your password"
-          required
-        >
-
-
-        <button type="submit" class="btn btn-primary auth-submit">
-          Login
-        </button>
-
-      </form>
-
-
-      <!-- SIGNUP FORM -->
-      <form id="signupForm" class="auth-form hidden">
-
-        <label>Full Name</label>
-
-        <input
-          type="text"
-          id="signupName"
-          placeholder="Enter your full name"
-          required
-        >
-
-
-        <label>Email</label>
-
-        <input
-          type="email"
-          id="signupEmail"
-          placeholder="Enter your email"
-          required
-        >
-
-
-        <label>Password</label>
-
-        <input
-          type="password"
-          id="signupPassword"
-          placeholder="Create a password"
-          required
-        >
-
-
-        <label>Confirm Password</label>
-
-        <input
-          type="password"
-          id="signupConfirm"
-          placeholder="Confirm your password"
-          required
-        >
-
-
-        <button type="submit" class="btn btn-primary auth-submit">
           Create Account
         </button>
 
       </form>
 
 
-      <div class="divider">
+      <div class="auth-divider">
         <span>OR</span>
       </div>
 
 
-      <!-- SOCIAL LOGIN -->
-      <div class="social-buttons">
+      <!-- GOOGLE LOGIN -->
 
-        <button class="social-btn google-btn" id="googleLogin">
-          <span>G</span>
-          Continue with Google
-        </button>
+      <button
+        class="google-button"
+        id="googleLoginButton"
+        type="button"
+      >
 
-
-        <button class="social-btn facebook-btn" id="facebookLogin">
-          <span>f</span>
-          Continue with Facebook
-        </button>
-
-      </div>
-
-
-      <div class="auth-switch">
-
-        <span id="switchText">
-          Don't have an account?
+        <span class="google-icon">
+          G
         </span>
 
-        <button id="switchAuth" type="button">
-          Create Account
+        <span>
+          Continue with Google
+        </span>
+
+      </button>
+
+
+      <p class="auth-switch">
+
+        <span id="authSwitchText">
+          Already have an account?
+        </span>
+
+        <button
+          type="button"
+          id="authSwitchButton"
+        >
+          Login
         </button>
 
-      </div>
+      </p>
+
+
+      <div
+        class="auth-message"
+        id="authMessage"
+      ></div>
 
     </div>
 
   </div>
 
 
-  <!-- ================= SCRIPTS ================= -->
-<script type="module" src="script.js"></script>
+  <!-- =========================
+       SCRIPT
+  ========================== -->
+  <script type="module" src="script.js"></script>
 
 </body>
-  </html>
+          </html>
