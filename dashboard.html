@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CVBuilder — Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header class="dashboard-header">
+
+    <div class="container dashboard-nav">
+
+      <a href="index.html" class="logo">
+        CV<span>Builder</span>
+      </a>
+
+      <div class="dashboard-user">
+
+        <div class="user-avatar" id="userAvatar">
+          U
+        </div>
+
+        <div class="user-info">
+          <strong id="userName">User</strong>
+          <small id="userEmail">Loading...</small>
+        </div>
+
+        <button id="logoutBtn" class="logout-btn">
+          Logout
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="dashboard-main">
+
+    <div class="container">
+
+      <!-- Welcome -->
+
+      <section class="dashboard-welcome">
+
+        <div>
+          <span class="dashboard-label">
+            CV BUILDER DASHBOARD
+          </span>
+
+          <h1>
+            Create your professional CV
+          </h1>
+
+          <p>
+            Choose a category and build a CV designed
+            specifically for your career.
+          </p>
+        </div>
+
+        <button
+          class="primary-btn"
+          id="createCVBtn"
+        >
+          + Create New CV
+        </button>
+
+      </section>
+
+
+      <!-- ================= STATS ================= -->
+
+      <section class="dashboard-stats">
+
+        <div class="dashboard-stat-card">
+
+          <div class="stat-icon">
+            📄
+          </div>
+
+          <div>
+            <span>My CVs</span>
+            <strong id="cvCount">0</strong>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-stat-card">
+
+          <div class="stat-icon">
+            ⭐
+          </div>
+
+          <div>
+            <span>Templates</span>
+            <strong>30+</strong>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-stat-card">
+
+          <div class="stat-icon">
+            📥
+          </div>
+
+          <div>
+            <span>Downloads</span>
+            <strong>0</strong>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= CREATE CV ================= -->
+
+      <section class="create-cv-section">
+
+        <div class="section-heading">
+
+          <div>
+            <span class="dashboard-label">
+              START BUILDING
+            </span>
+
+            <h2>
+              Choose your career category
+            </h2>
+
+            <p>
+              Your selected category will determine
+              the CV formats and information fields.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-categories">
+
+          <button
+            class="dashboard-category"
+            data-category="it"
+          >
+            <span>💻</span>
+            <strong>IT / Software</strong>
+            <small>Developers, programmers & tech</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="business"
+          >
+            <span>💼</span>
+            <strong>Business</strong>
+            <small>Management & business careers</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="banking"
+          >
+            <span>🏦</span>
+            <strong>Banking & Finance</strong>
+            <small>Finance, banking & accounting</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="medical"
+          >
+            <span>⚕️</span>
+            <strong>Medical</strong>
+            <small>Doctors, nurses & healthcare</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="teaching"
+          >
+            <span>🎓</span>
+            <strong>Teaching</strong>
+            <small>Teachers & educators</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="design"
+          >
+            <span>🎨</span>
+            <strong>Graphic Design</strong>
+            <small>Designers & creative professionals</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="engineering"
+          >
+            <span>⚙️</span>
+            <strong>Engineering</strong>
+            <small>Engineers & technical careers</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="student"
+          >
+            <span>📚</span>
+            <strong>Student / Fresh Graduate</strong>
+            <small>Students & new graduates</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="marketing"
+          >
+            <span>📈</span>
+            <strong>Marketing & Sales</strong>
+            <small>Sales, marketing & advertising</small>
+          </button>
+
+
+          <button
+            class="dashboard-category"
+            data-category="other"
+          >
+            <span>✨</span>
+            <strong>Other</strong>
+            <small>Other professional fields</small>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ================= MY CVS ================= -->
+
+      <section class="my-cvs-section">
+
+        <div class="section-heading">
+
+          <div>
+
+            <span class="dashboard-label">
+              YOUR DOCUMENTS
+            </span>
+
+            <h2>
+              My CVs
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="empty-cvs"
+          id="emptyCVs"
+        >
+
+          <div class="empty-icon">
+            📄
+          </div>
+
+          <h3>
+            No CVs yet
+          </h3>
+
+          <p>
+            Create your first professional CV
+            and it will appear here.
+          </p>
+
+          <button
+            class="primary-btn"
+            id="emptyCreateBtn"
+          >
+            Create My First CV
+          </button>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- ================= SCRIPT ================= -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+
+    const firebaseConfig = {
+
+      apiKey: "AIzaSyBlz6jMOYuJzWVd7pLTyAR8lkBJbAHYq40",
+
+      authDomain:
+        "cvbuilder-13804.firebaseapp.com",
+
+      projectId:
+        "cvbuilder-13804",
+
+      storageBucket:
+        "cvbuilder-13804.firebasestorage.app",
+
+      messagingSenderId:
+        "419200286217",
+
+      appId:
+        "1:419200286217:web:97f273a6b15db78f8342d8"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+    const auth =
+      getAuth(app);
+
+
+    // ================= AUTH STATE =================
+
+    onAuthStateChanged(auth, user => {
+
+      if (!user) {
+
+        window.location.href =
+          "index.html";
+
+        return;
+
+      }
+
+
+      const userName =
+        document.getElementById("userName");
+
+      const userEmail =
+        document.getElementById("userEmail");
+
+      const userAvatar =
+        document.getElementById("userAvatar");
+
+
+      userEmail.textContent =
+        user.email || "";
+
+
+      if (user.displayName) {
+
+        userName.textContent =
+          user.displayName;
+
+      } else {
+
+        userName.textContent =
+          "CVBuilder User";
+
+      }
+
+
+      if (user.photoURL) {
+
+        userAvatar.innerHTML =
+          `<img src="${user.photoURL}" alt="Profile">`;
+
+      } else {
+
+        userAvatar.textContent =
+          (user.displayName || "U")
+          .charAt(0)
+          .toUpperCase();
+
+      }
+
+    });
+
+
+    // ================= LOGOUT =================
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener("click", async () => {
+
+        try {
+
+          await signOut(auth);
+
+          window.location.href =
+            "index.html";
+
+        } catch (error) {
+
+          console.error(error);
+
+          alert(
+            "Logout failed. Please try again."
+          );
+
+        }
+
+      });
+
+
+    // ================= CATEGORY =================
+
+    document
+      .querySelectorAll(
+        ".dashboard-category"
+      )
+      .forEach(category => {
+
+        category.addEventListener(
+          "click",
+          () => {
+
+            const selectedCategory =
+              category.dataset.category;
+
+
+            localStorage.setItem(
+              "selectedCVCategory",
+              selectedCategory
+            );
+
+
+            window.location.href =
+              "templates.html";
+
+          }
+        );
+
+      });
+
+
+    // ================= CREATE BUTTONS =================
+
+    function startCreatingCV() {
+
+      window.scrollTo({
+        top: document.querySelector(
+          ".create-cv-section"
+        ).offsetTop - 80,
+
+        behavior: "smooth"
+      });
+
+    }
+
+
+    document
+      .getElementById("createCVBtn")
+      .addEventListener(
+        "click",
+        startCreatingCV
+      );
+
+
+    document
+      .getElementById("emptyCreateBtn")
+      .addEventListener(
+        "click",
+        startCreatingCV
+      );
+
+  </script>
+
+</body>
+            </html>
