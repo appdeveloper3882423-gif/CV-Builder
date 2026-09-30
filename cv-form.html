@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CVBuilder — CV Information</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="dashboard-header">
+
+  <div class="container dashboard-nav">
+
+    <a href="dashboard.html" class="logo">
+      CV<span>Builder</span>
+    </a>
+
+    <a href="templates.html" class="back-dashboard">
+      ← Templates
+    </a>
+
+  </div>
+
+</header>
+
+
+<main class="cv-form-main">
+
+  <div class="container">
+
+    <div class="cv-form-heading">
+
+      <span class="dashboard-label">
+        STEP 3 OF 4
+      </span>
+
+      <h1>Create your CV</h1>
+
+      <p id="formDescription">
+        Enter your professional information below.
+      </p>
+
+    </div>
+
+
+    <div class="cv-form-layout">
+
+      <!-- ================= FORM ================= -->
+
+      <section class="cv-form-card">
+
+        <form id="cvForm">
+
+          <!-- PERSONAL INFORMATION -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+              <span>01</span>
+
+              <div>
+                <h2>Personal Information</h2>
+                <p>Your basic contact information.</p>
+              </div>
+            </div>
+
+
+            <div class="form-grid">
+
+              <div class="form-group">
+
+                <label for="fullName">
+                  Full Name *
+                </label>
+
+                <input
+                  type="text"
+                  id="fullName"
+                  placeholder="e.g. Muhammad Usama"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="jobTitle">
+                  Professional Title *
+                </label>
+
+                <input
+                  type="text"
+                  id="jobTitle"
+                  placeholder="e.g. Software Developer"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="email">
+                  Email *
+                </label>
+
+                <input
+                  type="email"
+                  id="email"
+                  placeholder="you@example.com"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="phone">
+                  Phone *
+                </label>
+
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="+92 300 1234567"
+                  required
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="location">
+                  Location
+                </label>
+
+                <input
+                  type="text"
+                  id="location"
+                  placeholder="City, Country"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="website">
+                  Website / Portfolio
+                </label>
+
+                <input
+                  type="url"
+                  id="website"
+                  placeholder="https://example.com"
+                >
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- SUMMARY -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>02</span>
+
+              <div>
+                <h2>Professional Summary</h2>
+                <p>Introduce yourself professionally.</p>
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="summary">
+                About You *
+              </label>
+
+              <textarea
+                id="summary"
+                rows="5"
+                placeholder="Write a short professional summary..."
+                required
+              ></textarea>
+
+            </div>
+
+          </div>
+
+
+          <!-- CATEGORY SPECIFIC -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>03</span>
+
+              <div>
+
+                <h2 id="categorySectionTitle">
+                  Professional Information
+                </h2>
+
+                <p id="categorySectionDescription">
+                  Information related to your career.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div id="categoryFields"></div>
+
+          </div>
+
+
+          <!-- EXPERIENCE -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>04</span>
+
+              <div>
+                <h2>Experience</h2>
+                <p>Add your work experience.</p>
+              </div>
+
+            </div>
+
+
+            <div id="experienceContainer">
+
+              <div class="experience-item">
+
+                <div class="form-grid">
+
+                  <div class="form-group">
+
+                    <label>Job Title</label>
+
+                    <input
+                      type="text"
+                      name="experienceJob"
+                      placeholder="Job title"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>Company</label>
+
+                    <input
+                      type="text"
+                      name="experienceCompany"
+                      placeholder="Company name"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>Start Date</label>
+
+                    <input
+                      type="month"
+                      name="experienceStart"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>End Date</label>
+
+                    <input
+                      type="month"
+                      name="experienceEnd"
+                    >
+
+                  </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                  <label>Description</label>
+
+                  <textarea
+                    name="experienceDescription"
+                    rows="3"
+                    placeholder="Describe your responsibilities and achievements..."
+                  ></textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="add-entry-btn"
+              id="addExperience"
+            >
+              + Add Experience
+            </button>
+
+          </div>
+
+
+          <!-- EDUCATION -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>05</span>
+
+              <div>
+                <h2>Education</h2>
+                <p>Add your educational background.</p>
+              </div>
+
+            </div>
+
+
+            <div id="educationContainer">
+
+              <div class="education-item">
+
+                <div class="form-grid">
+
+                  <div class="form-group">
+
+                    <label>Degree / Program</label>
+
+                    <input
+                      type="text"
+                      name="educationDegree"
+                      placeholder="e.g. DAE Computer Information Technology"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>Institute</label>
+
+                    <input
+                      type="text"
+                      name="educationInstitute"
+                      placeholder="Institute name"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>Start Year</label>
+
+                    <input
+                      type="number"
+                      name="educationStart"
+                      placeholder="2023"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label>End Year</label>
+
+                    <input
+                      type="number"
+                      name="educationEnd"
+                      placeholder="2026"
+                    >
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="add-entry-btn"
+              id="addEducation"
+            >
+              + Add Education
+            </button>
+
+          </div>
+
+
+          <!-- SKILLS -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>06</span>
+
+              <div>
+                <h2>Skills</h2>
+                <p>Add skills relevant to your career.</p>
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="skills">
+                Skills
+              </label>
+
+              <textarea
+                id="skills"
+                rows="4"
+                placeholder="JavaScript, HTML, CSS, Communication..."
+              ></textarea>
+
+              <small class="field-help">
+                Separate each skill with a comma.
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- LANGUAGES -->
+
+          <div class="form-section">
+
+            <div class="form-section-title">
+
+              <span>07</span>
+
+              <div>
+                <h2>Languages</h2>
+                <p>Languages you can communicate in.</p>
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label for="languages">
+                Languages
+              </label>
+
+              <input
+                type="text"
+                id="languages"
+                placeholder="English, Urdu, Punjabi"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTION -->
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="secondary-btn"
+              onclick="history.back()"
+            >
+              ← Back
+            </button>
+
+            <button
+              type="submit"
+              class="primary-btn"
+            >
+              Generate CV →
+            </button>
+
+          </div>
+
+        </form>
+
+      </section>
+
+
+      <!-- ================= SIDE PREVIEW ================= -->
+
+      <aside class="form-side-panel">
+
+        <div class="side-preview-card">
+
+          <div class="mini-cv">
+
+            <div class="mini-header">
+
+              <div class="mini-avatar">
+                U
+              </div>
+
+              <div>
+
+                <div
+                  class="mini-name"
+                  id="previewName"
+                >
+                  Your Name
+                </div>
+
+                <div
+                  class="mini-title"
+                  id="previewTitle"
+                >
+                  Professional Title
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="mini-line"></div>
+            <div class="mini-line short"></div>
+
+
+            <div class="mini-heading">
+              SUMMARY
+            </div>
+
+            <div class="mini-text"></div>
+            <div class="mini-text"></div>
+            <div class="mini-text short"></div>
+
+
+            <div class="mini-heading">
+              EXPERIENCE
+            </div>
+
+            <div class="mini-text"></div>
+            <div class="mini-text"></div>
+
+
+            <div class="mini-heading">
+              SKILLS
+            </div>
+
+            <div class="mini-tags">
+
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-tip">
+
+          <strong>💡 Tip</strong>
+
+          <p>
+            Keep your CV clear, professional and
+            focused on achievements relevant to
+            the job you're applying for.
+          </p>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+  // =====================================
+  // CATEGORY
+  // =====================================
+
+  const category =
+    localStorage.getItem("selectedCVCategory") || "other";
+
+  const template =
+    localStorage.getItem("selectedCVTemplate") || "professional";
+
+
+  const categoryData = {
+
+    it: {
+      title: "IT / Software Information",
+      description: "Add your technical skills, programming knowledge and projects.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Programming Languages</label>
+            <input id="programming" placeholder="JavaScript, Python, C++, Java">
+          </div>
+
+          <div class="form-group">
+            <label>Frameworks / Technologies</label>
+            <input id="frameworks" placeholder="React, Node.js, Firebase">
+          </div>
+
+          <div class="form-group">
+            <label>GitHub</label>
+            <input id="github" placeholder="https://github.com/username">
+          </div>
+
+          <div class="form-group">
+            <label>Technical Level</label>
+            <select id="technicalLevel">
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label>Projects</label>
+          <textarea id="projects" rows="4"
+            placeholder="Describe your important software projects..."></textarea>
+        </div>
+      `
+    },
+
+
+    business: {
+      title: "Business Information",
+      description: "Add your business, management and leadership experience.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Business Area</label>
+            <input id="businessArea" placeholder="Management, Administration...">
+          </div>
+
+          <div class="form-group">
+            <label>Leadership Experience</label>
+            <input id="leadership" placeholder="Team leadership experience">
+          </div>
+
+          <div class="form-group">
+            <label>Industry</label>
+            <input id="industry" placeholder="Industry">
+          </div>
+
+          <div class="form-group">
+            <label>Management Skills</label>
+            <input id="managementSkills" placeholder="Planning, Leadership...">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    banking: {
+      title: "Banking & Finance Information",
+      description: "Add your finance, banking and accounting expertise.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Finance Skills</label>
+            <input id="financeSkills" placeholder="Financial Analysis, Accounting...">
+          </div>
+
+          <div class="form-group">
+            <label>Banking Experience</label>
+            <input id="bankingExperience" placeholder="Banking experience">
+          </div>
+
+          <div class="form-group">
+            <label>Accounting Software</label>
+            <input id="accountingSoftware" placeholder="QuickBooks, Excel...">
+          </div>
+
+          <div class="form-group">
+            <label>Certifications</label>
+            <input id="financeCertifications" placeholder="ACCA, CFA, etc.">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    medical: {
+      title: "Medical Information",
+      description: "Add your medical qualifications, specialization and certifications.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Medical Qualification</label>
+            <input id="medicalQualification" placeholder="MBBS, Nursing, Pharm-D...">
+          </div>
+
+          <div class="form-group">
+            <label>Specialization</label>
+            <input id="specialization" placeholder="Specialization">
+          </div>
+
+          <div class="form-group">
+            <label>Clinical Experience</label>
+            <input id="clinicalExperience" placeholder="Clinical experience">
+          </div>
+
+          <div class="form-group">
+            <label>Medical Certifications</label>
+            <input id="medicalCertifications" placeholder="Certifications">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    teaching: {
+      title: "Teaching Information",
+      description: "Add your teaching experience, subjects and academic expertise.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Subjects</label>
+            <input id="subjects" placeholder="Mathematics, Computer Science...">
+          </div>
+
+          <div class="form-group">
+            <label>Teaching Level</label>
+            <input id="teachingLevel" placeholder="Primary, Secondary, College...">
+          </div>
+
+          <div class="form-group">
+            <label>Teaching Experience</label>
+            <input id="teachingExperience" placeholder="Years of teaching">
+          </div>
+
+          <div class="form-group">
+            <label>Teaching Certifications</label>
+            <input id="teachingCertifications" placeholder="B.Ed, M.Ed...">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    design: {
+      title: "Graphic Design Information",
+      description: "Add your creative skills, design software and portfolio.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Design Software</label>
+            <input id="designSoftware" placeholder="Photoshop, Illustrator, Figma...">
+          </div>
+
+          <div class="form-group">
+            <label>Design Specialization</label>
+            <input id="designSpecialization" placeholder="UI/UX, Branding, Illustration...">
+          </div>
+
+          <div class="form-group">
+            <label>Portfolio</label>
+            <input id="portfolio" placeholder="https://behance.net/username">
+          </div>
+
+          <div class="form-group">
+            <label>Creative Skills</label>
+            <input id="creativeSkills" placeholder="Branding, Typography...">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    engineering: {
+      title: "Engineering Information",
+      description: "Add your engineering discipline, technical skills and projects.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Engineering Discipline</label>
+            <input id="engineeringDiscipline" placeholder="Civil, Electrical, Mechanical...">
+          </div>
+
+          <div class="form-group">
+            <label>Technical Software</label>
+            <input id="engineeringSoftware" placeholder="AutoCAD, MATLAB...">
+          </div>
+
+          <div class="form-group">
+            <label>Engineering Skills</label>
+            <input id="engineeringSkills" placeholder="Technical skills">
+          </div>
+
+          <div class="form-group">
+            <label>Projects</label>
+            <input id="engineeringProjects" placeholder="Major engineering projects">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    student: {
+      title: "Student / Fresh Graduate Information",
+      description: "Highlight your education, skills, projects and achievements.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Field of Study</label>
+            <input id="studyField" placeholder="Computer Science, Business...">
+          </div>
+
+          <div class="form-group">
+            <label>Graduation Year</label>
+            <input id="graduationYear" placeholder="2026">
+          </div>
+
+          <div class="form-group">
+            <label>Academic Achievement</label>
+            <input id="achievement" placeholder="Awards, grades, achievements">
+          </div>
+
+          <div class="form-group">
+            <label>Internship</label>
+            <input id="internship" placeholder="Internship experience">
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label>Academic / Personal Projects</label>
+          <textarea id="studentProjects" rows="4"
+            placeholder="Describe your projects..."></textarea>
+        </div>
+      `
+    },
+
+
+    marketing: {
+      title: "Marketing & Sales Information",
+      description: "Add your marketing, sales and digital skills.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Marketing Skills</label>
+            <input id="marketingSkills" placeholder="SEO, Social Media, Branding...">
+          </div>
+
+          <div class="form-group">
+            <label>Sales Experience</label>
+            <input id="salesExperience" placeholder="Sales experience">
+          </div>
+
+          <div class="form-group">
+            <label>Digital Platforms</label>
+            <input id="digitalPlatforms" placeholder="Google Ads, Meta Ads...">
+          </div>
+
+          <div class="form-group">
+            <label>Campaign Experience</label>
+            <input id="campaignExperience" placeholder="Campaign experience">
+          </div>
+
+        </div>
+      `
+    },
+
+
+    other: {
+      title: "Professional Information",
+      description: "Add information relevant to your professional field.",
+      fields: `
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Professional Field</label>
+            <input id="professionalField" placeholder="Your field">
+          </div>
+
+          <div class="form-group">
+            <label>Professional Skills</label>
+            <input id="professionalSkills" placeholder="Your professional skills">
+          </div>
+
+          <div class="form-group">
+            <label>Certifications</label>
+            <input id="certifications" placeholder="Certifications">
+          </div>
+
+          <div class="form-group">
+            <label>Achievements</label>
+            <input id="achievements" placeholder="Professional achievements">
+          </div>
+
+        </div>
+      `
+    }
+
+  };
+
+
+  const data =
+    categoryData[category] || categoryData.other;
+
+
+  document.getElementById(
+    "categorySectionTitle"
+  ).textContent = data.title;
+
+
+  document.getElementById(
+    "categorySectionDescription"
+  ).textContent = data.description;
+
+
+  document.getElementById(
+    "formDescription"
+  ).textContent = data.description;
+
+
+  document.getElementById(
+    "categoryFields"
+  ).innerHTML = data.fields;
+
+
+  // =====================================
+  // ADD EXPERIENCE
+  // =====================================
+
+  document.getElementById(
+    "addExperience"
+  ).addEventListener("click", () => {
+
+    const container =
+      document.getElementById(
+        "experienceContainer"
+      );
+
+
+    const item =
+      document.createElement("div");
+
+
+    item.className =
+      "experience-item";
+
+
+    item.innerHTML = `
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Job Title</label>
+          <input type="text" name="experienceJob">
+        </div>
+
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" name="experienceCompany">
+        </div>
+
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="month" name="experienceStart">
+        </div>
+
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="month" name="experienceEnd">
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea
+          name="experienceDescription"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <button
+        type="button"
+        class="remove-entry-btn"
+        onclick="this.parentElement.remove()"
+      >
+        Remove
+      </button>
+    `;
+
+
+    container.appendChild(item);
+
+  });
+
+
+  // =====================================
+  // ADD EDUCATION
+  // =====================================
+
+  document.getElementById(
+    "addEducation"
+  ).addEventListener("click", () => {
+
+    const container =
+      document.getElementById(
+        "educationContainer"
+      );
+
+
+    const item =
+      document.createElement("div");
+
+
+    item.className =
+      "education-item";
+
+
+    item.innerHTML = `
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Degree / Program</label>
+          <input type="text" name="educationDegree">
+        </div>
+
+        <div class="form-group">
+          <label>Institute</label>
+          <input type="text" name="educationInstitute">
+        </div>
+
+        <div class="form-group">
+          <label>Start Year</label>
+          <input type="number" name="educationStart">
+        </div>
+
+        <div class="form-group">
+          <label>End Year</label>
+          <input type="number" name="educationEnd">
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="remove-entry-btn"
+        onclick="this.parentElement.remove()"
+      >
+        Remove
+      </button>
+    `;
+
+
+    container.appendChild(item);
+
+  });
+
+
+  // =====================================
+  // LIVE MINI PREVIEW
+  // =====================================
+
+  document.getElementById(
+    "fullName"
+  ).addEventListener("input", e => {
+
+    document.getElementById(
+      "previewName"
+    ).textContent =
+      e.target.value || "Your Name";
+
+  });
+
+
+  document.getElementById(
+    "jobTitle"
+  ).addEventListener("input", e => {
+
+    document.getElementById(
+      "previewTitle"
+    ).textContent =
+      e.target.value || "Professional Title";
+
+  });
+
+
+  // =====================================
+  // SUBMIT
+  // =====================================
+
+  document.getElementById(
+    "cvForm"
+  ).addEventListener("submit", e => {
+
+    e.preventDefault();
+
+
+    const cvData = {
+
+      category: category,
+
+      template: template,
+
+      fullName:
+        document.getElementById("fullName").value,
+
+      jobTitle:
+        document.getElementById("jobTitle").value,
+
+      email:
+        document.getElementById("email").value,
+
+      phone:
+        document.getElementById("phone").value,
+
+      location:
+        document.getElementById("location").value,
+
+      website:
+        document.getElementById("website").value,
+
+      summary:
+        document.getElementById("summary").value,
+
+      skills:
+        document.getElementById("skills").value,
+
+      languages:
+        document.getElementById("languages").value
+
+    };
+
+
+    localStorage.setItem(
+      "currentCV",
+      JSON.stringify(cvData)
+    );
+
+
+    window.location.href =
+      "cv-preview.html";
+
+  });
+
+</script>
+
+</body>
+  </html>
