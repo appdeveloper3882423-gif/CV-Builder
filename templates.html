@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CVBuilder — Choose Template</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="dashboard-header">
+
+    <div class="container dashboard-nav">
+
+      <a href="dashboard.html" class="logo">
+        CV<span>Builder</span>
+      </a>
+
+      <a href="dashboard.html" class="back-dashboard">
+        ← Dashboard
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <main class="templates-main">
+
+    <div class="container">
+
+      <div class="templates-top">
+
+        <span class="dashboard-label">
+          STEP 2 OF 4
+        </span>
+
+        <h1 id="categoryTitle">
+          Choose your CV format
+        </h1>
+
+        <p id="categoryDescription">
+          Select a professional template for your career.
+        </p>
+
+      </div>
+
+
+      <!-- TEMPLATE GRID -->
+
+      <div
+        class="templates-grid"
+        id="templatesGrid"
+      ></div>
+
+
+      <!-- CONTINUE -->
+
+      <div class="template-actions">
+
+        <button
+          class="secondary-btn"
+          onclick="history.back()"
+        >
+          ← Back
+        </button>
+
+        <button
+          class="primary-btn"
+          id="continueBtn"
+          disabled
+        >
+          Continue →
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    const templates = {
+
+      it: {
+
+        title: "IT / Software CV Templates",
+
+        description:
+          "Choose a format designed for developers, programmers and technology professionals.",
+
+        items: [
+          ["ats-developer", "ATS Developer", "🤖", "ATS-friendly format focused on technical skills and experience."],
+          ["modern-tech", "Modern Tech", "💻", "Modern professional design for technology careers."],
+          ["software-engineer", "Software Engineer", "⚙️", "Structured format for software engineers and developers."],
+          ["minimal-professional", "Minimal Professional", "📄", "Clean and simple professional CV format."],
+          ["creative-developer", "Creative Developer", "✨", "Creative layout for developers who want a modern look."]
+        ]
+
+      },
+
+
+      business: {
+
+        title: "Business CV Templates",
+
+        description:
+          "Professional formats for management, administration and business careers.",
+
+        items: [
+          ["business-professional", "Business Professional", "💼", "Corporate CV focused on professional experience."],
+          ["modern-business", "Modern Business", "📊", "Modern layout for business professionals."],
+          ["executive", "Executive", "👔", "Premium structured format for leadership roles."],
+          ["corporate", "Corporate", "🏢", "Traditional corporate CV format."],
+          ["business-minimal", "Minimal Business", "📄", "Simple and clean business CV."]
+        ]
+
+      },
+
+
+      banking: {
+
+        title: "Banking & Finance CV Templates",
+
+        description:
+          "Formats designed for banking, accounting and finance professionals.",
+
+        items: [
+          ["corporate-finance", "Corporate Finance", "🏦", "Professional finance-focused CV."],
+          ["banking-professional", "Banking Professional", "💳", "Designed for banking careers."],
+          ["finance-executive", "Finance Executive", "📈", "Executive format for senior finance roles."],
+          ["ats-finance", "ATS Finance", "🤖", "ATS-friendly finance CV."],
+          ["accounting", "Accounting Professional", "🧮", "Structured accounting CV format."]
+        ]
+
+      },
+
+
+      medical: {
+
+        title: "Medical CV Templates",
+
+        description:
+          "Professional CV formats for healthcare and medical careers.",
+
+        items: [
+          ["medical-professional", "Medical Professional", "⚕️", "Clean medical CV format."],
+          ["doctor", "Doctor CV", "🩺", "Structured format for doctors."],
+          ["nursing", "Nursing CV", "🏥", "Designed for nursing professionals."],
+          ["healthcare", "Healthcare Professional", "➕", "Healthcare-focused professional CV."],
+          ["medical-minimal", "Medical Minimal", "📄", "Simple and clean medical CV."]
+        ]
+
+      },
+
+
+      teaching: {
+
+        title: "Teaching CV Templates",
+
+        description:
+          "Formats designed for teachers, educators and academic professionals.",
+
+        items: [
+          ["professional-teacher", "Professional Teacher", "👨‍🏫", "Professional teaching CV."],
+          ["academic-cv", "Academic CV", "🎓", "Detailed academic format."],
+          ["modern-educator", "Modern Educator", "📚", "Modern format for educators."],
+          ["simple-teacher", "Simple Teacher", "📝", "Clean teacher CV."],
+          ["education-professional", "Education Professional", "🏫", "Professional education-sector CV."]
+        ]
+
+      },
+
+
+      design: {
+
+        title: "Graphic Design CV Templates",
+
+        description:
+          "Creative formats for graphic designers and creative professionals.",
+
+        items: [
+          ["creative-portfolio", "Creative Portfolio", "🎨", "Portfolio-focused creative CV."],
+          ["designer-modern", "Designer Modern", "🖌️", "Modern designer CV."],
+          ["minimal-creative", "Minimal Creative", "✨", "Minimal creative layout."],
+          ["professional-designer", "Professional Designer", "🎯", "Professional graphic design CV."],
+          ["visual-creative", "Visual Creative", "🖼️", "Visual-focused creative format."]
+        ]
+
+      },
+
+
+      engineering: {
+
+        title: "Engineering CV Templates",
+
+        description:
+          "Structured CV formats for engineers and technical professionals.",
+
+        items: [
+          ["engineering-professional", "Engineering Professional", "⚙️", "Professional engineering CV."],
+          ["technical-engineer", "Technical Engineer", "🔧", "Technical skills-focused format."],
+          ["project-engineer", "Project Engineer", "🏗️", "Project and experience-focused CV."],
+          ["ats-engineering", "ATS Engineering", "🤖", "ATS-friendly engineering format."],
+          ["modern-engineering", "Modern Engineering", "📐", "Modern engineering CV."]
+        ]
+
+      },
+
+
+      student: {
+
+        title: "Student / Fresh Graduate CV Templates",
+
+        description:
+          "Formats for students, interns and fresh graduates.",
+
+        items: [
+          ["student-modern", "Student Modern", "🎓", "Modern student CV."],
+          ["fresh-graduate", "Fresh Graduate", "🚀", "Designed for fresh graduates."],
+          ["internship", "Internship CV", "💼", "Focused on internships and skills."],
+          ["academic-student", "Academic Student", "📚", "Education-focused student CV."],
+          ["first-job", "First Job", "🌟", "Simple format for your first job."]
+        ]
+
+      },
+
+
+      marketing: {
+
+        title: "Marketing & Sales CV Templates",
+
+        description:
+          "Professional formats for marketing, sales and advertising careers.",
+
+        items: [
+          ["marketing-professional", "Marketing Professional", "📣", "Marketing-focused CV."],
+          ["sales-professional", "Sales Professional", "💰", "Sales experience-focused format."],
+          ["digital-marketing", "Digital Marketing", "📱", "Designed for digital marketers."],
+          ["modern-marketing", "Modern Marketing", "📈", "Modern marketing CV."],
+          ["ats-marketing", "ATS Marketing", "🤖", "ATS-friendly marketing CV."]
+        ]
+
+      },
+
+
+      other: {
+
+        title: "Professional CV Templates",
+
+        description:
+          "Choose a general professional format for your career.",
+
+        items: [
+          ["professional", "Professional", "💼", "Universal professional CV."],
+          ["modern", "Modern", "✨", "Modern professional format."],
+          ["minimal", "Minimal", "📄", "Clean minimal CV."],
+          ["ats", "ATS Friendly", "🤖", "ATS-friendly professional CV."],
+          ["creative", "Creative", "🎨", "Creative professional CV."]
+        ]
+
+      }
+
+    };
+
+
+    // =====================================
+    // GET CATEGORY
+    // =====================================
+
+    const category =
+      localStorage.getItem("selectedCVCategory") || "other";
+
+
+    const data =
+      templates[category] || templates.other;
+
+
+    document.getElementById("categoryTitle")
+      .textContent = data.title;
+
+
+    document.getElementById("categoryDescription")
+      .textContent = data.description;
+
+
+    const grid =
+      document.getElementById("templatesGrid");
+
+
+    let selectedTemplate = null;
+
+
+    // =====================================
+    // CREATE TEMPLATE CARDS
+    // =====================================
+
+    data.items.forEach(item => {
+
+      const [
+        id,
+        name,
+        icon,
+        description
+      ] = item;
+
+
+      const card =
+        document.createElement("button");
+
+
+      card.className =
+        "template-card";
+
+
+      card.dataset.template =
+        id;
+
+
+      card.innerHTML = `
+
+        <div class="template-preview">
+
+          <div class="preview-top">
+
+            <span class="preview-icon">
+              ${icon}
+            </span>
+
+            <div>
+              <div class="preview-line long"></div>
+              <div class="preview-line medium"></div>
+            </div>
+
+          </div>
+
+          <div class="preview-body">
+
+            <div class="preview-line full"></div>
+            <div class="preview-line full"></div>
+            <div class="preview-line short"></div>
+
+            <div class="preview-section"></div>
+
+            <div class="preview-line full"></div>
+            <div class="preview-line medium"></div>
+
+          </div>
+
+        </div>
+
+
+        <div class="template-info">
+
+          <h3>
+            ${name}
+          </h3>
+
+          <p>
+            ${description}
+          </p>
+
+        </div>
+
+      `;
+
+
+      card.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".template-card")
+          .forEach(c =>
+            c.classList.remove("selected")
+          );
+
+
+        card.classList.add("selected");
+
+
+        selectedTemplate = id;
+
+
+        document.getElementById("continueBtn")
+          .disabled = false;
+
+      });
+
+
+      grid.appendChild(card);
+
+    });
+
+
+    // =====================================
+    // CONTINUE
+    // =====================================
+
+    document
+      .getElementById("continueBtn")
+      .addEventListener("click", () => {
+
+        if (!selectedTemplate) return;
+
+
+        localStorage.setItem(
+          "selectedCVTemplate",
+          selectedTemplate
+        );
+
+
+        window.location.href =
+          "cv-form.html";
+
+      });
+
+  </script>
+
+</body>
+</html>
