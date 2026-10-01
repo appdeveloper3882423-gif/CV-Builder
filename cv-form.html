@@ -4,443 +4,929 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CVBuilder — CV Information</title>
+  <title>Build Your CV | CVBuilder</title>
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --text: #0f172a;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    /* NAVBAR */
+
+    .navbar {
+      height: 70px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg,#2563eb,#7c3aed);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      padding: 9px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* PAGE */
+
+    .page {
+      width: min(1200px, 94%);
+      margin: auto;
+      padding: 32px 0 70px;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .step {
+      display: inline-block;
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(28px,4vw,38px);
+      margin-bottom: 7px;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .selected-info {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .info-badge {
+      padding: 7px 11px;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      color: #475569;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* LAYOUT */
+
+    .builder-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .form-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .form-section {
+      padding: 25px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-section:last-child {
+      border-bottom: 0;
+    }
+
+    .section-title {
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      font-size: 19px;
+      margin-bottom: 5px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      border-radius: 9px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: .2s;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.09);
+    }
+
+    textarea {
+      min-height: 105px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .hint {
+      color: #94a3b8;
+      font-size: 11px;
+    }
+
+    /* DYNAMIC CATEGORY */
+
+    .category-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 18px;
+    }
+
+    .category-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .category-box-header h3 {
+      font-size: 16px;
+    }
+
+    .category-box-header span {
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      background: #eff6ff;
+      padding: 6px 9px;
+      border-radius: 999px;
+    }
+
+    /* REPEATER */
+
+    .repeat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .repeat-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 17px;
+      background: #fafcff;
+      position: relative;
+    }
+
+    .repeat-item + .repeat-item {
+      margin-top: 2px;
+    }
+
+    .remove-item {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      border: 0;
+      background: #fee2e2;
+      color: var(--danger);
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .repeat-item .grid {
+      padding-right: 38px;
+    }
+
+    .add-button {
+      margin-top: 14px;
+      border: 1px dashed #93c5fd;
+      background: #eff6ff;
+      color: var(--primary);
+      padding: 10px 14px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-button:hover {
+      background: #dbeafe;
+    }
+
+    /* PREVIEW SIDE */
+
+    .side-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      position: sticky;
+      top: 92px;
+    }
+
+    .side-card h3 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .side-card > p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .mini-cv {
+      border: 1px solid #dbe3ec;
+      background: white;
+      min-height: 390px;
+      border-radius: 7px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(15,23,42,.06);
+    }
+
+    .mini-top {
+      background: #2563eb;
+      color: white;
+      padding: 18px 15px;
+    }
+
+    .mini-top h4 {
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+
+    .mini-top p {
+      font-size: 10px;
+      opacity: .9;
+    }
+
+    .mini-body {
+      padding: 15px;
+    }
+
+    .mini-section {
+      margin-bottom: 16px;
+    }
+
+    .mini-section-title {
+      font-size: 9px;
+      font-weight: 800;
+      color: #2563eb;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .mini-line {
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+
+    .mini-line.w80 {
+      width: 80%;
+    }
+
+    .mini-line.w90 {
+      width: 90%;
+    }
+
+    .mini-line.w65 {
+      width: 65%;
+    }
+
+    .mini-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .mini-skill {
+      height: 17px;
+      width: 45px;
+      border-radius: 4px;
+      background: #eff6ff;
+    }
+
+    /* ACTIONS */
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 20px 25px;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+    }
+
+    .action-left,
+    .action-right {
+      display: flex;
+      gap: 10px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: white;
+      border: 1px solid var(--border);
+      color: #334155;
+    }
+
+    .button.primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .button.primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .button.secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* MESSAGE */
+
+    .message {
+      display: none;
+      padding: 11px 13px;
+      border-radius: 9px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* LOADING */
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .loading.active {
+      display: flex;
+    }
+
+    .loading-box {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+      border: 4px solid #dbeafe;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width: 900px) {
+      .builder-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: static;
+        order: -1;
+      }
+
+      .mini-cv {
+        max-width: 360px;
+        margin: auto;
+      }
+    }
+
+    @media(max-width: 620px) {
+      .navbar {
+        padding: 0 4%;
+      }
+
+      .brand {
+        font-size: 18px;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .page {
+        width: 94%;
+        padding-top: 25px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .form-section {
+        padding: 20px 16px;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 17px 16px;
+      }
+
+      .action-left,
+      .action-right {
+        width: 100%;
+      }
+
+      .action-left .button,
+      .action-right .button {
+        flex: 1;
+      }
+
+      .selected-info {
+        gap: 6px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="dashboard-header">
+  <!-- NAVBAR -->
 
-  <div class="container dashboard-nav">
+  <nav class="navbar">
 
-    <a href="dashboard.html" class="logo">
-      CV<span>Builder</span>
+    <a href="dashboard.html" class="brand">
+      <span class="brand-icon">CV</span>
+      <span>CVBuilder</span>
     </a>
 
-    <a href="templates.html" class="back-dashboard">
-      ← Templates
-    </a>
+    <div class="nav-actions">
+      <button class="nav-btn" id="backTemplates">
+        Templates
+      </button>
 
-  </div>
-
-</header>
-
-
-<main class="cv-form-main">
-
-  <div class="container">
-
-    <div class="cv-form-heading">
-
-      <span class="dashboard-label">
-        STEP 3 OF 4
-      </span>
-
-      <h1>Create your CV</h1>
-
-      <p id="formDescription">
-        Enter your professional information below.
-      </p>
-
+      <button class="nav-btn" id="backDashboard">
+        Dashboard
+      </button>
     </div>
 
-
-    <div class="cv-form-layout">
-
-      <!-- ================= FORM ================= -->
-
-      <section class="cv-form-card">
-
-        <form id="cvForm">
-
-          <!-- PERSONAL INFORMATION -->
-
-          <div class="form-section">
-
-            <div class="form-section-title">
-              <span>01</span>
-
-              <div>
-                <h2>Personal Information</h2>
-                <p>Your basic contact information.</p>
-              </div>
-            </div>
+  </nav>
 
 
-            <div class="form-grid">
+  <main class="page">
 
-              <div class="form-group">
+    <!-- HEADER -->
 
-                <label for="fullName">
-                  Full Name *
-                </label>
+    <header class="page-header">
 
-                <input
-                  type="text"
-                  id="fullName"
-                  placeholder="e.g. Muhammad Usama"
-                  required
-                >
+      <span class="step">Step 2 of 3</span>
 
-              </div>
+      <h1>Build Your Professional CV</h1>
 
+      <p>
+        Enter your information below. Your CV will be generated
+        using the selected professional category and template.
+      </p>
 
-              <div class="form-group">
+      <div class="selected-info">
 
-                <label for="jobTitle">
-                  Professional Title *
-                </label>
+        <span class="info-badge" id="categoryBadge">
+          Category: Loading...
+        </span>
 
-                <input
-                  type="text"
-                  id="jobTitle"
-                  placeholder="e.g. Software Developer"
-                  required
-                >
+        <span class="info-badge" id="templateBadge">
+          Template: Loading...
+        </span>
 
-              </div>
+      </div>
+
+    </header>
 
 
-              <div class="form-group">
-
-                <label for="email">
-                  Email *
-                </label>
-
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="you@example.com"
-                  required
-                >
-
-              </div>
+    <div id="formMessage" class="message"></div>
 
 
-              <div class="form-group">
+    <div class="builder-layout">
 
-                <label for="phone">
-                  Phone *
-                </label>
+      <!-- FORM -->
 
-                <input
-                  type="tel"
-                  id="phone"
-                  placeholder="+92 300 1234567"
-                  required
-                >
+      <form id="cvForm" class="form-card">
 
-              </div>
+        <!-- PERSONAL INFORMATION -->
 
+        <section class="form-section">
 
-              <div class="form-group">
+          <div class="section-title">
 
-                <label for="location">
-                  Location
-                </label>
+            <h2>Personal Information</h2>
 
-                <input
-                  type="text"
-                  id="location"
-                  placeholder="City, Country"
-                >
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="website">
-                  Website / Portfolio
-                </label>
-
-                <input
-                  type="url"
-                  id="website"
-                  placeholder="https://example.com"
-                >
-
-              </div>
-
-            </div>
+            <p>
+              Add the basic information employers need to contact you.
+            </p>
 
           </div>
 
 
-          <!-- SUMMARY -->
+          <div class="grid">
 
-          <div class="form-section">
+            <div class="field">
 
-            <div class="form-section-title">
-
-              <span>02</span>
-
-              <div>
-                <h2>Professional Summary</h2>
-                <p>Introduce yourself professionally.</p>
-              </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="summary">
-                About You *
+              <label for="fullName">
+                Full Name *
               </label>
 
-              <textarea
-                id="summary"
-                rows="5"
-                placeholder="Write a short professional summary..."
+              <input
+                type="text"
+                id="fullName"
+                placeholder="e.g. John Smith"
                 required
-              ></textarea>
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="jobTitle">
+                Professional Title *
+              </label>
+
+              <input
+                type="text"
+                id="jobTitle"
+                placeholder="e.g. Software Developer"
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="email">
+                Email Address *
+              </label>
+
+              <input
+                type="email"
+                id="email"
+                placeholder="john@example.com"
+                required
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="phone">
+                Phone Number
+              </label>
+
+              <input
+                type="tel"
+                id="phone"
+                placeholder="+92 300 1234567"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="location">
+                Location
+              </label>
+
+              <input
+                type="text"
+                id="location"
+                placeholder="City, Country"
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label for="website">
+                Website / LinkedIn
+              </label>
+
+              <input
+                type="url"
+                id="website"
+                placeholder="https://..."
+              >
 
             </div>
 
           </div>
 
-
-          <!-- CATEGORY SPECIFIC -->
-
-          <div class="form-section">
-
-            <div class="form-section-title">
-
-              <span>03</span>
-
-              <div>
-
-                <h2 id="categorySectionTitle">
-                  Professional Information
-                </h2>
-
-                <p id="categorySectionDescription">
-                  Information related to your career.
-                </p>
-
-              </div>
-
-            </div>
+        </section>
 
 
-            <div id="categoryFields"></div>
+        <!-- PROFESSIONAL SUMMARY -->
+
+        <section class="form-section">
+
+          <div class="section-title">
+
+            <h2>Professional Summary</h2>
+
+            <p>
+              Write a short introduction highlighting your professional
+              background, strengths and career goals.
+            </p>
+
+          </div>
+
+          <div class="field">
+
+            <label for="summary">
+              Professional Summary
+            </label>
+
+            <textarea
+              id="summary"
+              placeholder="Write 2–5 sentences about your professional background, key strengths and career goals..."
+            ></textarea>
+
+            <span class="hint">
+              Recommended: 50–100 words.
+            </span>
+
+          </div>
+
+        </section>
+
+
+        <!-- CATEGORY SPECIFIC -->
+
+        <section class="form-section">
+
+          <div class="section-title">
+
+            <h2 id="categorySectionTitle">
+              Professional Information
+            </h2>
+
+            <p id="categorySectionDescription">
+              Add information relevant to your selected category.
+            </p>
 
           </div>
 
 
-          <!-- EXPERIENCE -->
+          <div class="category-box">
 
-          <div class="form-section">
+            <div class="category-box-header">
 
-            <div class="form-section-title">
+              <h3 id="categoryBoxTitle">
+                Category Information
+              </h3>
 
-              <span>04</span>
-
-              <div>
-                <h2>Experience</h2>
-                <p>Add your work experience.</p>
-              </div>
-
-            </div>
-
-
-            <div id="experienceContainer">
-
-              <div class="experience-item">
-
-                <div class="form-grid">
-
-                  <div class="form-group">
-
-                    <label>Job Title</label>
-
-                    <input
-                      type="text"
-                      name="experienceJob"
-                      placeholder="Job title"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>Company</label>
-
-                    <input
-                      type="text"
-                      name="experienceCompany"
-                      placeholder="Company name"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>Start Date</label>
-
-                    <input
-                      type="month"
-                      name="experienceStart"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>End Date</label>
-
-                    <input
-                      type="month"
-                      name="experienceEnd"
-                    >
-
-                  </div>
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label>Description</label>
-
-                  <textarea
-                    name="experienceDescription"
-                    rows="3"
-                    placeholder="Describe your responsibilities and achievements..."
-                  ></textarea>
-
-                </div>
-
-              </div>
+              <span id="categoryBoxBadge">
+                Required for your profile
+              </span>
 
             </div>
 
 
-            <button
-              type="button"
-              class="add-entry-btn"
-              id="addExperience"
-            >
-              + Add Experience
-            </button>
+            <div id="categoryFields" class="grid"></div>
+
+          </div>
+
+        </section>
+
+
+        <!-- EXPERIENCE -->
+
+        <section class="form-section">
+
+          <div class="section-title">
+
+            <h2>Work Experience</h2>
+
+            <p>
+              Add your previous jobs, internships or professional experience.
+            </p>
 
           </div>
 
 
-          <!-- EDUCATION -->
+          <div id="experienceContainer" class="repeat-container"></div>
 
-          <div class="form-section">
+          <button
+            type="button"
+            class="add-button"
+            id="addExperience"
+          >
+            + Add Experience
+          </button>
 
-            <div class="form-section-title">
-
-              <span>05</span>
-
-              <div>
-                <h2>Education</h2>
-                <p>Add your educational background.</p>
-              </div>
-
-            </div>
+        </section>
 
 
-            <div id="educationContainer">
+        <!-- EDUCATION -->
 
-              <div class="education-item">
+        <section class="form-section">
 
-                <div class="form-grid">
+          <div class="section-title">
 
-                  <div class="form-group">
+            <h2>Education</h2>
 
-                    <label>Degree / Program</label>
-
-                    <input
-                      type="text"
-                      name="educationDegree"
-                      placeholder="e.g. DAE Computer Information Technology"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>Institute</label>
-
-                    <input
-                      type="text"
-                      name="educationInstitute"
-                      placeholder="Institute name"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>Start Year</label>
-
-                    <input
-                      type="number"
-                      name="educationStart"
-                      placeholder="2023"
-                    >
-
-                  </div>
-
-
-                  <div class="form-group">
-
-                    <label>End Year</label>
-
-                    <input
-                      type="number"
-                      name="educationEnd"
-                      placeholder="2026"
-                    >
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <button
-              type="button"
-              class="add-entry-btn"
-              id="addEducation"
-            >
-              + Add Education
-            </button>
+            <p>
+              Add your academic qualifications.
+            </p>
 
           </div>
 
 
-          <!-- SKILLS -->
+          <div id="educationContainer" class="repeat-container"></div>
 
-          <div class="form-section">
+          <button
+            type="button"
+            class="add-button"
+            id="addEducation"
+          >
+            + Add Education
+          </button>
 
-            <div class="form-section-title">
-
-              <span>06</span>
-
-              <div>
-                <h2>Skills</h2>
-                <p>Add skills relevant to your career.</p>
-              </div>
-
-            </div>
+        </section>
 
 
-            <div class="form-group">
+        <!-- SKILLS -->
+
+        <section class="form-section">
+
+          <div class="section-title">
+
+            <h2>Skills & Languages</h2>
+
+            <p>
+              Add your most relevant professional skills and languages.
+            </p>
+
+          </div>
+
+
+          <div class="grid">
+
+            <div class="field full">
 
               <label for="skills">
                 Skills
@@ -448,160 +934,156 @@
 
               <textarea
                 id="skills"
-                rows="4"
-                placeholder="JavaScript, HTML, CSS, Communication..."
+                placeholder="JavaScript, Project Management, Communication, Microsoft Excel..."
               ></textarea>
 
-              <small class="field-help">
-                Separate each skill with a comma.
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <!-- LANGUAGES -->
-
-          <div class="form-section">
-
-            <div class="form-section-title">
-
-              <span>07</span>
-
-              <div>
-                <h2>Languages</h2>
-                <p>Languages you can communicate in.</p>
-              </div>
+              <span class="hint">
+                Separate skills with commas.
+              </span>
 
             </div>
 
 
-            <div class="form-group">
+            <div class="field full">
 
               <label for="languages">
                 Languages
               </label>
 
-              <input
-                type="text"
+              <textarea
                 id="languages"
-                placeholder="English, Urdu, Punjabi"
-              >
+                placeholder="English, Urdu, Arabic..."
+              ></textarea>
+
+              <span class="hint">
+                Separate languages with commas.
+              </span>
 
             </div>
 
           </div>
 
+        </section>
 
-          <!-- ACTION -->
 
-          <div class="form-actions">
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+          <div class="action-left">
 
             <button
               type="button"
-              class="secondary-btn"
-              onclick="history.back()"
+              class="button secondary"
+              id="cancelButton"
             >
-              ← Back
-            </button>
-
-            <button
-              type="submit"
-              class="primary-btn"
-            >
-              Generate CV →
+              Cancel
             </button>
 
           </div>
 
-        </form>
 
-      </section>
+          <div class="action-right">
 
-
-      <!-- ================= SIDE PREVIEW ================= -->
-
-      <aside class="form-side-panel">
-
-        <div class="side-preview-card">
-
-          <div class="mini-cv">
-
-            <div class="mini-header">
-
-              <div class="mini-avatar">
-                U
-              </div>
-
-              <div>
-
-                <div
-                  class="mini-name"
-                  id="previewName"
-                >
-                  Your Name
-                </div>
-
-                <div
-                  class="mini-title"
-                  id="previewTitle"
-                >
-                  Professional Title
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="mini-line"></div>
-            <div class="mini-line short"></div>
-
-
-            <div class="mini-heading">
-              SUMMARY
-            </div>
-
-            <div class="mini-text"></div>
-            <div class="mini-text"></div>
-            <div class="mini-text short"></div>
-
-
-            <div class="mini-heading">
-              EXPERIENCE
-            </div>
-
-            <div class="mini-text"></div>
-            <div class="mini-text"></div>
-
-
-            <div class="mini-heading">
-              SKILLS
-            </div>
-
-            <div class="mini-tags">
-
-              <span></span>
-              <span></span>
-              <span></span>
-
-            </div>
+            <button
+              type="submit"
+              class="button primary"
+              id="previewButton"
+            >
+              Continue to Preview
+            </button>
 
           </div>
 
         </div>
 
+      </form>
 
-        <div class="form-tip">
 
-          <strong>💡 Tip</strong>
+      <!-- SIDE PREVIEW -->
 
-          <p>
-            Keep your CV clear, professional and
-            focused on achievements relevant to
-            the job you're applying for.
-          </p>
+      <aside class="side-card">
+
+        <h3>Live CV Preview</h3>
+
+        <p>
+          Your basic information will appear in the preview automatically.
+        </p>
+
+
+        <div class="mini-cv">
+
+          <div class="mini-top">
+
+            <h4 id="previewName">
+              Your Name
+            </h4>
+
+            <p id="previewTitle">
+              Professional Title
+            </p>
+
+          </div>
+
+
+          <div class="mini-body">
+
+            <div class="mini-section">
+
+              <div class="mini-section-title">
+                Profile
+              </div>
+
+              <div class="mini-line w90"></div>
+              <div class="mini-line w80"></div>
+              <div class="mini-line w65"></div>
+
+            </div>
+
+
+            <div class="mini-section">
+
+              <div class="mini-section-title">
+                Experience
+              </div>
+
+              <div class="mini-line w80"></div>
+              <div class="mini-line w90"></div>
+              <div class="mini-line w65"></div>
+
+            </div>
+
+
+            <div class="mini-section">
+
+              <div class="mini-section-title">
+                Education
+              </div>
+
+              <div class="mini-line w90"></div>
+              <div class="mini-line w65"></div>
+
+            </div>
+
+
+            <div class="mini-section">
+
+              <div class="mini-section-title">
+                Skills
+              </div>
+
+              <div class="mini-skills">
+
+                <span class="mini-skill"></span>
+                <span class="mini-skill"></span>
+                <span class="mini-skill"></span>
+                <span class="mini-skill"></span>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -609,1208 +1091,1528 @@
 
     </div>
 
+  </main>
+
+
+  <!-- LOADING -->
+
+  <div class="loading" id="loading">
+
+    <div class="loading-box">
+
+      <div class="spinner"></div>
+
+      <strong>Preparing your CV...</strong>
+
+      <p style="font-size:12px;color:#64748b;margin-top:6px;">
+        Opening preview
+      </p>
+
+    </div>
+
   </div>
 
-</main>
 
+  <script type="module">
 
-<script>
+    import { auth } from "./firebase-config.js";
 
-/* =========================================
-   SELECTED CATEGORY & TEMPLATE
-========================================= */
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-const category =
-  localStorage.getItem("selectedCVCategory") || "Other";
 
-const template =
-  localStorage.getItem("selectedCVTemplate") || "Professional";
+    /* --------------------------------
+       ELEMENTS
+    -------------------------------- */
 
+    const form =
+      document.getElementById("cvForm");
 
-/* =========================================
-   CATEGORY DATA
-========================================= */
+    const categoryFields =
+      document.getElementById("categoryFields");
 
-const categoryData = {
+    const categoryBadge =
+      document.getElementById("categoryBadge");
 
-  "IT / Software": {
+    const templateBadge =
+      document.getElementById("templateBadge");
 
-    title: "IT / Software Information",
+    const categorySectionTitle =
+      document.getElementById("categorySectionTitle");
 
-    description:
-      "Add your technical skills, programming knowledge and projects.",
+    const categorySectionDescription =
+      document.getElementById("categorySectionDescription");
 
-    fields: `
+    const categoryBoxTitle =
+      document.getElementById("categoryBoxTitle");
 
-      <div class="form-grid">
+    const formMessage =
+      document.getElementById("formMessage");
 
-        <div class="form-group">
-          <label>Programming Languages</label>
-          <input
-            id="programming"
-            placeholder="JavaScript, Python, C++, Java"
-          >
-        </div>
+    const experienceContainer =
+      document.getElementById("experienceContainer");
 
-        <div class="form-group">
-          <label>Frameworks / Technologies</label>
-          <input
-            id="frameworks"
-            placeholder="React, Node.js, Firebase"
-          >
-        </div>
+    const educationContainer =
+      document.getElementById("educationContainer");
 
-        <div class="form-group">
-          <label>GitHub</label>
-          <input
-            id="github"
-            placeholder="https://github.com/username"
-          >
-        </div>
+    const loading =
+      document.getElementById("loading");
 
-        <div class="form-group">
-          <label>Technical Level</label>
+    const previewName =
+      document.getElementById("previewName");
 
-          <select id="technicalLevel">
+    const previewTitle =
+      document.getElementById("previewTitle");
 
-            <option value="">
-              Select Level
-            </option>
 
-            <option>Beginner</option>
-            <option>Intermediate</option>
-            <option>Advanced</option>
+    /* --------------------------------
+       SELECTED DATA
+    -------------------------------- */
 
-          </select>
+    const category =
+      localStorage.getItem("selectedCVCategory");
 
-        </div>
+    const template =
+      localStorage.getItem("selectedCVTemplate");
 
-      </div>
 
-      <div class="form-group">
+    if (!category || !template) {
 
-        <label>Projects</label>
+      window.location.href =
+        "templates.html";
 
-        <textarea
-          id="projects"
-          rows="4"
-          placeholder="Describe your important software projects..."
-        ></textarea>
+    }
 
-      </div>
-    `
-  },
 
+    /* --------------------------------
+       AUTH
+    -------------------------------- */
 
-  "Business": {
+    onAuthStateChanged(auth, (user) => {
 
-    title: "Business Information",
+      if (!user) {
 
-    description:
-      "Add your business, management and leadership experience.",
+        window.location.href =
+          "index.html";
 
-    fields: `
+        return;
+      }
 
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Business Area</label>
-          <input
-            id="businessArea"
-            placeholder="Management, Administration..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Leadership Experience</label>
-          <input
-            id="leadership"
-            placeholder="Team leadership experience"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Industry</label>
-          <input
-            id="industry"
-            placeholder="Industry"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Management Skills</label>
-          <input
-            id="managementSkills"
-            placeholder="Planning, Leadership..."
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Banking & Finance": {
-
-    title: "Banking & Finance Information",
-
-    description:
-      "Add your finance, banking and accounting expertise.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Finance Skills</label>
-          <input
-            id="financeSkills"
-            placeholder="Financial Analysis, Accounting..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Banking Experience</label>
-          <input
-            id="bankingExperience"
-            placeholder="Banking experience"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Accounting Software</label>
-          <input
-            id="accountingSoftware"
-            placeholder="QuickBooks, Excel..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Certifications</label>
-          <input
-            id="financeCertifications"
-            placeholder="ACCA, CFA, etc."
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Medical": {
-
-    title: "Medical Information",
-
-    description:
-      "Add your medical qualifications, specialization and certifications.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Medical Qualification</label>
-          <input
-            id="medicalQualification"
-            placeholder="MBBS, Nursing, Pharm-D..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Specialization</label>
-          <input
-            id="specialization"
-            placeholder="Specialization"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Clinical Experience</label>
-          <input
-            id="clinicalExperience"
-            placeholder="Clinical experience"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Medical Certifications</label>
-          <input
-            id="medicalCertifications"
-            placeholder="Certifications"
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Teaching": {
-
-    title: "Teaching Information",
-
-    description:
-      "Add your teaching experience, subjects and academic expertise.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Subjects</label>
-          <input
-            id="subjects"
-            placeholder="Mathematics, Computer Science..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Teaching Level</label>
-          <input
-            id="teachingLevel"
-            placeholder="Primary, Secondary, College..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Teaching Experience</label>
-          <input
-            id="teachingExperience"
-            placeholder="Years of teaching"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Teaching Certifications</label>
-          <input
-            id="teachingCertifications"
-            placeholder="B.Ed, M.Ed..."
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Graphic Design": {
-
-    title: "Graphic Design Information",
-
-    description:
-      "Add your creative skills, design software and portfolio.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Design Software</label>
-          <input
-            id="designSoftware"
-            placeholder="Photoshop, Illustrator, Figma..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Design Specialization</label>
-          <input
-            id="designSpecialization"
-            placeholder="UI/UX, Branding, Illustration..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Portfolio</label>
-          <input
-            id="portfolio"
-            placeholder="https://behance.net/username"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Creative Skills</label>
-          <input
-            id="creativeSkills"
-            placeholder="Branding, Typography..."
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Engineering": {
-
-    title: "Engineering Information",
-
-    description:
-      "Add your engineering discipline, technical skills and projects.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Engineering Discipline</label>
-          <input
-            id="engineeringDiscipline"
-            placeholder="Civil, Electrical, Mechanical..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Technical Software</label>
-          <input
-            id="engineeringSoftware"
-            placeholder="AutoCAD, MATLAB..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Engineering Skills</label>
-          <input
-            id="engineeringSkills"
-            placeholder="Technical skills"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Projects</label>
-          <input
-            id="engineeringProjects"
-            placeholder="Major engineering projects"
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Student / Fresh Graduate": {
-
-    title:
-      "Student / Fresh Graduate Information",
-
-    description:
-      "Highlight your education, skills, projects and achievements.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Field of Study</label>
-          <input
-            id="studyField"
-            placeholder="Computer Science, Business..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Graduation Year</label>
-          <input
-            id="graduationYear"
-            placeholder="2026"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Academic Achievement</label>
-          <input
-            id="achievement"
-            placeholder="Awards, grades, achievements"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Internship</label>
-          <input
-            id="internship"
-            placeholder="Internship experience"
-          >
-        </div>
-
-      </div>
-
-      <div class="form-group">
-
-        <label>Academic / Personal Projects</label>
-
-        <textarea
-          id="studentProjects"
-          rows="4"
-          placeholder="Describe your projects..."
-        ></textarea>
-
-      </div>
-    `
-  },
-
-
-  "Marketing & Sales": {
-
-    title:
-      "Marketing & Sales Information",
-
-    description:
-      "Add your marketing, sales and digital skills.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Marketing Skills</label>
-          <input
-            id="marketingSkills"
-            placeholder="SEO, Social Media, Branding..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Sales Experience</label>
-          <input
-            id="salesExperience"
-            placeholder="Sales experience"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Digital Platforms</label>
-          <input
-            id="digitalPlatforms"
-            placeholder="Google Ads, Meta Ads..."
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Campaign Experience</label>
-          <input
-            id="campaignExperience"
-            placeholder="Campaign experience"
-          >
-        </div>
-
-      </div>
-    `
-  },
-
-
-  "Other": {
-
-    title:
-      "Professional Information",
-
-    description:
-      "Add information relevant to your professional field.",
-
-    fields: `
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label>Professional Field</label>
-          <input
-            id="professionalField"
-            placeholder="Your field"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Professional Skills</label>
-          <input
-            id="professionalSkills"
-            placeholder="Your professional skills"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Certifications</label>
-          <input
-            id="certifications"
-            placeholder="Certifications"
-          >
-        </div>
-
-        <div class="form-group">
-          <label>Achievements</label>
-          <input
-            id="achievements"
-            placeholder="Professional achievements"
-          >
-        </div>
+      initializeForm();
 
-      </div>
-    `
-  }
+    });
 
-};
 
+    /* --------------------------------
+       CATEGORY FIELD DEFINITIONS
+    -------------------------------- */
 
-/* =========================================
-   LOAD CATEGORY
-========================================= */
+    const categoryDefinitions = {
 
-const currentCategory =
-  categoryData[category] ||
-  categoryData["Other"];
+      "IT / Software": {
 
-
-document.getElementById(
-  "categorySectionTitle"
-).textContent =
-  currentCategory.title;
-
-
-document.getElementById(
-  "categorySectionDescription"
-).textContent =
-  currentCategory.description;
-
-
-document.getElementById(
-  "formDescription"
-).textContent =
-  currentCategory.description;
-
-
-document.getElementById(
-  "categoryFields"
-).innerHTML =
-  currentCategory.fields;
-
-
-/* =========================================
-   ADD EXPERIENCE
-========================================= */
-
-document.getElementById(
-  "addExperience"
-).addEventListener("click", function() {
-
-  const container =
-    document.getElementById(
-      "experienceContainer"
-    );
-
-
-  const item =
-    document.createElement("div");
-
-
-  item.className =
-    "experience-item";
-
-
-  item.innerHTML = `
-
-    <div class="form-grid">
-
-      <div class="form-group">
-
-        <label>Job Title</label>
-
-        <input
-          type="text"
-          name="experienceJob"
-          placeholder="Job title"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Company</label>
-
-        <input
-          type="text"
-          name="experienceCompany"
-          placeholder="Company name"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Start Date</label>
-
-        <input
-          type="month"
-          name="experienceStart"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>End Date</label>
-
-        <input
-          type="month"
-          name="experienceEnd"
-        >
-
-      </div>
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>Description</label>
-
-      <textarea
-        name="experienceDescription"
-        rows="3"
-        placeholder="Describe your responsibilities and achievements..."
-      ></textarea>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="remove-entry-btn"
-      onclick="this.parentElement.remove()"
-    >
-      Remove
-    </button>
-
-  `;
-
-
-  container.appendChild(item);
-
-});
-
-
-/* =========================================
-   ADD EDUCATION
-========================================= */
-
-document.getElementById(
-  "addEducation"
-).addEventListener("click", function() {
-
-  const container =
-    document.getElementById(
-      "educationContainer"
-    );
-
-
-  const item =
-    document.createElement("div");
-
-
-  item.className =
-    "education-item";
-
-
-  item.innerHTML = `
-
-    <div class="form-grid">
-
-      <div class="form-group">
-
-        <label>Degree / Program</label>
-
-        <input
-          type="text"
-          name="educationDegree"
-          placeholder="e.g. DAE Computer Information Technology"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Institute</label>
-
-        <input
-          type="text"
-          name="educationInstitute"
-          placeholder="Institute name"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>Start Year</label>
-
-        <input
-          type="number"
-          name="educationStart"
-          placeholder="2023"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>End Year</label>
-
-        <input
-          type="number"
-          name="educationEnd"
-          placeholder="2026"
-        >
-
-      </div>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="remove-entry-btn"
-      onclick="this.parentElement.remove()"
-    >
-      Remove
-    </button>
-
-  `;
-
-
-  container.appendChild(item);
-
-});
-
-
-/* =========================================
-   LIVE PREVIEW
-========================================= */
-
-document.getElementById(
-  "fullName"
-).addEventListener("input", function() {
-
-  document.getElementById(
-    "previewName"
-  ).textContent =
-    this.value ||
-    "Your Name";
-
-});
-
-
-document.getElementById(
-  "jobTitle"
-).addEventListener("input", function() {
-
-  document.getElementById(
-    "previewTitle"
-  ).textContent =
-    this.value ||
-    "Professional Title";
-
-});
-
-
-/* =========================================
-   COLLECT EXPERIENCE
-========================================= */
-
-function collectExperience() {
-
-  const items =
-    document.querySelectorAll(
-      "#experienceContainer .experience-item"
-    );
-
-
-  const experience = [];
-
-
-  items.forEach(function(item) {
-
-    const job =
-      item.querySelector(
-        '[name="experienceJob"]'
-      )?.value.trim() || "";
-
-
-    const company =
-      item.querySelector(
-        '[name="experienceCompany"]'
-      )?.value.trim() || "";
-
-
-    const start =
-      item.querySelector(
-        '[name="experienceStart"]'
-      )?.value || "";
-
-
-    const end =
-      item.querySelector(
-        '[name="experienceEnd"]'
-      )?.value || "";
-
-
-    const description =
-      item.querySelector(
-        '[name="experienceDescription"]'
-      )?.value.trim() || "";
-
-
-    if (
-      job ||
-      company ||
-      start ||
-      end ||
-      description
-    ) {
-
-      experience.push({
-
-        position: job,
-
-        company: company,
-
-        date:
-          start || end
-            ? `${start} - ${end || "Present"}`
-            : "",
+        title: "IT & Software Information",
 
         description:
-          description
+          "Add your technical skills, development experience and technology profile.",
+
+        fields: [
+
+          {
+            id: "programming",
+            label: "Programming Languages",
+            placeholder: "JavaScript, Python, Java, C++, PHP...",
+            full: true
+          },
+
+          {
+            id: "frameworks",
+            label: "Frameworks & Technologies",
+            placeholder: "React, Node.js, Firebase, Laravel..."
+          },
+
+          {
+            id: "github",
+            label: "GitHub / Code Repository",
+            placeholder: "https://github.com/username"
+          },
+
+          {
+            id: "technicalLevel",
+            label: "Technical Level",
+            type: "select",
+            options: [
+              "Beginner",
+              "Intermediate",
+              "Advanced",
+              "Senior / Expert"
+            ]
+          },
+
+          {
+            id: "projects",
+            label: "Technical Projects",
+            placeholder: "Describe your most relevant software projects...",
+            full: true,
+            textarea: true
+          }
+
+        ]
+
+      },
+
+
+      "Business": {
+
+        title: "Business Information",
+
+        description:
+          "Highlight your business expertise, leadership and management experience.",
+
+        fields: [
+
+          {
+            id: "businessArea",
+            label: "Business Area",
+            placeholder: "Business Development, Operations, Management..."
+          },
+
+          {
+            id: "industry",
+            label: "Industry",
+            placeholder: "Retail, Technology, Manufacturing..."
+          },
+
+          {
+            id: "leadership",
+            label: "Leadership Experience",
+            placeholder: "Team leadership, strategic planning..."
+          },
+
+          {
+            id: "managementSkills",
+            label: "Management Skills",
+            placeholder: "Operations, budgeting, planning..."
+          }
+
+        ]
+
+      },
+
+
+      "Banking & Finance": {
+
+        title: "Banking & Finance Information",
+
+        description:
+          "Add your finance, banking, accounting and certification details.",
+
+        fields: [
+
+          {
+            id: "financeSkills",
+            label: "Finance Skills",
+            placeholder: "Financial Analysis, Reporting, Risk Management...",
+            full: true
+          },
+
+          {
+            id: "bankingExperience",
+            label: "Banking Experience",
+            placeholder: "Retail banking, credit, loans..."
+          },
+
+          {
+            id: "accountingSoftware",
+            label: "Accounting Software",
+            placeholder: "QuickBooks, SAP, Oracle..."
+          },
+
+          {
+            id: "financeCertifications",
+            label: "Finance Certifications",
+            placeholder: "ACCA, CFA, CA, FRM..."
+          }
+
+        ]
+
+      },
+
+
+      "Medical": {
+
+        title: "Medical Information",
+
+        description:
+          "Add your medical qualifications, specialization and clinical experience.",
+
+        fields: [
+
+          {
+            id: "medicalQualification",
+            label: "Medical Qualification",
+            placeholder: "MBBS, BDS, Pharm-D, BS Nursing..."
+          },
+
+          {
+            id: "specialization",
+            label: "Specialization",
+            placeholder: "Cardiology, Pediatrics, Surgery..."
+          },
+
+          {
+            id: "clinicalExperience",
+            label: "Clinical Experience",
+            placeholder: "Hospital, clinic or clinical experience...",
+            full: true,
+            textarea: true
+          },
+
+          {
+            id: "medicalCertifications",
+            label: "Medical Certifications",
+            placeholder: "BLS, ACLS, PALS..."
+          }
+
+        ]
+
+      },
+
+
+      "Teaching": {
+
+        title: "Teaching Information",
+
+        description:
+          "Add your teaching subjects, educational level and teaching experience.",
+
+        fields: [
+
+          {
+            id: "subjects",
+            label: "Subjects Taught",
+            placeholder: "Mathematics, English, Computer Science...",
+            full: true
+          },
+
+          {
+            id: "teachingLevel",
+            label: "Teaching Level",
+            placeholder: "Primary, Secondary, College, University..."
+          },
+
+          {
+            id: "teachingExperience",
+            label: "Teaching Experience",
+            placeholder: "Years and type of teaching experience..."
+          },
+
+          {
+            id: "teachingCertifications",
+            label: "Teaching Certifications",
+            placeholder: "B.Ed, M.Ed, TESOL..."
+          }
+
+        ]
+
+      },
+
+
+      "Graphic Design": {
+
+        title: "Graphic Design Information",
+
+        description:
+          "Showcase your design software, specialization and creative portfolio.",
+
+        fields: [
+
+          {
+            id: "designSoftware",
+            label: "Design Software",
+            placeholder: "Photoshop, Illustrator, Figma, Canva...",
+            full: true
+          },
+
+          {
+            id: "designSpecialization",
+            label: "Design Specialization",
+            placeholder: "Branding, UI/UX, Logo Design..."
+          },
+
+          {
+            id: "portfolio",
+            label: "Portfolio URL",
+            placeholder: "https://yourportfolio.com"
+          },
+
+          {
+            id: "creativeSkills",
+            label: "Creative Skills",
+            placeholder: "Typography, Illustration, Branding..."
+          }
+
+        ]
+
+      },
+
+
+      "Engineering": {
+
+        title: "Engineering Information",
+
+        description:
+          "Add your engineering discipline, software, skills and projects.",
+
+        fields: [
+
+          {
+            id: "engineeringDiscipline",
+            label: "Engineering Discipline",
+            placeholder: "Civil, Mechanical, Electrical, Software..."
+          },
+
+          {
+            id: "engineeringSoftware",
+            label: "Engineering Software",
+            placeholder: "AutoCAD, SolidWorks, MATLAB..."
+          },
+
+          {
+            id: "engineeringSkills",
+            label: "Engineering Skills",
+            placeholder: "Design, Analysis, Project Management...",
+            full: true
+          },
+
+          {
+            id: "engineeringProjects",
+            label: "Engineering Projects",
+            placeholder: "Describe your important engineering projects...",
+            full: true,
+            textarea: true
+          }
+
+        ]
+
+      },
+
+
+      "Student / Fresh Graduate": {
+
+        title: "Student & Graduate Information",
+
+        description:
+          "Highlight your education, achievements, internships and projects.",
+
+        fields: [
+
+          {
+            id: "studyField",
+            label: "Field of Study",
+            placeholder: "Computer Science, Business, Engineering..."
+          },
+
+          {
+            id: "graduationYear",
+            label: "Graduation Year",
+            placeholder: "2026"
+          },
+
+          {
+            id: "achievement",
+            label: "Academic Achievements",
+            placeholder: "Awards, scholarships, competitions...",
+            full: true
+          },
+
+          {
+            id: "internship",
+            label: "Internship Experience",
+            placeholder: "Internship title and organization...",
+            full: true
+          },
+
+          {
+            id: "studentProjects",
+            label: "Student Projects",
+            placeholder: "Describe your academic or personal projects...",
+            full: true,
+            textarea: true
+          }
+
+        ]
+
+      },
+
+
+      "Marketing & Sales": {
+
+        title: "Marketing & Sales Information",
+
+        description:
+          "Highlight your marketing skills, sales experience and campaign work.",
+
+        fields: [
+
+          {
+            id: "marketingSkills",
+            label: "Marketing Skills",
+            placeholder: "SEO, Content Marketing, Branding, Analytics...",
+            full: true
+          },
+
+          {
+            id: "salesExperience",
+            label: "Sales Experience",
+            placeholder: "B2B, B2C, Account Management..."
+          },
+
+          {
+            id: "digitalPlatforms",
+            label: "Digital Platforms",
+            placeholder: "Google Ads, Meta Ads, HubSpot..."
+          },
+
+          {
+            id: "campaignExperience",
+            label: "Campaign Experience",
+            placeholder: "Describe successful campaigns...",
+            full: true,
+            textarea: true
+          }
+
+        ]
+
+      },
+
+
+      "Other": {
+
+        title: "Professional Information",
+
+        description:
+          "Add information that is relevant to your professional field.",
+
+        fields: [
+
+          {
+            id: "professionalField",
+            label: "Professional Field",
+            placeholder: "Your professional field..."
+          },
+
+          {
+            id: "professionalSkills",
+            label: "Professional Skills",
+            placeholder: "Your key professional skills...",
+            full: true
+          },
+
+          {
+            id: "certifications",
+            label: "Certifications",
+            placeholder: "Professional certifications..."
+          },
+
+          {
+            id: "achievements",
+            label: "Achievements",
+            placeholder: "Awards and achievements..."
+          }
+
+        ]
+
+      }
+
+    };
+
+
+    /* --------------------------------
+       INITIALIZE
+    -------------------------------- */
+
+    function initializeForm() {
+
+      categoryBadge.textContent =
+        `Category: ${category}`;
+
+      templateBadge.textContent =
+        `Template: ${template}`;
+
+
+      const definition =
+        categoryDefinitions[category];
+
+      if (definition) {
+
+        categorySectionTitle.textContent =
+          definition.title;
+
+        categorySectionDescription.textContent =
+          definition.description;
+
+        categoryBoxTitle.textContent =
+          definition.title;
+
+        renderCategoryFields(
+          definition.fields
+        );
+
+      } else {
+
+        renderCategoryFields([]);
+
+      }
+
+
+      loadExistingCV();
+
+      addExperience();
+
+      addEducation();
+
+      updateMiniPreview();
+
+    }
+
+
+    /* --------------------------------
+       RENDER CATEGORY FIELDS
+    -------------------------------- */
+
+    function renderCategoryFields(fields) {
+
+      categoryFields.innerHTML = "";
+
+      fields.forEach((field) => {
+
+        const wrapper =
+          document.createElement("div");
+
+        wrapper.className =
+          `field ${field.full ? "full" : ""}`;
+
+
+        const label =
+          document.createElement("label");
+
+        label.setAttribute(
+          "for",
+          field.id
+        );
+
+        label.textContent =
+          field.label;
+
+
+        let input;
+
+
+        if (field.textarea) {
+
+          input =
+            document.createElement("textarea");
+
+          input.placeholder =
+            field.placeholder || "";
+
+        }
+
+        else if (field.type === "select") {
+
+          input =
+            document.createElement("select");
+
+          const defaultOption =
+            document.createElement("option");
+
+          defaultOption.value = "";
+
+          defaultOption.textContent =
+            "Select an option";
+
+          input.appendChild(
+            defaultOption
+          );
+
+
+          field.options.forEach((option) => {
+
+            const optionElement =
+              document.createElement("option");
+
+            optionElement.value =
+              option;
+
+            optionElement.textContent =
+              option;
+
+            input.appendChild(
+              optionElement
+            );
+
+          });
+
+        }
+
+        else {
+
+          input =
+            document.createElement("input");
+
+          input.type =
+            field.type || "text";
+
+          input.placeholder =
+            field.placeholder || "";
+
+        }
+
+
+        input.id =
+          field.id;
+
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+
+        categoryFields.appendChild(wrapper);
 
       });
 
     }
 
-  });
+
+    /* --------------------------------
+       EXPERIENCE
+    -------------------------------- */
+
+    function addExperience(data = {}) {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "repeat-item";
 
 
-  return experience;
+      item.innerHTML = `
 
-}
+        <button
+          type="button"
+          class="remove-item"
+          title="Remove"
+        >
+          ×
+        </button>
 
+        <div class="grid">
 
-/* =========================================
-   COLLECT EDUCATION
-========================================= */
+          <div class="field">
 
-function collectEducation() {
+            <label>Job Title</label>
 
-  const items =
-    document.querySelectorAll(
-      "#educationContainer .education-item"
-    );
+            <input
+              type="text"
+              name="experienceJob"
+              placeholder="Software Developer"
+              value="${escapeAttr(data.position || "")}"
+            >
 
-
-  const education = [];
-
-
-  items.forEach(function(item) {
-
-    const degree =
-      item.querySelector(
-        '[name="educationDegree"]'
-      )?.value.trim() || "";
+          </div>
 
 
-    const institute =
-      item.querySelector(
-        '[name="educationInstitute"]'
-      )?.value.trim() || "";
+          <div class="field">
+
+            <label>Company</label>
+
+            <input
+              type="text"
+              name="experienceCompany"
+              placeholder="Company Name"
+              value="${escapeAttr(data.company || "")}"
+            >
+
+          </div>
 
 
-    const start =
-      item.querySelector(
-        '[name="educationStart"]'
-      )?.value || "";
+          <div class="field">
+
+            <label>Start Date</label>
+
+            <input
+              type="text"
+              name="experienceStart"
+              placeholder="Jan 2024"
+              value="${escapeAttr(data.start || "")}"
+            >
+
+          </div>
 
 
-    const end =
-      item.querySelector(
-        '[name="educationEnd"]'
-      )?.value || "";
+          <div class="field">
+
+            <label>End Date</label>
+
+            <input
+              type="text"
+              name="experienceEnd"
+              placeholder="Present"
+              value="${escapeAttr(data.end || "")}"
+            >
+
+          </div>
 
 
-    if (
-      degree ||
-      institute ||
-      start ||
-      end
-    ) {
+          <div class="field full">
 
-      education.push({
+            <label>Description</label>
 
-        degree: degree,
+            <textarea
+              name="experienceDescription"
+              placeholder="Describe your responsibilities and achievements..."
+            >${escapeHTML(data.description || "")}</textarea>
 
-        institute: institute,
+          </div>
 
-        date:
-          start || end
-            ? `${start} - ${end || "Present"}`
-            : "",
+        </div>
 
-        description: ""
+      `;
+
+
+      item
+        .querySelector(".remove-item")
+        .addEventListener("click", () => {
+
+          item.remove();
+
+        });
+
+
+      experienceContainer.appendChild(item);
+
+    }
+
+
+    document
+      .getElementById("addExperience")
+      .addEventListener(
+        "click",
+        () => addExperience()
+      );
+
+
+    /* --------------------------------
+       EDUCATION
+    -------------------------------- */
+
+    function addEducation(data = {}) {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "repeat-item";
+
+
+      item.innerHTML = `
+
+        <button
+          type="button"
+          class="remove-item"
+          title="Remove"
+        >
+          ×
+        </button>
+
+        <div class="grid">
+
+          <div class="field">
+
+            <label>Degree / Qualification</label>
+
+            <input
+              type="text"
+              name="educationDegree"
+              placeholder="Bachelor of Computer Science"
+              value="${escapeAttr(data.degree || "")}"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Institute</label>
+
+            <input
+              type="text"
+              name="educationInstitute"
+              placeholder="University / College"
+              value="${escapeAttr(data.institute || "")}"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Start Date</label>
+
+            <input
+              type="text"
+              name="educationStart"
+              placeholder="2022"
+              value="${escapeAttr(data.start || "")}"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>End Date</label>
+
+            <input
+              type="text"
+              name="educationEnd"
+              placeholder="2026"
+              value="${escapeAttr(data.end || "")}"
+            >
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      item
+        .querySelector(".remove-item")
+        .addEventListener("click", () => {
+
+          item.remove();
+
+        });
+
+
+      educationContainer.appendChild(item);
+
+    }
+
+
+    document
+      .getElementById("addEducation")
+      .addEventListener(
+        "click",
+        () => addEducation()
+      );
+
+
+    /* --------------------------------
+       COLLECT EXPERIENCE
+    -------------------------------- */
+
+    function collectExperience() {
+
+      const items =
+        document.querySelectorAll(
+          "#experienceContainer .repeat-item"
+        );
+
+
+      return Array.from(items)
+        .map((item) => {
+
+          return {
+
+            position:
+              item.querySelector(
+                '[name="experienceJob"]'
+              )?.value.trim() || "",
+
+            company:
+              item.querySelector(
+                '[name="experienceCompany"]'
+              )?.value.trim() || "",
+
+            start:
+              item.querySelector(
+                '[name="experienceStart"]'
+              )?.value.trim() || "",
+
+            end:
+              item.querySelector(
+                '[name="experienceEnd"]'
+              )?.value.trim() || "",
+
+            date: buildDate(
+              item.querySelector(
+                '[name="experienceStart"]'
+              )?.value,
+
+              item.querySelector(
+                '[name="experienceEnd"]'
+              )?.value
+            ),
+
+            description:
+              item.querySelector(
+                '[name="experienceDescription"]'
+              )?.value.trim() || ""
+
+          };
+
+        })
+        .filter(item =>
+          item.position ||
+          item.company ||
+          item.description
+        );
+
+    }
+
+
+    /* --------------------------------
+       COLLECT EDUCATION
+    -------------------------------- */
+
+    function collectEducation() {
+
+      const items =
+        document.querySelectorAll(
+          "#educationContainer .repeat-item"
+        );
+
+
+      return Array.from(items)
+        .map((item) => {
+
+          return {
+
+            degree:
+              item.querySelector(
+                '[name="educationDegree"]'
+              )?.value.trim() || "",
+
+            institute:
+              item.querySelector(
+                '[name="educationInstitute"]'
+              )?.value.trim() || "",
+
+            start:
+              item.querySelector(
+                '[name="educationStart"]'
+              )?.value.trim() || "",
+
+            end:
+              item.querySelector(
+                '[name="educationEnd"]'
+              )?.value.trim() || "",
+
+            date: buildDate(
+              item.querySelector(
+                '[name="educationStart"]'
+              )?.value,
+
+              item.querySelector(
+                '[name="educationEnd"]'
+              )?.value
+            )
+
+          };
+
+        })
+        .filter(item =>
+          item.degree ||
+          item.institute
+        );
+
+    }
+
+
+    /* --------------------------------
+       CATEGORY DATA
+    -------------------------------- */
+
+    function collectCategoryData() {
+
+      const data = {};
+
+      const fields =
+        categoryDefinitions[category]?.fields || [];
+
+
+      fields.forEach((field) => {
+
+        const element =
+          document.getElementById(field.id);
+
+        if (element) {
+
+          data[field.id] =
+            element.value.trim();
+
+        }
 
       });
 
+
+      return data;
+
     }
 
-  });
+
+    /* --------------------------------
+       FORM SUBMIT
+    -------------------------------- */
+
+    form.addEventListener(
+      "submit",
+      (event) => {
+
+        event.preventDefault();
+
+        clearMessage();
 
 
-  return education;
+        const fullName =
+          document.getElementById("fullName")
+            .value.trim();
 
-}
+        const jobTitle =
+          document.getElementById("jobTitle")
+            .value.trim();
+
+        const email =
+          document.getElementById("email")
+            .value.trim();
 
 
-/* =========================================
-   COLLECT CATEGORY DATA
-========================================= */
+        if (!fullName) {
 
-function collectCategoryData() {
+          showMessage(
+            "Please enter your full name."
+          );
 
-  const data = {};
+          return;
+
+        }
 
 
-  const fields =
-    document.querySelectorAll(
-      "#categoryFields input, #categoryFields textarea, #categoryFields select"
+        if (!jobTitle) {
+
+          showMessage(
+            "Please enter your professional title."
+          );
+
+          return;
+
+        }
+
+
+        if (!email) {
+
+          showMessage(
+            "Please enter your email address."
+          );
+
+          return;
+
+        }
+
+
+        const currentCV = {
+
+          category,
+
+          template,
+
+          fullName,
+
+          professionalTitle:
+            jobTitle,
+
+          email,
+
+          phone:
+            document.getElementById("phone")
+              .value.trim(),
+
+          location:
+            document.getElementById("location")
+              .value.trim(),
+
+          website:
+            document.getElementById("website")
+              .value.trim(),
+
+          summary:
+            document.getElementById("summary")
+              .value.trim(),
+
+          skills:
+            document.getElementById("skills")
+              .value.trim(),
+
+          languages:
+            document.getElementById("languages")
+              .value.trim(),
+
+          ...collectCategoryData(),
+
+          experience:
+            collectExperience(),
+
+          education:
+            collectEducation(),
+
+          createdAt:
+            new Date().toISOString()
+
+        };
+
+
+        localStorage.setItem(
+          "currentCV",
+          JSON.stringify(currentCV)
+        );
+
+
+        loading.classList.add("active");
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "cv-preview.html";
+
+        }, 400);
+
+      }
     );
 
 
-  fields.forEach(function(field) {
+    /* --------------------------------
+       LOAD EXISTING CV
+    -------------------------------- */
 
-    if (field.id) {
+    function loadExistingCV() {
 
-      data[field.id] =
-        field.value.trim();
+      const raw =
+        localStorage.getItem("currentCV");
+
+
+      if (!raw) {
+        return;
+      }
+
+
+      let oldCV;
+
+      try {
+
+        oldCV =
+          JSON.parse(raw);
+
+      } catch {
+
+        return;
+
+      }
+
+
+      if (!oldCV) {
+        return;
+      }
+
+
+      setValue(
+        "fullName",
+        oldCV.fullName
+      );
+
+      setValue(
+        "jobTitle",
+        oldCV.professionalTitle
+      );
+
+      setValue(
+        "email",
+        oldCV.email
+      );
+
+      setValue(
+        "phone",
+        oldCV.phone
+      );
+
+      setValue(
+        "location",
+        oldCV.location
+      );
+
+      setValue(
+        "website",
+        oldCV.website
+      );
+
+      setValue(
+        "summary",
+        oldCV.summary
+      );
+
+      setValue(
+        "skills",
+        oldCV.skills
+      );
+
+      setValue(
+        "languages",
+        oldCV.languages
+      );
+
+
+      const fields =
+        categoryDefinitions[category]?.fields || [];
+
+
+      fields.forEach((field) => {
+
+        setValue(
+          field.id,
+          oldCV[field.id]
+        );
+
+      });
+
+
+      experienceContainer.innerHTML = "";
+
+      if (
+        Array.isArray(oldCV.experience) &&
+        oldCV.experience.length
+      ) {
+
+        oldCV.experience.forEach(
+          item => addExperience(item)
+        );
+
+      } else {
+
+        addExperience();
+
+      }
+
+
+      educationContainer.innerHTML = "";
+
+      if (
+        Array.isArray(oldCV.education) &&
+        oldCV.education.length
+      ) {
+
+        oldCV.education.forEach(
+          item => addEducation(item)
+        );
+
+      } else {
+
+        addEducation();
+
+      }
+
+
+      updateMiniPreview();
 
     }
 
-  });
 
+    /* --------------------------------
+       INPUT HELPERS
+    -------------------------------- */
 
-  return data;
+    function setValue(id, value) {
 
-}
-
-
-/* =========================================
-   FORM SUBMIT
-========================================= */
-
-document.getElementById(
-  "cvForm"
-).addEventListener("submit", function(event) {
-
-  event.preventDefault();
-
-
-  /* BASIC INFORMATION */
-
-  const cvData = {
-
-    category: category,
-
-    template: template,
-
-    fullName:
-      document.getElementById(
-        "fullName"
-      ).value.trim(),
-
-    professionalTitle:
-      document.getElementById(
-        "jobTitle"
-      ).value.trim(),
-
-    email:
-      document.getElementById(
-        "email"
-      ).value.trim(),
-
-    phone:
-      document.getElementById(
-        "phone"
-      ).value.trim(),
-
-    location:
-      document.getElementById(
-        "location"
-      ).value.trim(),
-
-    website:
-      document.getElementById(
-        "website"
-      ).value.trim(),
-
-    summary:
-      document.getElementById(
-        "summary"
-      ).value.trim(),
-
-    skills:
-      document.getElementById(
-        "skills"
-      ).value.trim(),
-
-    languages:
-      document.getElementById(
-        "languages"
-      ).value.trim(),
-
-
-    /* CATEGORY */
-
-    ...collectCategoryData(),
-
-
-    /* EXPERIENCE */
-
-    experience:
-      collectExperience(),
-
-
-    /* EDUCATION */
-
-    education:
-      collectEducation(),
-
-
-    /* TIMESTAMP */
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  /* SAVE COMPLETE CV */
-
-  localStorage.setItem(
-    "currentCV",
-    JSON.stringify(cvData)
-  );
-
-
-  /* SAVE SELECTED OPTIONS */
-
-  localStorage.setItem(
-    "selectedCVCategory",
-    category
-  );
-
-
-  localStorage.setItem(
-    "selectedCVTemplate",
-    template
-  );
-
-
-  /* GO TO PREVIEW */
-
-  window.location.href =
-    "cv-preview.html";
-
-});
-
-
-/* =========================================
-   LOAD PREVIOUS DATA IF AVAILABLE
-========================================= */
-
-const oldCV =
-  JSON.parse(
-    localStorage.getItem("currentCV")
-  );
-
-
-if (oldCV) {
-
-  const fields = {
-
-    fullName:
-      oldCV.fullName,
-
-    jobTitle:
-      oldCV.professionalTitle ||
-      oldCV.jobTitle,
-
-    email:
-      oldCV.email,
-
-    phone:
-      oldCV.phone,
-
-    location:
-      oldCV.location,
-
-    website:
-      oldCV.website,
-
-    summary:
-      oldCV.summary,
-
-    skills:
-      oldCV.skills,
-
-    languages:
-      oldCV.languages
-
-  };
-
-
-  Object.entries(fields).forEach(
-    function([id, value]) {
-
-      const field =
+      const element =
         document.getElementById(id);
 
       if (
-        field &&
-        value !== undefined
+        element &&
+        value !== undefined &&
+        value !== null
       ) {
 
-        field.value = value;
+        element.value = value;
 
       }
 
     }
-  );
 
 
-  /* LIVE PREVIEW */
+    function buildDate(start, end) {
 
-  document.getElementById(
-    "previewName"
-  ).textContent =
-    oldCV.fullName ||
-    "Your Name";
+      const s =
+        String(start || "").trim();
 
-
-  document.getElementById(
-    "previewTitle"
-  ).textContent =
-    oldCV.professionalTitle ||
-    oldCV.jobTitle ||
-    "Professional Title";
-
-}
+      const e =
+        String(end || "").trim();
 
 
-/* =========================================
-   DONE
-========================================= */
+      if (!s && !e) {
+        return "";
+      }
 
-</script>
+      if (s && e) {
+        return `${s} - ${e}`;
+      }
+
+      return s || e;
+
+    }
+
+
+    /* --------------------------------
+       LIVE MINI PREVIEW
+    -------------------------------- */
+
+    ["fullName", "jobTitle"].forEach((id) => {
+
+      document
+        .getElementById(id)
+        .addEventListener(
+          "input",
+          updateMiniPreview
+        );
+
+    });
+
+
+    function updateMiniPreview() {
+
+      const name =
+        document.getElementById("fullName")
+          .value.trim();
+
+      const title =
+        document.getElementById("jobTitle")
+          .value.trim();
+
+
+      previewName.textContent =
+        name || "Your Name";
+
+      previewTitle.textContent =
+        title || "Professional Title";
+
+    }
+
+
+    /* --------------------------------
+       NAVIGATION
+    -------------------------------- */
+
+    document
+      .getElementById("backTemplates")
+      .addEventListener(
+        "click",
+        () => {
+
+          window.location.href =
+            "templates.html";
+
+        }
+      );
+
+
+    document
+      .getElementById("backDashboard")
+      .addEventListener(
+        "click",
+        () => {
+
+          window.location.href =
+            "dashboard.html";
+
+        }
+      );
+
+
+    document
+      .getElementById("cancelButton")
+      .addEventListener(
+        "click",
+        () => {
+
+          window.location.href =
+            "dashboard.html";
+
+        }
+      );
+
+
+    /* --------------------------------
+       MESSAGE
+    -------------------------------- */
+
+    function showMessage(message) {
+
+      formMessage.textContent =
+        message;
+
+      formMessage.className =
+        "message show error";
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    function clearMessage() {
+
+      formMessage.textContent = "";
+
+      formMessage.className =
+        "message";
+
+    }
+
+
+    /* --------------------------------
+       SECURITY HELPERS
+    -------------------------------- */
+
+    function escapeHTML(value) {
+
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function escapeAttr(value) {
+
+      return escapeHTML(value);
+
+    }
+
+
+    console.log(
+      "CV form initialized:",
+      category,
+      template
+    );
+
+  </script>
 
 </body>
-                  </html>
+  </html>
