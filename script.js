@@ -1,6 +1,12 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+/* =========================================================
+   CVBUILDER — AUTHENTICATION & LANDING PAGE
+========================================================= */
+
 import {
-  getAuth,
+  auth
+} from "./firebase-config.js";
+
+import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -9,296 +15,648 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-// ===============================
-// FIREBASE CONFIG
-// ===============================
-const firebaseConfig = {
-  apiKey: "AIzaSyBlz6jMOYuJzWVd7pLTyAR8lkBJbAHYq40",
-  authDomain: "cvbuilder-13804.firebaseapp.com",
-  projectId: "cvbuilder-13804",
-  storageBucket: "cvbuilder-13804.firebasestorage.app",
-  messagingSenderId: "419200286217",
-  appId: "1:419200286217:web:97f273a6b15db78f8342d8"
-};
 
-// ===============================
-// INITIALIZE FIREBASE
-// ===============================
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+/* =========================================================
+   DOM HELPERS
+========================================================= */
 
-// ===============================
-// DOM
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
+const $ = (id) => document.getElementById(id);
 
-  const authModal = document.getElementById("authModal");
 
-  const loginForm = document.getElementById("loginForm");
-  const signupForm = document.getElementById("signupForm");
+/* =========================================================
+   AUTH STATE
+========================================================= */
 
-  const loginEmail = document.getElementById("loginEmail");
-  const loginPassword = document.getElementById("loginPassword");
+let authMode = "signup";
 
-  const signupName = document.getElementById("signupName");
-  const signupEmail = document.getElementById("signupEmail");
-  const signupPassword = document.getElementById("signupPassword");
-  const signupConfirm = document.getElementById("signupConfirm");
+let redirectAfterLogin = null;
 
-  const googleLogin = document.getElementById("googleLogin");
-  const facebookLogin = document.getElementById("facebookLogin");
 
-  // ===============================
-  // OPEN / CLOSE MODAL
-  // ===============================
-  function openAuth() {
-    if (authModal) {
-      authModal.classList.add("active");
-      document.body.style.overflow = "hidden";
+/* =========================================================
+   DOM ELEMENTS
+========================================================= */
+
+const authModal = $("authModal");
+const authForm = $("authForm");
+
+const authTitle = $("authTitle");
+const authSubtitle = $("authSubtitle");
+
+const authEmail = $("authEmail");
+const authPassword = $("authPassword");
+
+const authSubmitButton = $("authSubmitButton");
+
+const authSwitchText = $("authSwitchText");
+const authSwitchButton = $("authSwitchButton");
+
+const googleLoginButton = $("googleLoginButton");
+
+const authMessage = $("authMessage");
+
+
+/* =========================================================
+   AUTH MODAL
+========================================================= */
+
+function openAuthModal(mode = "signup", redirect = null) {
+
+  authMode = mode;
+  redirectAfterLogin = redirect;
+
+  updateAuthModal();
+
+  authModal.classList.add("active");
+
+  document.body.style.overflow = "hidden";
+
+  setTimeout(() => {
+
+    if (authEmail) {
+      authEmail.focus();
     }
+
+  }, 100);
+}
+
+
+function closeAuthModal() {
+
+  authModal.classList.remove("active");
+
+  document.body.style.overflow = "";
+
+  clearAuthMessage();
+
+  if (authForm) {
+    authForm.reset();
   }
 
-  function closeAuth() {
-    if (authModal) {
-      authModal.classList.remove("active");
-      document.body.style.overflow = "";
-    }
+}
+
+
+/* =========================================================
+   UPDATE AUTH MODAL
+========================================================= */
+
+function updateAuthModal() {
+
+  clearAuthMessage();
+
+  if (authMode === "login") {
+
+    authTitle.textContent = "Welcome Back";
+
+    authSubtitle.textContent =
+      "Login to access your CVBuilder dashboard.";
+
+    authSubmitButton.textContent = "Login";
+
+    authSwitchText.textContent =
+      "Don't have an account?";
+
+    authSwitchButton.textContent =
+      "Create Account";
+
+    authPassword.setAttribute(
+      "autocomplete",
+      "current-password"
+    );
+
+  } else {
+
+    authTitle.textContent =
+      "Create Your Account";
+
+    authSubtitle.textContent =
+      "Start building your professional CV today.";
+
+    authSubmitButton.textContent =
+      "Create Account";
+
+    authSwitchText.textContent =
+      "Already have an account?";
+
+    authSwitchButton.textContent =
+      "Login";
+
+    authPassword.setAttribute(
+      "autocomplete",
+      "new-password"
+    );
+
   }
 
-  document.querySelectorAll(
-    "#loginBtn, #heroLogin, #createAccountBtn, #heroCreate"
-  ).forEach(button => {
-    if (button) {
-      button.addEventListener("click", openAuth);
-    }
-  });
+}
 
-  const closeBtn = document.querySelector(".auth-close");
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeAuth);
+/* =========================================================
+   AUTH MESSAGE
+========================================================= */
+
+function showAuthMessage(message, type = "error") {
+
+  if (!authMessage) return;
+
+  authMessage.textContent = message;
+
+  authMessage.className =
+    `auth-message show ${type}`;
+
+}
+
+
+function clearAuthMessage() {
+
+  if (!authMessage) return;
+
+  authMessage.textContent = "";
+
+  authMessage.className =
+    "auth-message";
+
+}
+
+
+/* =========================================================
+   BUTTON LOADING
+========================================================= */
+
+function setButtonLoading(button, loading, loadingText) {
+
+  if (!button) return;
+
+  if (loading) {
+
+    button.dataset.originalText =
+      button.textContent;
+
+    button.disabled = true;
+
+    button.textContent =
+      loadingText;
+
+  } else {
+
+    button.disabled = false;
+
+    button.textContent =
+      button.dataset.originalText ||
+      button.textContent;
+
   }
 
-  if (authModal) {
-    authModal.addEventListener("click", e => {
-      if (e.target === authModal) {
-        closeAuth();
-      }
-    });
+}
+
+
+/* =========================================================
+   FIREBASE ERROR MESSAGE
+========================================================= */
+
+function getFirebaseErrorMessage(error) {
+
+  const code = error?.code || "";
+
+  switch (code) {
+
+    case "auth/email-already-in-use":
+      return "An account already exists with this email address.";
+
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+
+    case "auth/weak-password":
+      return "Password should be at least 6 characters.";
+
+    case "auth/invalid-credential":
+      return "Email or password is incorrect.";
+
+    case "auth/user-not-found":
+      return "No account was found with this email address.";
+
+    case "auth/wrong-password":
+      return "Email or password is incorrect.";
+
+    case "auth/popup-closed-by-user":
+      return "Google sign-in was cancelled.";
+
+    case "auth/popup-blocked":
+      return "The Google login popup was blocked by your browser.";
+
+    case "auth/account-exists-with-different-credential":
+      return "An account already exists using another sign-in method.";
+
+    case "auth/too-many-requests":
+      return "Too many attempts. Please try again later.";
+
+    case "auth/network-request-failed":
+      return "Network error. Please check your internet connection.";
+
+    case "auth/operation-not-allowed":
+      return "This sign-in method is not enabled in Firebase.";
+
+    default:
+      console.error("Firebase Error:", error);
+
+      return "Something went wrong. Please try again.";
   }
 
-  // ===============================
-  // LOGIN / SIGNUP SWITCH
-  // ===============================
-  const showSignup = document.getElementById("showSignup");
-  const showLogin = document.getElementById("showLogin");
+}
 
-  if (showSignup) {
-    showSignup.addEventListener("click", e => {
-      e.preventDefault();
 
-      loginForm.style.display = "none";
-      signupForm.style.display = "block";
-    });
+/* =========================================================
+   EMAIL AUTHENTICATION
+========================================================= */
+
+async function handleEmailAuthentication(event) {
+
+  event.preventDefault();
+
+  clearAuthMessage();
+
+  const email =
+    authEmail.value.trim();
+
+  const password =
+    authPassword.value;
+
+  if (!email) {
+
+    showAuthMessage(
+      "Please enter your email address."
+    );
+
+    return;
   }
 
-  if (showLogin) {
-    showLogin.addEventListener("click", e => {
-      e.preventDefault();
+  if (!password) {
 
-      signupForm.style.display = "none";
-      loginForm.style.display = "block";
-    });
+    showAuthMessage(
+      "Please enter your password."
+    );
+
+    return;
   }
 
-  // ===============================
-  // EMAIL LOGIN
-  // ===============================
-  if (loginForm) {
-    loginForm.addEventListener("submit", async e => {
-      e.preventDefault();
+  if (password.length < 6) {
 
-      const email = loginEmail.value.trim();
-      const password = loginPassword.value;
+    showAuthMessage(
+      "Password should be at least 6 characters."
+    );
 
-      try {
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
-        alert("Login successful!");
-        closeAuth();
-
-        window.location.href = "dashboard.html";
-
-      } catch (error) {
-        console.error(error);
-
-        if (error.code === "auth/invalid-credential") {
-          alert("Email ya password incorrect hai.");
-        } else if (error.code === "auth/too-many-requests") {
-          alert("Too many attempts. Thori der baad try karo.");
-        } else {
-          alert(error.message);
-        }
-      }
-    });
+    return;
   }
 
-  // ===============================
-  // CREATE ACCOUNT
-  // ===============================
-  if (signupForm) {
-    signupForm.addEventListener("submit", async e => {
-      e.preventDefault();
 
-      const name = signupName.value.trim();
-      const email = signupEmail.value.trim();
-      const password = signupPassword.value;
-      const confirmPassword = signupConfirm.value;
+  setButtonLoading(
+    authSubmitButton,
+    true,
+    authMode === "login"
+      ? "Logging in..."
+      : "Creating account..."
+  );
 
-      if (password !== confirmPassword) {
-        alert("Passwords match nahi karte.");
-        return;
-      }
 
-      if (password.length < 6) {
-        alert("Password kam az kam 6 characters ka hona chahiye.");
-        return;
-      }
+  try {
 
-      try {
-        const userCredential =
-          await createUserWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
+    if (authMode === "signup") {
 
-        const user = userCredential.user;
-
-        alert(`Account created successfully! Welcome ${name}`);
-
-        closeAuth();
-
-        window.location.href = "dashboard.html";
-
-      } catch (error) {
-        console.error(error);
-
-        if (error.code === "auth/email-already-in-use") {
-          alert("Ye email pehle se registered hai.");
-        } else if (error.code === "auth/invalid-email") {
-          alert("Email address valid nahi hai.");
-        } else {
-          alert(error.message);
-        }
-      }
-    });
-  }
-
-  // ===============================
-  // GOOGLE LOGIN
-  // ===============================
-  if (googleLogin) {
-    googleLogin.addEventListener("click", async () => {
-
-      try {
-        const result = await signInWithPopup(
-          auth,
-          googleProvider
-        );
-
-        const user = result.user;
-
-        alert(`Welcome ${user.displayName || "User"}!`);
-
-        window.location.href = "dashboard.html";
-
-      } catch (error) {
-        console.error(error);
-
-        if (error.code === "auth/popup-closed-by-user") {
-          alert("Google login cancel kar diya gaya.");
-        } else {
-          alert(error.message);
-        }
-      }
-    });
-  }
-
-  // ===============================
-  // FACEBOOK
-  // ===============================
-  if (facebookLogin) {
-    facebookLogin.addEventListener("click", () => {
-      alert("Facebook Login abhi setup nahi hua. Isay baad mein enable karenge.");
-    });
-  }
-
-  // ===============================
-  // CATEGORY BUTTONS
-  // ===============================
-  document.querySelectorAll("[data-category]").forEach(card => {
-
-    card.addEventListener("click", () => {
-
-      const category = card.dataset.category;
-
-      localStorage.setItem(
-        "selectedCVCategory",
-        category
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
       );
 
-      alert(`Selected category: ${category}`);
-
-      // Category system next step mein dashboard se connect hoga.
-    });
-
-  });
-
-  // ===============================
-  // THEME
-  // ===============================
-  const themeToggle = document.getElementById("themeToggle");
-
-  if (themeToggle) {
-
-    const savedTheme =
-      localStorage.getItem("cvbuilder-theme");
-
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark-mode");
-    }
-
-    themeToggle.addEventListener("click", () => {
-
-      document.body.classList.toggle("dark-mode");
-
-      localStorage.setItem(
-        "cvbuilder-theme",
-        document.body.classList.contains("dark-mode")
-          ? "dark"
-          : "light"
+      showAuthMessage(
+        "Account created successfully. Redirecting...",
+        "success"
       );
 
-    });
+    } else {
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      showAuthMessage(
+        "Login successful. Redirecting...",
+        "success"
+      );
+
+    }
+
+
+    setTimeout(() => {
+
+      closeAuthModal();
+
+      goToDashboard();
+
+    }, 700);
+
+
+  } catch (error) {
+
+    showAuthMessage(
+      getFirebaseErrorMessage(error),
+      "error"
+    );
+
+    setButtonLoading(
+      authSubmitButton,
+      false
+    );
+
   }
 
-  // ===============================
-  // AUTH STATE
-  // ===============================
-  onAuthStateChanged(auth, user => {
+}
+
+
+/* =========================================================
+   GOOGLE AUTHENTICATION
+========================================================= */
+
+async function handleGoogleLogin() {
+
+  clearAuthMessage();
+
+  setButtonLoading(
+    googleLoginButton,
+    true,
+    "Connecting..."
+  );
+
+
+  try {
+
+    const provider =
+      new GoogleAuthProvider();
+
+    provider.setCustomParameters({
+      prompt: "select_account"
+    });
+
+
+    await signInWithPopup(
+      auth,
+      provider
+    );
+
+
+    showAuthMessage(
+      "Google login successful. Redirecting...",
+      "success"
+    );
+
+
+    setTimeout(() => {
+
+      closeAuthModal();
+
+      goToDashboard();
+
+    }, 700);
+
+
+  } catch (error) {
+
+    showAuthMessage(
+      getFirebaseErrorMessage(error),
+      "error"
+    );
+
+    setButtonLoading(
+      googleLoginButton,
+      false
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   DASHBOARD REDIRECT
+========================================================= */
+
+function goToDashboard() {
+
+  window.location.href =
+    "dashboard.html";
+
+}
+
+
+/* =========================================================
+   BUTTON EVENTS
+========================================================= */
+
+
+/* Navbar Login */
+
+$("loginButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal("login");
+  }
+);
+
+
+/* Navbar Create Account */
+
+$("signupButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal("signup");
+  }
+);
+
+
+/* Hero Create */
+
+$("heroCreateButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal(
+      "signup",
+      "create"
+    );
+  }
+);
+
+
+/* Hero Login */
+
+$("heroLoginButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal("login");
+  }
+);
+
+
+/* CTA Create */
+
+$("ctaCreateButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal(
+      "signup",
+      "create"
+    );
+  }
+);
+
+
+/* Footer Login */
+
+$("footerLoginButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal("login");
+  }
+);
+
+
+/* Footer Signup */
+
+$("footerSignupButton")?.addEventListener(
+  "click",
+  () => {
+    openAuthModal("signup");
+  }
+);
+
+
+/* Close Modal */
+
+$("closeAuthModal")?.addEventListener(
+  "click",
+  closeAuthModal
+);
+
+
+/* Switch Login / Signup */
+
+authSwitchButton?.addEventListener(
+  "click",
+  () => {
+
+    authMode =
+      authMode === "login"
+        ? "signup"
+        : "login";
+
+    updateAuthModal();
+
+  }
+);
+
+
+/* Email Form */
+
+authForm?.addEventListener(
+  "submit",
+  handleEmailAuthentication
+);
+
+
+/* Google */
+
+googleLoginButton?.addEventListener(
+  "click",
+  handleGoogleLogin
+);
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
+
+authModal?.addEventListener(
+  "click",
+  (event) => {
+
+    if (
+      event.target === authModal
+    ) {
+      closeAuthModal();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.key === "Escape" &&
+      authModal?.classList.contains("active")
+    ) {
+      closeAuthModal();
+    }
+
+  }
+);
+
+
+/* =========================================================
+   AUTH STATE LISTENER
+========================================================= */
+
+onAuthStateChanged(
+  auth,
+  (user) => {
 
     if (user) {
-      console.log("Logged in:", user.email);
+
+      console.log(
+        "Authenticated user:",
+        user.email || user.uid
+      );
+
     } else {
-      console.log("No user logged in.");
+
+      console.log(
+        "No authenticated user."
+      );
+
     }
+
+  }
+);
+
+
+/* =========================================================
+   PREVENT HASH JUMP FOR EMPTY LINKS
+========================================================= */
+
+document
+  .querySelectorAll('a[href="#"]')
+  .forEach((link) => {
+
+    link.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+      }
+    );
 
   });
 
-});
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+console.log(
+  "CVBuilder authentication system initialized."
+);
