@@ -1,2482 +1,2576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Build Your CV | CVBuilder</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    /* =========================================
-       CV FORM PAGE
-    ========================================= */
-
-    .form-page {
-      min-height: 100vh;
-      background: #f6f8fc;
-    }
-
-    .form-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(255,255,255,.95);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid #e5eaf1;
-    }
-
-    .form-nav-inner {
-      width: min(1180px, calc(100% - 32px));
-      min-height: 70px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      text-decoration: none;
-      color: #172033;
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .brand span {
-      color: #2563eb;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 9px;
-    }
-
-    .nav-btn {
-      border: 1px solid #dce3ed;
-      background: #fff;
-      color: #34445a;
-      padding: 10px 15px;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .nav-btn:hover {
-      border-color: #2563eb;
-      color: #2563eb;
-    }
-
-    .form-container {
-      width: min(1180px, calc(100% - 32px));
-      margin: auto;
-      padding: 35px 0 70px;
-    }
-
-    /* Header */
-
-    .form-header {
-      margin-bottom: 25px;
-    }
-
-    .form-header h1 {
-      margin: 0 0 8px;
-      color: #172033;
-      font-size: clamp(28px, 4vw, 38px);
-      letter-spacing: -.8px;
-    }
-
-    .form-header p {
-      margin: 0;
-      color: #728096;
-      font-size: 14px;
-    }
-
-    /* Selection info */
-
-    .selection-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 15px 18px;
-      margin-bottom: 25px;
-    }
-
-    .selection-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .selection-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      background: #eff6ff;
-      display: grid;
-      place-items: center;
-      font-size: 20px;
-    }
-
-    .selection-text strong {
-      display: block;
-      color: #172033;
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
-
-    .selection-text span {
-      color: #718096;
-      font-size: 12px;
-    }
-
-    .change-template {
-      border: 0;
-      background: #eff6ff;
-      color: #2563eb;
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 750;
-      cursor: pointer;
-    }
-
-    /* Layout */
-
-    .form-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .form-main {
-      min-width: 0;
-    }
-
-    .form-card {
-      background: #fff;
-      border: 1px solid #e3e8ef;
-      border-radius: 16px;
-      padding: 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 20px rgba(20,35,60,.035);
-    }
-
-    .section-heading {
-      margin-bottom: 20px;
-    }
-
-    .section-heading h2 {
-      margin: 0 0 5px;
-      color: #172033;
-      font-size: 19px;
-    }
-
-    .section-heading p {
-      margin: 0;
-      color: #7a8799;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    /* Inputs */
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 16px;
-    }
-
-    .field {
-      min-width: 0;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      color: #34445a;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .required {
-      color: #dc2626;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #dce3ed;
-      background: #fff;
-      color: #243247;
-      border-radius: 9px;
-      padding: 11px 12px;
-      outline: none;
-      font-family: inherit;
-      font-size: 13px;
-      transition: .2s ease;
-    }
-
-    .field input,
-    .field select {
-      height: 43px;
-    }
-
-    .field textarea {
-      min-height: 105px;
-      resize: vertical;
-      line-height: 1.55;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37,99,235,.09);
-    }
-
-    /* Dynamic category fields */
-
-    .category-fields {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 16px;
-    }
-
-    .category-fields .field.full {
-      grid-column: 1 / -1;
-    }
-
-    /* Repeater */
-
-    .repeater-item {
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 17px;
-      margin-bottom: 13px;
-      background: #fbfcfe;
-    }
-
-    .repeater-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 10px;
-    }
-
-    .repeater-title {
-      color: #34445a;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .remove-btn {
-      border: 0;
-      background: #fff1f2;
-      color: #dc2626;
-      border-radius: 7px;
-      padding: 6px 9px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .add-btn {
-      width: 100%;
-      height: 42px;
-      border: 1px dashed #9db7df;
-      background: #f8fbff;
-      color: #2563eb;
-      border-radius: 9px;
-      font-weight: 750;
-      cursor: pointer;
-      transition: .2s ease;
-    }
-
-    .add-btn:hover {
-      background: #eff6ff;
-      border-color: #2563eb;
-    }
-
-    /* Sidebar */
-
-    .form-sidebar {
-      position: sticky;
-      top: 92px;
-    }
-
-    .side-card {
-      background: #fff;
-      border: 1px solid #e3e8ef;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 5px 20px rgba(20,35,60,.035);
-    }
-
-    .side-card h3 {
-      margin: 0 0 15px;
-      color: #172033;
-      font-size: 16px;
-    }
-
-    .mini-preview {
-      width: 100%;
-      aspect-ratio: 210 / 297;
-      background: #fff;
-      border: 1px solid #dfe5ed;
-      box-shadow: 0 5px 18px rgba(20,35,60,.1);
-      border-radius: 3px;
-      padding: 18px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .mini-preview-name {
-      width: 70%;
-      height: 9px;
-      border-radius: 3px;
-      background: #172033;
-      margin-bottom: 7px;
-    }
-
-    .mini-preview-title {
-      width: 52%;
-      height: 5px;
-      border-radius: 3px;
-      background: #2563eb;
-      margin-bottom: 16px;
-    }
-
-    .mini-preview-line {
-      height: 4px;
-      border-radius: 3px;
-      background: #dce3ed;
-      margin: 7px 0;
-    }
-
-    .mini-preview-line.short {
-      width: 60%;
-    }
-
-    .mini-preview-line.medium {
-      width: 78%;
-    }
-
-    .mini-preview-line.long {
-      width: 95%;
-    }
-
-    .mini-heading {
-      width: 38%;
-      height: 5px;
-      border-radius: 3px;
-      background: #64748b;
-      margin: 17px 0 8px;
-    }
-
-    .tips {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .tips li {
-      display: flex;
-      gap: 9px;
-      color: #68778c;
-      font-size: 12px;
-      line-height: 1.55;
-      margin-bottom: 11px;
-    }
-
-    .tips li::before {
-      content: "✓";
-      color: #16a34a;
-      font-weight: 800;
-    }
-
-    /* Bottom */
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 5px;
-    }
-
-    .action-btn {
-      height: 45px;
-      padding: 0 20px;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 750;
-      cursor: pointer;
-    }
-
-    .action-secondary {
-      border: 1px solid #dce3ed;
-      background: #fff;
-      color: #34445a;
-    }
-
-    .action-primary {
-      border: 1px solid #2563eb;
-      background: #2563eb;
-      color: #fff;
-    }
-
-    .action-primary:hover {
-      background: #1d4ed8;
-    }
-
-    .form-message {
-      display: none;
-      margin-bottom: 15px;
-      padding: 11px 13px;
-      border-radius: 8px;
-      font-size: 12px;
-    }
-
-    .form-message.show {
-      display: block;
-    }
-
-    .form-message.error {
-      background: #fff1f2;
-      color: #be123c;
-      border: 1px solid #fecdd3;
-    }
-
-    /* Mobile */
-
-    @media (max-width: 900px) {
-      .form-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .form-sidebar {
-        position: static;
-        order: -1;
-      }
-
-      .mini-preview {
-        max-width: 240px;
-        margin: auto;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .form-container,
-      .form-nav-inner {
-        width: calc(100% - 22px);
-      }
-
-      .form-grid,
-      .category-fields {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full,
-      .category-fields .field.full {
-        grid-column: auto;
-      }
-
-      .form-card {
-        padding: 18px;
-      }
-
-      .selection-bar {
-        align-items: flex-start;
-      }
-
-      .change-template {
-        white-space: nowrap;
-      }
-
-      .form-actions {
-        flex-direction: column-reverse;
-      }
-
-      .action-btn {
-        width: 100%;
-      }
-
-      .nav-actions .nav-btn:first-child {
-        display: none;
-      }
-    }
-
-    @media (max-width: 430px) {
-      .brand {
-        font-size: 19px;
-      }
-
-      .selection-bar {
-        flex-direction: column;
-      }
-
-      .change-template {
-        width: 100%;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Build Your CV | CVBuilder</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --primary-light:#eff6ff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --bg:#f8fafc;
+  --white:#fff;
+  --danger:#dc2626;
+  --success:#16a34a;
+  --shadow:0 10px 35px rgba(15,23,42,.08);
+}
+
+body{
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:
+    radial-gradient(circle at 5% 0%,rgba(37,99,235,.08),transparent 28%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button,
+input,
+textarea,
+select{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* NAVBAR */
+
+.navbar{
+  height:70px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+  font-size:20px;
+  font-weight:800;
+}
+
+.brand-icon{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+}
+
+.nav-actions{
+  display:flex;
+  gap:8px;
+}
+
+.nav-btn{
+  background:#fff;
+  border:1px solid var(--border);
+  padding:9px 14px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--text);
+}
+
+/* PAGE */
+
+.page{
+  width:min(1180px,92%);
+  margin:auto;
+  padding:32px 0 70px;
+}
+
+.page-header{
+  margin-bottom:25px;
+}
+
+.back-link{
+  border:0;
+  background:none;
+  color:var(--primary);
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.page-header h1{
+  font-size:32px;
+  letter-spacing:-.8px;
+  margin-bottom:7px;
+}
+
+.page-header p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* SELECTION BAR */
+
+.selection-bar{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:15px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow);
+}
+
+.selection-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  padding:7px 10px;
+  border-radius:8px;
+  background:var(--primary-light);
+  color:var(--primary);
+  font-size:11px;
+  font-weight:800;
+}
+
+.selection-arrow{
+  color:#94a3b8;
+}
+
+.change-btn{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:700;
+}
+
+/* LAYOUT */
+
+.builder-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 310px;
+  gap:24px;
+  align-items:start;
+}
+
+.form-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.form-section{
+  padding:27px;
+  border-bottom:1px solid var(--border);
+}
+
+.form-section:last-child{
+  border-bottom:0;
+}
+
+.section-title{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:22px;
+}
+
+.section-number{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-size:13px;
+  font-weight:800;
+  flex-shrink:0;
+}
+
+.section-title h2{
+  font-size:18px;
+  margin-bottom:4px;
+}
+
+.section-title p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+
+/* FIELDS */
+
+.field-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:17px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  font-size:12px;
+  font-weight:800;
+  color:#334155;
+}
+
+.field small{
+  font-size:10px;
+  color:#94a3b8;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:11px 12px;
+  font-size:13px;
+  color:var(--text);
+  outline:none;
+  background:#fff;
+  transition:.2s;
+}
+
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+  line-height:1.6;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:#93c5fd;
+  box-shadow:0 0 0 3px rgba(37,99,235,.08);
+}
+
+.field input::placeholder,
+.field textarea::placeholder{
+  color:#a1aab8;
+}
+
+/* ROLE INTRO */
+
+.role-intro{
+  background:linear-gradient(135deg,#eff6ff,#f8fafc);
+  border:1px solid #dbeafe;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:21px;
+}
+
+.role-intro strong{
+  display:block;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+.role-intro span{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+/* DYNAMIC FIELDS */
+
+.dynamic-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:17px;
+}
+
+/* EXPERIENCE */
+
+.entry{
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:17px;
+  margin-bottom:13px;
+  background:#fcfdff;
+}
+
+.entry-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:14px;
+}
+
+.entry-title{
+  font-size:12px;
+  font-weight:800;
+}
+
+.remove-btn{
+  border:0;
+  background:#fef2f2;
+  color:var(--danger);
+  padding:6px 8px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:800;
+}
+
+/* BUTTON */
+
+.add-btn{
+  border:1px dashed #93c5fd;
+  background:#eff6ff;
+  color:var(--primary);
+  padding:10px 13px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:800;
+}
+
+/* SKILLS */
+
+.skills-help{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:12px;
+}
+
+.skill-input-wrap{
+  display:flex;
+  gap:8px;
+}
+
+.skill-input-wrap input{
+  flex:1;
+}
+
+.skill-add{
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  border-radius:9px;
+  padding:0 15px;
+  font-weight:800;
+}
+
+.skill-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:12px;
+}
+
+.skill-tag{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #dbeafe;
+  padding:7px 9px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.skill-tag button{
+  border:0;
+  background:none;
+  color:#64748b;
+}
+
+/* ACTION */
+
+.form-actions{
+  padding:20px 27px;
+  background:#f8fafc;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.cancel-btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  padding:11px 17px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.preview-btn{
+  border:0;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:#fff;
+  padding:12px 21px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:800;
+  box-shadow:0 8px 18px rgba(37,99,235,.2);
+}
+
+/* SIDE PREVIEW */
+
+.preview-panel{
+  position:sticky;
+  top:92px;
+}
+
+.preview-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.preview-head{
+  padding:17px;
+  border-bottom:1px solid var(--border);
+}
+
+.preview-head h3{
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.preview-head p{
+  font-size:10px;
+  color:var(--muted);
+}
+
+.mini-paper-wrap{
+  padding:17px;
+  background:#eef2f7;
+}
+
+.mini-paper{
+  background:#fff;
+  min-height:380px;
+  padding:18px;
+  box-shadow:0 5px 20px rgba(15,23,42,.1);
+}
+
+.mini-name{
+  height:9px;
+  width:65%;
+  background:#172033;
+  border-radius:4px;
+  margin-bottom:7px;
+}
+
+.mini-title{
+  height:5px;
+  width:45%;
+  background:#2563eb;
+  border-radius:4px;
+  margin-bottom:14px;
+}
+
+.mini-section{
+  margin-bottom:15px;
+}
+
+.mini-heading{
+  height:5px;
+  width:25%;
+  background:#2563eb;
+  border-radius:4px;
+  margin-bottom:7px;
+}
+
+.mini-line{
+  height:4px;
+  width:100%;
+  background:#dbe2ea;
+  border-radius:4px;
+  margin-bottom:5px;
+}
+
+.mini-line.short{
+  width:65%;
+}
+
+.mini-line.medium{
+  width:80%;
+}
+
+.preview-tip{
+  padding:15px;
+  border-top:1px solid var(--border);
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* MESSAGE */
+
+.form-message{
+  display:none;
+  margin:0 27px 20px;
+  padding:11px 13px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.form-message.show{
+  display:block;
+}
+
+.form-message.error{
+  background:#fef2f2;
+  color:#b91c1c;
+}
+
+.form-message.success{
+  background:#f0fdf4;
+  color:#15803d;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+  .builder-layout{
+    grid-template-columns:1fr;
+  }
+
+  .preview-panel{
+    display:none;
+  }
+}
+
+@media(max-width:650px){
+  .page{
+    width:94%;
+  }
+
+  .navbar{
+    padding:0 4%;
+  }
+
+  .nav-btn{
+    font-size:10px;
+    padding:8px 9px;
+  }
+
+  .page-header h1{
+    font-size:27px;
+  }
+
+  .selection-bar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .field-grid,
+  .dynamic-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .form-section{
+    padding:20px;
+  }
+
+  .form-actions{
+    padding:16px 20px;
+  }
+
+  .form-actions{
+    flex-direction:column-reverse;
+  }
+
+  .form-actions button{
+    width:100%;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <header class="form-nav">
+<nav class="navbar">
 
-    <div class="form-nav-inner">
+  <a href="dashboard.html" class="brand">
+    <span class="brand-icon">CV</span>
+    CVBuilder
+  </a>
 
-      <a href="dashboard.html" class="brand">
-        CV<span>Builder</span>
-      </a>
+  <div class="nav-actions">
+    <button class="nav-btn" id="dashboardButton">
+      Dashboard
+    </button>
 
-      <div class="nav-actions">
+    <button class="nav-btn" id="myCVsButton">
+      My CVs
+    </button>
+  </div>
 
-        <button
-          class="nav-btn"
-          id="dashboardButton">
-          Dashboard
-        </button>
+</nav>
 
-        <button
-          class="nav-btn"
-          id="myCVsButton">
-          My CVs
-        </button>
 
-      </div>
+<main class="page">
+
+  <div class="page-header">
+
+    <button class="back-link" id="backButton">
+      ← Back to Template Selection
+    </button>
+
+    <h1>
+      Build Your Professional CV
+    </h1>
+
+    <p>
+      Complete the information below. Your CV will be structured for your selected career role.
+    </p>
+
+  </div>
+
+
+  <div class="selection-bar">
+
+    <div class="selection-left">
+
+      <span class="badge" id="categoryBadge">
+        IT / Software
+      </span>
+
+      <span class="selection-arrow">
+        →
+      </span>
+
+      <span class="badge" id="roleBadge">
+        Software Engineer
+      </span>
+
+      <span class="selection-arrow">
+        →
+      </span>
+
+      <span class="badge" id="templateBadge">
+        Tech Professional
+      </span>
 
     </div>
 
-  </header>
+    <button class="change-btn" id="changeTemplateButton">
+      Change
+    </button>
+
+  </div>
 
 
-  <main class="form-page">
+  <div class="builder-layout">
 
-    <div class="form-container">
+    <form id="cvForm" class="form-card">
 
-      <!-- HEADER -->
-      <div class="form-header">
+      <!-- PERSONAL INFORMATION -->
 
-        <h1 id="pageTitle">
-          Build Your Professional CV
-        </h1>
+      <section class="form-section">
 
-        <p>
-          Enter your information below. You can review and edit everything before saving your CV.
-        </p>
+        <div class="section-title">
 
-      </div>
+          <div class="section-number">01</div>
 
-
-      <!-- CATEGORY / TEMPLATE -->
-      <div class="selection-bar">
-
-        <div class="selection-left">
-
-          <div
-            class="selection-icon"
-            id="selectionIcon">
-            💻
-          </div>
-
-          <div class="selection-text">
-
-            <strong id="selectedCategoryText">
-              IT / Software
-            </strong>
-
-            <span id="selectedTemplateText">
-              Modern Tech
-            </span>
-
+          <div>
+            <h2>Personal Information</h2>
+            <p>
+              Add the contact details employers need to reach you.
+            </p>
           </div>
 
         </div>
 
-        <button
-          class="change-template"
-          id="changeTemplateButton">
-          Change Template
-        </button>
 
-      </div>
-
-
-      <!-- FORM LAYOUT -->
-      <div class="form-layout">
-
-        <form
-          id="cvForm"
-          class="form-main"
-          novalidate>
-
-
-          <!-- ERROR -->
-          <div
-            id="formMessage"
-            class="form-message">
-          </div>
-
-
-          <!-- PERSONAL INFORMATION -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2>Personal Information</h2>
-
-              <p>
-                Add the contact information that employers should use to reach you.
-              </p>
-
-            </div>
-
-
-            <div class="form-grid">
-
-              <div class="field">
-                <label for="fullName">
-                  Full Name <span class="required">*</span>
-                </label>
-
-                <input
-                  id="fullName"
-                  name="fullName"
-                  type="text"
-                  placeholder="e.g. Muhammad Usama"
-                  autocomplete="name"
-                  required>
-              </div>
-
-
-              <div class="field">
-                <label for="jobTitle">
-                  Professional Title <span class="required">*</span>
-                </label>
-
-                <input
-                  id="jobTitle"
-                  name="jobTitle"
-                  type="text"
-                  placeholder="e.g. Software Developer"
-                  required>
-              </div>
-
-
-              <div class="field">
-                <label for="email">
-                  Email Address <span class="required">*</span>
-                </label>
-
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  autocomplete="email"
-                  required>
-              </div>
-
-
-              <div class="field">
-                <label for="phone">
-                  Phone Number
-                </label>
-
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="+92 300 1234567"
-                  autocomplete="tel">
-              </div>
-
-
-              <div class="field">
-                <label for="location">
-                  Location
-                </label>
-
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  placeholder="City, Country">
-              </div>
-
-
-              <div class="field">
-                <label for="website">
-                  Website / LinkedIn
-                </label>
-
-                <input
-                  id="website"
-                  name="website"
-                  type="url"
-                  placeholder="https://linkedin.com/in/yourname">
-              </div>
-
-            </div>
-
-          </section>
-
-
-          <!-- PROFESSIONAL SUMMARY -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2>Professional Summary</h2>
-
-              <p>
-                Write a short introduction highlighting your experience, strengths and career goals.
-              </p>
-
-            </div>
-
-
-            <div class="field">
-
-              <label for="summary">
-                Professional Summary
-              </label>
-
-              <textarea
-                id="summary"
-                name="summary"
-                placeholder="Write 3–5 sentences about your professional background, key strengths and career goals..."></textarea>
-
-            </div>
-
-          </section>
-
-
-          <!-- CATEGORY INFORMATION -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2 id="categorySectionTitle">
-                Professional Information
-              </h2>
-
-              <p id="categorySectionDescription">
-                Add information relevant to your selected career category.
-              </p>
-
-            </div>
-
-
-            <div
-              id="categoryFields"
-              class="category-fields">
-            </div>
-
-          </section>
-
-
-          <!-- EXPERIENCE -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2>Work Experience</h2>
-
-              <p>
-                Add your professional experience, internships or relevant work history.
-              </p>
-
-            </div>
-
-
-            <div id="experienceContainer"></div>
-
-
-            <button
-              type="button"
-              class="add-btn"
-              id="addExperience">
-              + Add Work Experience
-            </button>
-
-          </section>
-
-
-          <!-- EDUCATION -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2>Education</h2>
-
-              <p>
-                Add your academic qualifications and educational background.
-              </p>
-
-            </div>
-
-
-            <div id="educationContainer"></div>
-
-
-            <button
-              type="button"
-              class="add-btn"
-              id="addEducation">
-              + Add Education
-            </button>
-
-          </section>
-
-
-          <!-- SKILLS -->
-          <section class="form-card">
-
-            <div class="section-heading">
-
-              <h2>Skills & Languages</h2>
-
-              <p>
-                Add your most relevant professional skills and languages.
-              </p>
-
-            </div>
-
-
-            <div class="form-grid">
-
-              <div class="field">
-
-                <label for="skills">
-                  Skills
-                </label>
-
-                <textarea
-                  id="skills"
-                  name="skills"
-                  placeholder="JavaScript, Python, Communication, Leadership&#10;&#10;Separate skills with commas."></textarea>
-
-              </div>
-
-
-              <div class="field">
-
-                <label for="languages">
-                  Languages
-                </label>
-
-                <textarea
-                  id="languages"
-                  name="languages"
-                  placeholder="English, Urdu, Arabic&#10;&#10;Separate languages with commas."></textarea>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-          <!-- ACTIONS -->
-          <div class="form-actions">
-
-            <button
-              type="button"
-              class="action-btn action-secondary"
-              id="cancelButton">
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              class="action-btn action-primary"
-              id="previewButton">
-              Continue to Preview →
-            </button>
-
-          </div>
-
-
-        </form>
-
-
-        <!-- SIDEBAR -->
-        <aside class="form-sidebar">
-
-          <div class="side-card">
-
-            <h3>Live Preview</h3>
-
-            <div class="mini-preview">
-
-              <div
-                class="mini-preview-name"
-                id="previewName">
-                </div>
-
-              <div
-                class="mini-preview-title"
-                id="previewTitle">
-              </div>
-
-              <div class="mini-preview-line long"></div>
-              <div class="mini-preview-line medium"></div>
-              <div class="mini-preview-line short"></div>
-
-              <div class="mini-heading"></div>
-
-              <div class="mini-preview-line long"></div>
-              <div class="mini-preview-line medium"></div>
-              <div class="mini-preview-line long"></div>
-
-              <div class="mini-heading"></div>
-
-              <div class="mini-preview-line medium"></div>
-              <div class="mini-preview-line short"></div>
-
-            </div>
-
-          </div>
-
-
-          <div class="side-card">
-
-            <h3>CV Tips</h3>
-
-            <ul class="tips">
-
-              <li>
-                Keep your professional summary concise and specific.
-              </li>
-
-              <li>
-                Highlight achievements instead of only listing duties.
-              </li>
-
-              <li>
-                Use clear job titles and consistent dates.
-              </li>
-
-              <li>
-                Include skills that match your target career.
-              </li>
-
-              <li>
-                Review your CV carefully before downloading it.
-              </li>
-
-            </ul>
-
-          </div>
-
-        </aside>
-
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <script type="module">
-
-    /* =========================================
-       ELEMENTS
-    ========================================= */
-
-    const cvForm =
-      document.getElementById("cvForm");
-
-    const formMessage =
-      document.getElementById("formMessage");
-
-    const categoryFields =
-      document.getElementById("categoryFields");
-
-    const categorySectionTitle =
-      document.getElementById("categorySectionTitle");
-
-    const categorySectionDescription =
-      document.getElementById("categorySectionDescription");
-
-    const experienceContainer =
-      document.getElementById("experienceContainer");
-
-    const educationContainer =
-      document.getElementById("educationContainer");
-
-    const previewName =
-      document.getElementById("previewName");
-
-    const previewTitle =
-      document.getElementById("previewTitle");
-
-    const selectedCategoryText =
-      document.getElementById("selectedCategoryText");
-
-    const selectedTemplateText =
-      document.getElementById("selectedTemplateText");
-
-    const selectionIcon =
-      document.getElementById("selectionIcon");
-
-
-    /* =========================================
-       CATEGORY CONFIG
-    ========================================= */
-
-    const categoryConfig = {
-
-      IT: {
-        name: "IT / Software",
-        icon: "💻",
-        title: "IT & Software Information",
-        description:
-          "Add technical information that highlights your software and technology expertise.",
-        fields: [
-          {
-            id: "programming",
-            label: "Programming Languages",
-            placeholder: "JavaScript, Python, Java, C++",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "frameworks",
-            label: "Frameworks & Technologies",
-            placeholder: "React, Node.js, Firebase, Git",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "github",
-            label: "GitHub / Code Profile",
-            placeholder: "https://github.com/username",
-            type: "url"
-          },
-          {
-            id: "technicalLevel",
-            label: "Technical Level",
-            placeholder: "Junior / Mid-Level / Senior",
-            type: "text"
-          },
-          {
-            id: "projects",
-            label: "Key Projects",
-            placeholder: "Describe your most relevant software projects.",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Business: {
-        name: "Business",
-        icon: "💼",
-        title: "Business Information",
-        description:
-          "Highlight your business, management and leadership experience.",
-        fields: [
-          {
-            id: "businessArea",
-            label: "Business Area",
-            placeholder: "Operations, Management, Consulting",
-            type: "text"
-          },
-          {
-            id: "industry",
-            label: "Industry",
-            placeholder: "Technology, Retail, Manufacturing",
-            type: "text"
-          },
-          {
-            id: "leadership",
-            label: "Leadership Experience",
-            placeholder: "Describe your leadership responsibilities.",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "managementSkills",
-            label: "Management Skills",
-            placeholder: "Team Management, Strategy, Operations",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Banking: {
-        name: "Banking & Finance",
-        icon: "🏦",
-        title: "Banking & Finance Information",
-        description:
-          "Add financial, banking, accounting and certification details.",
-        fields: [
-          {
-            id: "financeSkills",
-            label: "Finance Skills",
-            placeholder: "Financial Analysis, Budgeting, Reporting",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "bankingExperience",
-            label: "Banking Experience",
-            placeholder: "Branch Banking, Credit, Risk Management",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "accountingSoftware",
-            label: "Accounting / Finance Software",
-            placeholder: "Excel, QuickBooks, SAP",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "financeCertifications",
-            label: "Finance Certifications",
-            placeholder: "ACCA, CFA, CA, etc.",
-            type: "text",
-            full: true
-          }
-        ]
-      },
-
-
-      Medical: {
-        name: "Medical",
-        icon: "⚕️",
-        title: "Medical Information",
-        description:
-          "Add your medical qualifications, specialization and clinical experience.",
-        fields: [
-          {
-            id: "medicalQualification",
-            label: "Medical Qualification",
-            placeholder: "MBBS, BDS, Pharm-D, Nursing",
-            type: "text"
-          },
-          {
-            id: "specialization",
-            label: "Specialization",
-            placeholder: "Cardiology, Pediatrics, Surgery",
-            type: "text"
-          },
-          {
-            id: "clinicalExperience",
-            label: "Clinical Experience",
-            placeholder: "Describe your clinical experience.",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "medicalCertifications",
-            label: "Medical Certifications",
-            placeholder: "Relevant medical certifications.",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Teaching: {
-        name: "Teaching",
-        icon: "📚",
-        title: "Teaching Information",
-        description:
-          "Add subjects, teaching experience, education level and certifications.",
-        fields: [
-          {
-            id: "subjects",
-            label: "Subjects",
-            placeholder: "Computer Science, Mathematics, English",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "teachingLevel",
-            label: "Teaching Level",
-            placeholder: "Primary, Secondary, College, University",
-            type: "text"
-          },
-          {
-            id: "teachingExperience",
-            label: "Teaching Experience",
-            placeholder: "Describe your teaching experience.",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "teachingCertifications",
-            label: "Teaching Certifications",
-            placeholder: "B.Ed, M.Ed, Teaching Certificates",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Design: {
-        name: "Graphic Design",
-        icon: "🎨",
-        title: "Graphic Design Information",
-        description:
-          "Showcase your design tools, specialization, portfolio and creative skills.",
-        fields: [
-          {
-            id: "designSoftware",
-            label: "Design Software",
-            placeholder: "Photoshop, Illustrator, Figma",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "designSpecialization",
-            label: "Design Specialization",
-            placeholder: "Branding, UI/UX, Illustration",
-            type: "text"
-          },
-          {
-            id: "portfolio",
-            label: "Portfolio URL",
-            placeholder: "https://yourportfolio.com",
-            type: "url"
-          },
-          {
-            id: "creativeSkills",
-            label: "Creative Skills",
-            placeholder: "Branding, Typography, Illustration",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Engineering: {
-        name: "Engineering",
-        icon: "⚙️",
-        title: "Engineering Information",
-        description:
-          "Add your engineering discipline, software, technical skills and projects.",
-        fields: [
-          {
-            id: "engineeringDiscipline",
-            label: "Engineering Discipline",
-            placeholder: "Civil, Electrical, Mechanical",
-            type: "text"
-          },
-          {
-            id: "engineeringSoftware",
-            label: "Engineering Software",
-            placeholder: "AutoCAD, MATLAB, SolidWorks",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "engineeringSkills",
-            label: "Technical Engineering Skills",
-            placeholder: "Design, Analysis, Project Management",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "engineeringProjects",
-            label: "Engineering Projects",
-            placeholder: "Describe relevant engineering projects.",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Student: {
-        name: "Student / Fresh Graduate",
-        icon: "🎓",
-        title: "Student & Graduate Information",
-        description:
-          "Highlight your studies, achievements, internships and academic projects.",
-        fields: [
-          {
-            id: "studyField",
-            label: "Field of Study",
-            placeholder: "Computer Science, Business, Engineering",
-            type: "text"
-          },
-          {
-            id: "graduationYear",
-            label: "Graduation Year",
-            placeholder: "2026",
-            type: "text"
-          },
-          {
-            id: "achievement",
-            label: "Academic Achievements",
-            placeholder: "Awards, scholarships, competitions",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "internship",
-            label: "Internship Experience",
-            placeholder: "Describe relevant internships.",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "studentProjects",
-            label: "Academic / Student Projects",
-            placeholder: "Describe your most relevant projects.",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Marketing: {
-        name: "Marketing & Sales",
-        icon: "📈",
-        title: "Marketing & Sales Information",
-        description:
-          "Highlight marketing skills, sales experience, platforms and campaigns.",
-        fields: [
-          {
-            id: "marketingSkills",
-            label: "Marketing Skills",
-            placeholder: "SEO, Content Marketing, Branding",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "salesExperience",
-            label: "Sales Experience",
-            placeholder: "B2B Sales, Retail Sales, Account Management",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "digitalPlatforms",
-            label: "Digital Platforms",
-            placeholder: "Google Ads, Meta Ads, HubSpot",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "campaignExperience",
-            label: "Campaign Experience",
-            placeholder: "Describe successful marketing campaigns.",
-            type: "textarea",
-            full: true
-          }
-        ]
-      },
-
-
-      Other: {
-        name: "Other",
-        icon: "📄",
-        title: "Professional Information",
-        description:
-          "Add information that best represents your professional background.",
-        fields: [
-          {
-            id: "professionalField",
-            label: "Professional Field",
-            placeholder: "Your career field",
-            type: "text"
-          },
-          {
-            id: "professionalSkills",
-            label: "Professional Skills",
-            placeholder: "Your most relevant professional skills",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "certifications",
-            label: "Certifications",
-            placeholder: "Professional certifications",
-            type: "textarea",
-            full: true
-          },
-          {
-            id: "achievements",
-            label: "Achievements",
-            placeholder: "Awards, accomplishments and achievements",
-            type: "textarea",
-            full: true
-          }
-        ]
-      }
-
-    };
-
-
-    /* =========================================
-       LOCAL STORAGE
-    ========================================= */
-
-    let selectedCategory =
-      localStorage.getItem("selectedCVCategory") ||
-      "IT";
-
-    let selectedTemplate =
-      localStorage.getItem("selectedCVTemplate") ||
-      "Modern Tech";
-
-    let currentCV = null;
-
-
-    try {
-
-      const saved =
-        localStorage.getItem("currentCV");
-
-      if (saved) {
-        currentCV = JSON.parse(saved);
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Could not read saved CV:",
-        error
-      );
-
-    }
-
-
-    /*
-      If an existing CV is being edited,
-      use its saved category/template.
-    */
-
-    if (currentCV) {
-
-      if (currentCV.category) {
-        selectedCategory =
-          currentCV.category;
-      }
-
-      if (currentCV.template) {
-        selectedTemplate =
-          currentCV.template;
-      }
-
-    }
-
-
-    /* =========================================
-       CATEGORY SETUP
-    ========================================= */
-
-    function setupCategory() {
-
-      const config =
-        categoryConfig[selectedCategory] ||
-        categoryConfig.Other;
-
-
-      selectionIcon.textContent =
-        config.icon;
-
-      selectedCategoryText.textContent =
-        config.name;
-
-      selectedTemplateText.textContent =
-        selectedTemplate ||
-        "Professional Template";
-
-
-      categorySectionTitle.textContent =
-        config.title;
-
-      categorySectionDescription.textContent =
-        config.description;
-
-
-      categoryFields.innerHTML = "";
-
-
-      config.fields.forEach(field => {
-
-        const wrapper =
-          document.createElement("div");
-
-        wrapper.className =
-          "field" +
-          (field.full ? " full" : "");
-
-
-        const label =
-          document.createElement("label");
-
-        label.setAttribute(
-          "for",
-          field.id
-        );
-
-        label.textContent =
-          field.label;
-
-
-        let input;
-
-
-        if (field.type === "textarea") {
-
-          input =
-            document.createElement("textarea");
-
-        } else {
-
-          input =
-            document.createElement("input");
-
-          input.type =
-            field.type || "text";
-
-        }
-
-
-        input.id =
-          field.id;
-
-        input.name =
-          field.id;
-
-        input.placeholder =
-          field.placeholder || "";
-
-
-        wrapper.appendChild(label);
-        wrapper.appendChild(input);
-
-        categoryFields.appendChild(wrapper);
-
-
-        /*
-          Restore old saved category data.
-        */
-
-        if (
-          currentCV &&
-          currentCV[field.id] !== undefined
-        ) {
-
-          input.value =
-            currentCV[field.id] || "";
-
-        }
-
-      });
-
-    }
-
-
-    /* =========================================
-       EXPERIENCE
-    ========================================= */
-
-    function createExperienceItem(data = {}) {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "repeater-item";
-
-
-      item.innerHTML = `
-
-        <div class="repeater-top">
-
-          <div class="repeater-title">
-            Work Experience
-          </div>
-
-          <button
-            type="button"
-            class="remove-btn">
-            Remove
-          </button>
-
-        </div>
-
-
-        <div class="form-grid">
+        <div class="field-grid">
 
           <div class="field">
 
-            <label>
-              Job Title
-            </label>
+            <label>Full Name *</label>
 
             <input
-              name="experienceJob"
               type="text"
-              placeholder="e.g. Software Developer"
-              value="${escapeAttribute(data.position || "")}">
+              id="fullName"
+              placeholder="e.g. Muhammad Usama"
+              required
+            >
 
           </div>
 
 
           <div class="field">
 
-            <label>
-              Company
-            </label>
+            <label>Professional Title *</label>
 
             <input
-              name="experienceCompany"
               type="text"
-              placeholder="e.g. ABC Technologies"
-              value="${escapeAttribute(data.company || "")}">
+              id="jobTitle"
+              placeholder="e.g. Software Engineer"
+              required
+            >
 
           </div>
 
 
-          <div class="field full">
+          <div class="field">
 
-            <label>
-              Date / Duration
-            </label>
+            <label>Professional Email *</label>
 
             <input
-              name="experienceDate"
-              type="text"
-              placeholder="e.g. Jan 2024 - Present"
-              value="${escapeAttribute(data.date || "")}">
+              type="email"
+              id="email"
+              placeholder="name@example.com"
+              required
+            >
 
           </div>
 
 
+          <div class="field">
+
+            <label>Phone Number</label>
+
+            <input
+              type="tel"
+              id="phone"
+              placeholder="+92 300 0000000"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Location</label>
+
+            <input
+              type="text"
+              id="location"
+              placeholder="City, Country"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>LinkedIn</label>
+
+            <input
+              type="url"
+              id="linkedin"
+              placeholder="https://linkedin.com/in/yourname"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>GitHub / Portfolio</label>
+
+            <input
+              type="url"
+              id="website"
+              placeholder="https://github.com/yourname"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label>Professional Website</label>
+
+            <input
+              type="url"
+              id="portfolio"
+              placeholder="https://yourwebsite.com"
+            >
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ROLE INTRO -->
+
+      <section class="form-section">
+
+        <div class="role-intro">
+
+          <strong id="roleIntroTitle">
+            Software Engineer CV
+          </strong>
+
+          <span id="roleIntroText">
+            Your form is customized for your selected role.
+          </span>
+
+        </div>
+
+
+        <div class="section-title">
+
+          <div class="section-number">02</div>
+
+          <div>
+            <h2>Professional Summary</h2>
+            <p>
+              Give employers a quick overview of your professional value.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>Professional Summary *</label>
+
+          <textarea
+            id="summary"
+            placeholder="Write 3–4 concise sentences about your experience, expertise and professional value."
+            required
+          ></textarea>
+
+          <small>
+            Focus on your role, strongest skills and measurable impact where possible.
+          </small>
+
+        </div>
+
+      </section>
+
+
+      <!-- ROLE SPECIFIC -->
+
+      <section class="form-section">
+
+        <div class="section-title">
+
+          <div class="section-number">03</div>
+
+          <div>
+            <h2 id="roleSectionTitle">
+              Professional Skills
+            </h2>
+
+            <p id="roleSectionDescription">
+              Add skills and information relevant to your selected role.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div id="roleFields" class="dynamic-grid"></div>
+
+      </section>
+
+
+      <!-- EXPERIENCE -->
+
+      <section class="form-section">
+
+        <div class="section-title">
+
+          <div class="section-number">04</div>
+
+          <div>
+            <h2>Professional Experience</h2>
+
+            <p>
+              Add your work experience in reverse chronological order.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div id="experienceContainer"></div>
+
+        <button
+          type="button"
+          class="add-btn"
+          id="addExperience"
+        >
+          + Add Experience
+        </button>
+
+      </section>
+
+
+      <!-- PROJECTS -->
+
+      <section class="form-section" id="projectsSection">
+
+        <div class="section-title">
+
+          <div class="section-number">05</div>
+
+          <div>
+            <h2>Projects</h2>
+
+            <p id="projectsDescription">
+              Add relevant professional, academic or personal projects.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div id="projectsContainer"></div>
+
+        <button
+          type="button"
+          class="add-btn"
+          id="addProject"
+        >
+          + Add Project
+        </button>
+
+      </section>
+
+
+      <!-- EDUCATION -->
+
+      <section class="form-section">
+
+        <div class="section-title">
+
+          <div class="section-number">06</div>
+
+          <div>
+            <h2>Education</h2>
+
+            <p>
+              Add your most relevant qualifications.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div id="educationContainer"></div>
+
+        <button
+          type="button"
+          class="add-btn"
+          id="addEducation"
+        >
+          + Add Education
+        </button>
+
+      </section>
+
+
+      <!-- CERTIFICATIONS -->
+
+      <section class="form-section">
+
+        <div class="section-title">
+
+          <div class="section-number">07</div>
+
+          <div>
+            <h2>Certifications & Achievements</h2>
+
+            <p>
+              Add certifications, awards and professional achievements.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="field-grid">
+
           <div class="field full">
 
-            <label>
-              Responsibilities & Achievements
-            </label>
+            <label>Certifications</label>
 
             <textarea
-              name="experienceDescription"
-              placeholder="Describe your responsibilities and achievements...">${escapeHTML(data.description || "")}</textarea>
-
-          </div>
-
-        </div>
-      `;
-
-
-      item
-        .querySelector(".remove-btn")
-        .addEventListener(
-          "click",
-          () => item.remove()
-        );
-
-
-      experienceContainer.appendChild(item);
-    }
-
-
-    function loadExperience() {
-
-      experienceContainer.innerHTML = "";
-
-
-      if (
-        currentCV &&
-        Array.isArray(currentCV.experience) &&
-        currentCV.experience.length
-      ) {
-
-        currentCV.experience.forEach(
-          item => createExperienceItem(item)
-        );
-
-      } else {
-
-        createExperienceItem();
-
-      }
-
-    }
-
-
-    document
-      .getElementById("addExperience")
-      .addEventListener(
-        "click",
-        () => createExperienceItem()
-      );
-
-
-    /* =========================================
-       EDUCATION
-    ========================================= */
-
-    function createEducationItem(data = {}) {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "repeater-item";
-
-
-      item.innerHTML = `
-
-        <div class="repeater-top">
-
-          <div class="repeater-title">
-            Education
-          </div>
-
-          <button
-            type="button"
-            class="remove-btn">
-            Remove
-          </button>
-
-        </div>
-
-
-        <div class="form-grid">
-
-          <div class="field">
-
-            <label>
-              Degree / Qualification
-            </label>
-
-            <input
-              name="educationDegree"
-              type="text"
-              placeholder="e.g. DAE Computer Information Technology"
-              value="${escapeAttribute(data.degree || "")}">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              Institution
-            </label>
-
-            <input
-              name="educationInstitute"
-              type="text"
-              placeholder="e.g. College / University"
-              value="${escapeAttribute(data.institute || "")}">
+              id="certifications"
+              placeholder="e.g. Google Data Analytics Certificate&#10;AWS Cloud Practitioner&#10;Microsoft Power BI"
+            ></textarea>
 
           </div>
 
 
           <div class="field full">
 
-            <label>
-              Date / Duration
-            </label>
+            <label>Key Achievements</label>
 
-            <input
-              name="educationDate"
-              type="text"
-              placeholder="e.g. 2023 - 2026"
-              value="${escapeAttribute(data.date || "")}">
+            <textarea
+              id="achievements"
+              placeholder="Describe important achievements, awards or measurable results."
+            ></textarea>
 
           </div>
 
         </div>
-      `;
 
+      </section>
 
-      item
-        .querySelector(".remove-btn")
-        .addEventListener(
-          "click",
-          () => item.remove()
-        );
 
+      <!-- LANGUAGES -->
 
-      educationContainer.appendChild(item);
-    }
+      <section class="form-section">
 
+        <div class="section-title">
 
-    function loadEducation() {
+          <div class="section-number">08</div>
 
-      educationContainer.innerHTML = "";
+          <div>
+            <h2>Languages</h2>
 
+            <p>
+              List languages you can professionally communicate in.
+            </p>
+          </div>
 
-      if (
-        currentCV &&
-        Array.isArray(currentCV.education) &&
-        currentCV.education.length
-      ) {
+        </div>
 
-        currentCV.education.forEach(
-          item => createEducationItem(item)
-        );
 
-      } else {
+        <div class="field">
 
-        createEducationItem();
+          <label>Languages</label>
 
-      }
+          <textarea
+            id="languages"
+            placeholder="English — Professional&#10;Urdu — Native"
+          ></textarea>
 
-    }
+        </div>
 
+      </section>
 
-    document
-      .getElementById("addEducation")
-      .addEventListener(
-        "click",
-        () => createEducationItem()
-      );
 
+      <div
+        class="form-message"
+        id="formMessage"
+      ></div>
 
-    /* =========================================
-       COLLECT EXPERIENCE
-    ========================================= */
 
-    function collectExperience() {
+      <div class="form-actions">
 
-      return Array
-        .from(
-          experienceContainer.querySelectorAll(
-            ".repeater-item"
-          )
-        )
-        .map(item => {
+        <button
+          type="button"
+          class="cancel-btn"
+          id="cancelButton"
+        >
+          Cancel
+        </button>
 
-          return {
+        <button
+          type="submit"
+          class="preview-btn"
+          id="previewButton"
+        >
+          Preview Professional CV →
+        </button>
 
-            position:
-              item.querySelector(
-                '[name="experienceJob"]'
-              )?.value.trim() || "",
+      </div>
 
-            company:
-              item.querySelector(
-                '[name="experienceCompany"]'
-              )?.value.trim() || "",
+    </form>
 
-            date:
-              item.querySelector(
-                '[name="experienceDate"]'
-              )?.value.trim() || "",
 
-            description:
-              item.querySelector(
-                '[name="experienceDescription"]'
-              )?.value.trim() || ""
+    <!-- SIDE PREVIEW -->
 
-          };
+    <aside class="preview-panel">
 
-        })
-        .filter(item =>
-          item.position ||
-          item.company ||
-          item.date ||
-          item.description
-        );
+      <div class="preview-card">
 
-    }
+        <div class="preview-head">
 
+          <h3>Live CV Preview</h3>
 
-    /* =========================================
-       COLLECT EDUCATION
-    ========================================= */
+          <p>
+            Your selected template will be used for the final CV.
+          </p>
 
-    function collectEducation() {
+        </div>
 
-      return Array
-        .from(
-          educationContainer.querySelectorAll(
-            ".repeater-item"
-          )
-        )
-        .map(item => {
 
-          return {
+        <div class="mini-paper-wrap">
 
-            degree:
-              item.querySelector(
-                '[name="educationDegree"]'
-              )?.value.trim() || "",
+          <div class="mini-paper">
 
-            institute:
-              item.querySelector(
-                '[name="educationInstitute"]'
-              )?.value.trim() || "",
+            <div class="mini-name"></div>
 
-            date:
-              item.querySelector(
-                '[name="educationDate"]'
-              )?.value.trim() || "",
+            <div
+              class="mini-title"
+              id="miniTitle"
+            ></div>
 
-            description: ""
 
-          };
+            <div class="mini-section">
 
-        })
-        .filter(item =>
-          item.degree ||
-          item.institute ||
-          item.date
-        );
+              <div class="mini-heading"></div>
 
-    }
+              <div class="mini-line"></div>
+              <div class="mini-line medium"></div>
+              <div class="mini-line short"></div>
 
+            </div>
 
-    /* =========================================
-       COLLECT CATEGORY DATA
-    ========================================= */
 
-    function collectCategoryData() {
+            <div class="mini-section">
 
-      const config =
-        categoryConfig[selectedCategory] ||
-        categoryConfig.Other;
+              <div class="mini-heading"></div>
 
+              <div class="mini-line"></div>
+              <div class="mini-line"></div>
+              <div class="mini-line medium"></div>
 
-      const data = {};
+            </div>
 
 
-      config.fields.forEach(field => {
+            <div class="mini-section">
 
-        const element =
-          document.getElementById(field.id);
+              <div class="mini-heading"></div>
 
-        if (element) {
+              <div class="mini-line"></div>
+              <div class="mini-line short"></div>
 
-          data[field.id] =
-            element.value.trim();
+            </div>
 
-        }
 
-      });
+            <div class="mini-section">
 
+              <div class="mini-heading"></div>
 
-      return data;
+              <div class="mini-line"></div>
+              <div class="mini-line medium"></div>
 
-    }
+            </div>
 
+          </div>
 
-    /* =========================================
-       ATTRIBUTE ESCAPE
-    ========================================= */
+        </div>
 
-    function escapeAttribute(value) {
 
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/"/g, "&quot;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+        <div class="preview-tip">
 
-    }
+          <strong>Professional tip:</strong>
+          Keep your CV focused on achievements, relevant skills and evidence that matches the role you are applying for.
 
+        </div>
 
-    function escapeHTML(value) {
+      </div>
 
-      return String(value || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    </aside>
 
-    }
+  </div>
 
+</main>
 
-    /* =========================================
-       RESTORE BASIC INFORMATION
-    ========================================= */
 
-    function loadBasicInformation() {
+<script type="module">
 
-      if (!currentCV) {
-        return;
-      }
+import { auth, db } from "./firebase-config.js";
 
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-      const fields = [
+import {
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-        "fullName",
-        "jobTitle",
-        "email",
-        "phone",
-        "location",
-        "website",
-        "summary",
-        "skills",
-        "languages"
 
-      ];
+/* =========================================================
+   STATE
+========================================================= */
 
+let currentUser = null;
 
-      fields.forEach(id => {
+let selectedCategory =
+  localStorage.getItem("selectedCVCategory") || "Other";
 
-        const element =
-          document.getElementById(id);
+let selectedRole =
+  localStorage.getItem("selectedCVRole") || "General Professional";
 
-        if (
-          element &&
-          currentCV[id] !== undefined
-        ) {
+let selectedTemplate =
+  localStorage.getItem("selectedCVTemplate") || "classic";
 
-          element.value =
-            currentCV[id] || "";
+let currentCV =
+  JSON.parse(localStorage.getItem("currentCV") || "null");
 
-        }
 
-      });
+/* =========================================================
+   CATEGORY NAMES
+========================================================= */
 
-    }
+const categoryNames = {
+  IT:"IT / Software",
+  Business:"Business",
+  Banking:"Banking & Finance",
+  Medical:"Medical",
+  Teaching:"Teaching",
+  Design:"Graphic Design",
+  Engineering:"Engineering",
+  Student:"Student / Fresh Graduate",
+  Marketing:"Marketing & Sales",
+  Other:"Other Professional"
+};
+
+
+/* =========================================================
+   ROLE CONFIG
+========================================================= */
+
+const roleConfigs = {
+
+  "Software Engineer":{
+    intro:"Highlight your programming stack, engineering projects, systems and measurable technical impact.",
+    title:"Software Engineering Profile",
+    fields:[
+      ["programming","Programming Languages","e.g. JavaScript, Python, Java, C++"],
+      ["frameworks","Frameworks & Libraries","e.g. React, Node.js, Django"],
+      ["databases","Databases","e.g. MySQL, PostgreSQL, MongoDB"],
+      ["cloud","Cloud / DevOps","e.g. AWS, Azure, Docker, CI/CD"],
+      ["tools","Development Tools","e.g. Git, GitHub, Jira, VS Code"]
+    ]
+  },
+
+  "Web Developer":{
+    intro:"Show your web development stack, shipped websites, responsive design and web projects.",
+    title:"Web Development Profile",
+    fields:[
+      ["frontend","Frontend Technologies","HTML, CSS, JavaScript, React..."],
+      ["backend","Backend Technologies","Node.js, PHP, Python, APIs..."],
+      ["cms","CMS / Platforms","WordPress, Shopify, Webflow..."],
+      ["webTools","Web Tools","Git, GitHub, Figma, DevTools..."],
+      ["webPerformance","Web Performance / Accessibility","Performance, responsive design, accessibility..."]
+    ]
+  },
+
+  "Frontend Developer":{
+    intro:"Focus on user interfaces, frontend frameworks, responsive design and shipped interfaces.",
+    title:"Frontend Development Profile",
+    fields:[
+      ["frontend","Frontend Stack","React, Vue, Angular, HTML, CSS..."],
+      ["uiLibraries","UI Libraries","Bootstrap, Tailwind, Material UI..."],
+      ["state","State Management","Redux, Context API, Zustand..."],
+      ["testing","Testing Tools","Jest, Cypress, Playwright..."],
+      ["designTools","Design / Collaboration Tools","Figma, GitHub, Jira..."]
+    ]
+  },
+
+  "Backend Developer":{
+    intro:"Highlight APIs, databases, server-side technologies, architecture and reliability.",
+    title:"Backend Development Profile",
+    fields:[
+      ["backendStack","Backend Stack","Node.js, Java, Python, PHP..."],
+      ["apis","APIs & Architecture","REST, GraphQL, Microservices..."],
+      ["databases","Databases","PostgreSQL, MySQL, MongoDB..."],
+      ["cloud","Cloud / Infrastructure","AWS, Azure, Docker..."],
+      ["security","Security","Authentication, authorization, encryption..."]
+    ]
+  },
+
+  "Full Stack Developer":{
+    intro:"Demonstrate your ability to build complete applications across frontend, backend and databases.",
+    title:"Full Stack Development Profile",
+    fields:[
+      ["frontend","Frontend Stack","React, Vue, HTML, CSS..."],
+      ["backend","Backend Stack","Node.js, Python, PHP, Java..."],
+      ["database","Database Stack","MySQL, PostgreSQL, MongoDB..."],
+      ["deployment","Deployment / Cloud","Vercel, AWS, Docker, CI/CD..."],
+      ["tools","Tools","Git, GitHub, Jira, Postman..."]
+    ]
+  },
+
+  "Data Analyst":{
+    intro:"Emphasize SQL, analytics, dashboards, data visualization and measurable business insights.",
+    title:"Data Analytics Profile",
+    fields:[
+      ["sql","SQL","Queries, joins, CTEs, window functions..."],
+      ["analyticsTools","Analytics Tools","Excel, Power BI, Tableau..."],
+      ["programming","Programming / Statistics","Python, R, statistics..."],
+      ["databases","Data Platforms","MySQL, PostgreSQL, BigQuery..."],
+      ["analyticsProjects","Analytics Projects","Dashboards, reports, forecasting..."]
+    ]
+  },
+
+  "Cybersecurity Specialist":{
+    intro:"Highlight security tools, networking, security projects, certifications and incident response.",
+    title:"Cybersecurity Profile",
+    fields:[
+      ["securityTools","Security Tools","Wireshark, Burp Suite, SIEM..."],
+      ["networking","Networking","TCP/IP, DNS, firewalls, VPN..."],
+      ["securityAreas","Security Areas","SOC, penetration testing, vulnerability management..."],
+      ["siem","SIEM / Monitoring","Splunk, Sentinel, ELK..."],
+      ["securityCerts","Security Certifications","Security+, CEH, etc."]
+    ]
+  },
+
+  "IT Support Specialist":{
+    intro:"Show troubleshooting, hardware/software support, networking and user support experience.",
+    title:"IT Support Profile",
+    fields:[
+      ["support","Technical Support","Hardware, software, troubleshooting..."],
+      ["systems","Operating Systems","Windows, Linux, macOS..."],
+      ["networking","Networking","LAN, Wi-Fi, TCP/IP, routers..."],
+      ["tools","Support Tools","Ticketing systems, remote support..."],
+      ["hardware","Hardware","PC assembly, diagnostics, peripherals..."]
+    ]
+  },
+
+  "Network Engineer":{
+    intro:"Focus on network infrastructure, routing, switching, security and network projects.",
+    title:"Network Engineering Profile",
+    fields:[
+      ["networking","Networking","TCP/IP, VLAN, DNS, DHCP..."],
+      ["routing","Routing & Switching","Cisco, routing protocols, switches..."],
+      ["security","Network Security","Firewalls, VPN, IDS/IPS..."],
+      ["monitoring","Network Monitoring","Monitoring and diagnostics tools..."],
+      ["certifications","Network Certifications","CCNA, CCNP, etc."]
+    ]
+  },
+
+  "Business Analyst":{
+    intro:"Show requirements analysis, stakeholder management, process improvement and business outcomes.",
+    title:"Business Analysis Profile",
+    fields:[
+      ["analysis","Business Analysis","Requirements, process analysis, documentation..."],
+      ["tools","Tools","Excel, Power BI, Jira, Confluence..."],
+      ["methodologies","Methodologies","Agile, Scrum, BPMN..."],
+      ["stakeholders","Stakeholder Management","Workshops, communication, presentations..."],
+      ["businessDomains","Business Domains","Finance, operations, product, etc."]
+    ]
+  },
+
+  "Project Manager":{
+    intro:"Highlight project delivery, methodologies, budgets, timelines and stakeholder coordination.",
+    title:"Project Management Profile",
+    fields:[
+      ["methodologies","Methodologies","Agile, Scrum, Waterfall..."],
+      ["projectTools","Project Tools","Jira, Trello, MS Project..."],
+      ["budget","Budget / Scope","Project budget and scope experience..."],
+      ["stakeholders","Stakeholder Management","Clients, teams, vendors..."],
+      ["pmCertifications","Project Certifications","PMP, PRINCE2, Scrum..."]
+    ]
+  },
+
+  "Operations Manager":{
+    intro:"Demonstrate team leadership, process improvement, KPIs, cost control and operational results.",
+    title:"Operations Management Profile",
+    fields:[
+      ["operations","Operations Areas","Process, service delivery, workflow..."],
+      ["kpis","KPIs","SLA, productivity, quality, cost..."],
+      ["leadership","Team Leadership","Team size and responsibilities..."],
+      ["process","Process Improvement","Lean, SOPs, automation..."],
+      ["systems","Operations Systems","ERP, CRM and other systems..."]
+    ]
+  },
+
+  "HR Manager":{
+    intro:"Highlight recruitment, employee relations, HR systems, onboarding and workforce metrics.",
+    title:"Human Resources Profile",
+    fields:[
+      ["hrAreas","HR Areas","Recruitment, employee relations, payroll..."],
+      ["recruitment","Recruitment","Hiring volume, sourcing, interviewing..."],
+      ["hrSystems","HR Systems","HRIS, ATS, payroll systems..."],
+      ["employeeRelations","Employee Relations","Policies, performance, engagement..."],
+      ["hrMetrics","HR Metrics","Retention, time-to-hire, headcount..."]
+    ]
+  },
+
+  "Banking Officer":{
+    intro:"Present banking operations, customer service, compliance and financial responsibilities clearly.",
+    title:"Banking Profile",
+    fields:[
+      ["bankingArea","Banking Area","Branch banking, operations, retail banking..."],
+      ["bankingSystems","Banking Systems","Core banking systems..."],
+      ["compliance","Compliance","KYC, AML, regulatory procedures..."],
+      ["customerService","Customer Service","Accounts, complaints, relationship management..."],
+      ["bankingSkills","Banking Skills","Cash handling, documentation, reporting..."]
+    ]
+  },
+
+  "Financial Analyst":{
+    intro:"Focus on financial modelling, reporting, forecasting, variance analysis and business insights.",
+    title:"Financial Analysis Profile",
+    fields:[
+      ["financeSkills","Financial Skills","Financial modelling, forecasting, variance analysis..."],
+      ["software","Finance Software","Excel, Power BI, SAP, Oracle..."],
+      ["reporting","Reporting","Management reporting, financial statements..."],
+      ["analysis","Analysis","Budgeting, forecasting, valuation..."],
+      ["financeCertifications","Finance Certifications","ACCA, CFA, FMVA, etc."]
+    ]
+  },
+
+  "Accountant":{
+    intro:"Highlight accounting systems, reconciliations, reporting, controls and financial accuracy.",
+    title:"Accounting Profile",
+    fields:[
+      ["accounting","Accounting Areas","Bookkeeping, reconciliation, reporting..."],
+      ["software","Accounting Software","Tally, QuickBooks, SAP, Xero..."],
+      ["tax","Tax / Compliance","Tax filing, GST, VAT, compliance..."],
+      ["reporting","Financial Reporting","Month-end close, statements..."],
+      ["controls","Controls / Audit","Internal controls, audit support..."]
+    ]
+  },
+
+  "Finance Manager":{
+    intro:"Show financial planning, budgeting, leadership, reporting and business decision support.",
+    title:"Finance Management Profile",
+    fields:[
+      ["fpna","FP&A","Planning, forecasting, budgeting..."],
+      ["leadership","Financial Leadership","Team and stakeholder management..."],
+      ["reporting","Reporting","Management and financial reporting..."],
+      ["risk","Risk / Compliance","Financial controls and risk..."],
+      ["systems","Finance Systems","ERP and financial platforms..."]
+    ]
+  },
+
+  "Doctor / Physician":{
+    intro:"Highlight medical qualification, registration, clinical experience, specialization and patient care.",
+    title:"Medical Professional Profile",
+    fields:[
+      ["qualification","Medical Qualification","MBBS, MD or relevant qualification..."],
+      ["registration","Registration / License","Professional registration details..."],
+      ["specialization","Specialization","Medical specialty..."],
+      ["clinicalSkills","Clinical Skills","Procedures, diagnostics, patient care..."],
+      ["clinicalSystems","Clinical Systems","EHR / hospital systems..."]
+    ]
+  },
+
+  "Nurse":{
+    intro:"Focus on clinical experience, patient care, certifications and healthcare competencies.",
+    title:"Nursing Profile",
+    fields:[
+      ["qualification","Nursing Qualification","BSN, RN or relevant qualification..."],
+      ["registration","Registration / License","Professional registration..."],
+      ["clinicalAreas","Clinical Areas","Emergency, ICU, pediatrics..."],
+      ["clinicalSkills","Clinical Skills","Patient care, medication, monitoring..."],
+      ["certifications","Clinical Certifications","BLS, ACLS and other certifications..."]
+    ]
+  },
+
+  "Pharmacist":{
+    intro:"Show pharmacy registration, medication safety, dispensing, counseling and pharmacy operations.",
+    title:"Pharmacy Profile",
+    fields:[
+      ["qualification","Pharmacy Qualification","PharmD or relevant qualification..."],
+      ["registration","Registration / License","Professional registration..."],
+      ["pharmacySkills","Pharmacy Skills","Dispensing, medication review, counseling..."],
+      ["systems","Pharmacy Systems","Inventory and pharmacy software..."],
+      ["specialization","Specialization","Clinical, community, hospital pharmacy..."]
+    ]
+  },
+
+  "School Teacher":{
+    intro:"Highlight subjects, grade levels, curriculum, classroom experience and student outcomes.",
+    title:"Teaching Profile",
+    fields:[
+      ["subjects","Subjects Taught","Mathematics, English, Computer Science..."],
+      ["levels","Grade / Level","Primary, Middle, Secondary..."],
+      ["curriculum","Curriculum / Board","Curriculum, board or teaching framework..."],
+      ["teachingMethods","Teaching Methods","Lesson planning, assessment, classroom management..."],
+      ["studentOutcomes","Student Outcomes","Academic improvement and achievements..."]
+    ]
+  },
+
+  "College Lecturer":{
+    intro:"Show subject expertise, teaching experience, curriculum development and academic achievements.",
+    title:"College Lecturer Profile",
+    fields:[
+      ["subjects","Subjects / Courses","Courses and subjects taught..."],
+      ["teachingMethods","Teaching Methods","Lectures, assessment, practicals..."],
+      ["curriculum","Curriculum Development","Course planning and development..."],
+      ["research","Research","Research, publications or academic work..."],
+      ["academicTools","Academic Tools","LMS and educational platforms..."]
+    ]
+  },
+
+  "Graphic Designer":{
+    intro:"Focus on design specialization, software, portfolio work, client projects and visual outcomes.",
+    title:"Graphic Design Profile",
+    fields:[
+      ["specialization","Design Specialization","Branding, print, social media, UI..."],
+      ["software","Design Software","Photoshop, Illustrator, Figma..."],
+      ["portfolio","Portfolio","Portfolio URL..."],
+      ["creativeSkills","Creative Skills","Typography, layout, branding..."],
+      ["clientWork","Client / Project Work","Types of clients and projects..."]
+    ]
+  },
+
+  "UI/UX Designer":{
+    intro:"Show UX research, wireframes, prototyping, design systems and product outcomes.",
+    title:"UI/UX Design Profile",
+    fields:[
+      ["designTools","Design Tools","Figma, Adobe XD, Sketch..."],
+      ["uxMethods","UX Methods","Research, interviews, usability testing..."],
+      ["uiSkills","UI Skills","Design systems, typography, responsive UI..."],
+      ["prototyping","Prototyping","Wireframes, prototypes..."],
+      ["portfolio","Portfolio","Portfolio URL..."]
+    ]
+  },
+
+  "Civil Engineer":{
+    intro:"Highlight civil engineering discipline, CAD tools, site experience, safety and project delivery.",
+    title:"Civil Engineering Profile",
+    fields:[
+      ["discipline","Engineering Discipline","Structural, construction, transportation..."],
+      ["software","Engineering Software","AutoCAD, Civil 3D, Revit..."],
+      ["siteSkills","Site Skills","Site supervision, QA/QC, surveying..."],
+      ["safety","Safety / Compliance","HSE, safety procedures..."],
+      ["projects","Engineering Projects","Major project experience..."]
+    ]
+  },
+
+  "Mechanical Engineer":{
+    intro:"Show CAD, mechanical design, testing, manufacturing, maintenance and technical projects.",
+    title:"Mechanical Engineering Profile",
+    fields:[
+      ["discipline","Engineering Discipline","Design, manufacturing, maintenance..."],
+      ["cad","CAD / Engineering Software","SolidWorks, AutoCAD, CATIA..."],
+      ["technical","Technical Skills","Design, testing, manufacturing..."],
+      ["manufacturing","Manufacturing","Production and process experience..."],
+      ["projects","Engineering Projects","Mechanical projects..."]
+    ]
+  },
+
+  "Electrical Engineer":{
+    intro:"Focus on electrical systems, technical software, project work, testing and safety.",
+    title:"Electrical Engineering Profile",
+    fields:[
+      ["systems","Electrical Systems","Power, control, electronics..."],
+      ["software","Engineering Software","MATLAB, AutoCAD, ETAP..."],
+      ["technical","Technical Skills","Testing, installation, maintenance..."],
+      ["safety","Safety","Electrical safety and standards..."],
+      ["projects","Engineering Projects","Electrical projects..."]
+    ]
+  },
+
+  "Fresh Graduate":{
+    intro:"Use your education, academic projects, internships, certifications and achievements to show potential.",
+    title:"Graduate Profile",
+    fields:[
+      ["degree","Degree / Program","Your degree or diploma..."],
+      ["cgpa","CGPA / Marks","Academic score if relevant..."],
+      ["graduationYear","Graduation Year","Expected or completed year..."],
+      ["coursework","Relevant Coursework","Relevant subjects..."],
+      ["activities","Activities / Achievements","Societies, awards, competitions..."]
+    ]
+  },
+
+  "Internship Applicant":{
+    intro:"Highlight education, relevant coursework, projects, skills and motivation for the internship.",
+    title:"Internship Profile",
+    fields:[
+      ["degree","Degree / Program","Current degree or diploma..."],
+      ["educationLevel","Education Level","Current semester/year..."],
+      ["coursework","Relevant Coursework","Relevant subjects..."],
+      ["internshipArea","Target Internship Area","Department or field..."],
+      ["achievements","Academic Achievements","Awards, competitions, projects..."]
+    ]
+  },
+
+  "Marketing Executive":{
+    intro:"Show campaigns, digital platforms, content, lead generation and measurable marketing results.",
+    title:"Marketing Profile",
+    fields:[
+      ["marketingSkills","Marketing Skills","Campaigns, branding, content..."],
+      ["digitalPlatforms","Digital Platforms","Google Ads, Meta, LinkedIn..."],
+      ["seo","SEO / SEM","SEO, SEM, analytics..."],
+      ["campaigns","Campaign Experience","Campaigns and results..."],
+      ["analytics","Marketing Analytics","GA4, dashboards, conversion metrics..."]
+    ]
+  },
+
+  "Digital Marketing Specialist":{
+    intro:"Focus on digital channels, SEO/SEM, paid campaigns, analytics and conversion results.",
+    title:"Digital Marketing Profile",
+    fields:[
+      ["digitalSkills","Digital Marketing Skills","SEO, SEM, PPC, email..."],
+      ["platforms","Platforms","Google Ads, Meta Ads, TikTok, LinkedIn..."],
+      ["seo","SEO / SEM","SEO tools and techniques..."],
+      ["analytics","Analytics","GA4, Search Console, dashboards..."],
+      ["campaignResults","Campaign Results","ROI, leads, conversion, CAC..."]
+    ]
+  },
+
+  "Sales Executive":{
+    intro:"Highlight sales targets, pipeline, customer relationships and measurable commercial results.",
+    title:"Sales Profile",
+    fields:[
+      ["salesSkills","Sales Skills","Prospecting, negotiation, closing..."],
+      ["crm","CRM Systems","Salesforce, HubSpot, Zoho..."],
+      ["industry","Sales Industry","B2B, retail, real estate, FMCG..."],
+      ["targets","Sales Targets","Quota, target achievement..."],
+      ["results","Sales Results","Revenue, deals, conversion..."]
+    ]
+  }
+
+};
+
+
+/* =========================================================
+   FALLBACK CONFIG
+========================================================= */
+
+const fallbackConfig = {
+  intro:"Add the professional skills, qualifications and experience most relevant to your target role.",
+  title:"Professional Profile",
+  fields:[
+    ["coreSkills","Core Professional Skills","Add your strongest role-specific skills..."],
+    ["industry","Industry / Specialization","Your professional field or specialization..."],
+    ["tools","Tools / Software","Relevant software, tools or systems..."],
+    ["professionalFocus","Professional Focus","Your main areas of expertise..."]
+  ]
+};
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const form =
+  document.getElementById("cvForm");
+
+const roleFields =
+  document.getElementById("roleFields");
+
+const experienceContainer =
+  document.getElementById("experienceContainer");
+
+const projectsContainer =
+  document.getElementById("projectsContainer");
+
+const educationContainer =
+  document.getElementById("educationContainer");
+
+const formMessage =
+  document.getElementById("formMessage");
+
+
+/* =========================================================
+   INIT
+========================================================= */
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(!user){
+    window.location.href="index.html";
+    return;
+  }
+
+  currentUser=user;
+
+  initialize();
+
+});
+
+
+function initialize(){
+
+  document.getElementById("categoryBadge").textContent =
+    categoryNames[selectedCategory] || selectedCategory;
+
+  document.getElementById("roleBadge").textContent =
+    selectedRole;
+
+  document.getElementById("templateBadge").textContent =
+    templateDisplayName(selectedTemplate);
+
+  document.getElementById("roleIntroTitle").textContent =
+    `${selectedRole} CV`;
+
+  const config =
+    roleConfigs[selectedRole] || fallbackConfig;
+
+  document.getElementById("roleIntroText").textContent =
+    config.intro;
+
+  document.getElementById("roleSectionTitle").textContent =
+    config.title;
+
+  renderRoleFields(config);
+
+  addExperience();
+
+  addProject();
+
+  addEducation();
+
+  loadExistingCV();
+
+}
+
+
+/* =========================================================
+   TEMPLATE NAME
+========================================================= */
+
+function templateDisplayName(id){
+
+  const names={
+    tech:"Tech Professional",
+    modern:"Modern Professional",
+    classic:"ATS Clean",
+    executive:"Executive",
+    creative:"Creative Professional"
+  };
+
+  return names[id] || id || "Professional Template";
+
+}
+
+
+/* =========================================================
+   ROLE FIELDS
+========================================================= */
+
+function renderRoleFields(config){
+
+  roleFields.innerHTML="";
+
+  config.fields.forEach(field=>{
+
+    const [id,label,placeholder]=field;
+
+    const wrapper=document.createElement("div");
+
+    wrapper.className="field";
+
+    wrapper.innerHTML=`
+
+      <label>${label}</label>
+
+      <textarea
+        id="role_${id}"
+        placeholder="${placeholder}"
+      ></textarea>
+
+    `;
+
+    roleFields.appendChild(wrapper);
+
+  });
+
+}
+
+
+/* =========================================================
+   EXPERIENCE
+========================================================= */
+
+function addExperience(data={}){
+
+  const entry=document.createElement("div");
+
+  entry.className="entry";
+
+  entry.innerHTML=`
+
+    <div class="entry-head">
+
+      <span class="entry-title">
+        Work Experience
+      </span>
+
+      <button
+        type="button"
+        class="remove-btn"
+      >
+        Remove
+      </button>
+
+    </div>
+
+    <div class="field-grid">
+
+      <div class="field">
+
+        <label>Job Title</label>
+
+        <input
+          class="exp-job"
+          value="${escapeHTML(data.job || "")}"
+          placeholder="e.g. Software Engineer"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Company</label>
+
+        <input
+          class="exp-company"
+          value="${escapeHTML(data.company || "")}"
+          placeholder="Company name"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Location</label>
+
+        <input
+          class="exp-location"
+          value="${escapeHTML(data.location || "")}"
+          placeholder="City, Country"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Dates</label>
+
+        <input
+          class="exp-date"
+          value="${escapeHTML(data.date || "")}"
+          placeholder="Jan 2024 – Present"
+        >
+
+      </div>
+
+      <div class="field full">
+
+        <label>Achievements & Responsibilities</label>
+
+        <textarea
+          class="exp-description"
+          placeholder="Describe what you did and the results you achieved. Use numbers where possible."
+        >${escapeHTML(data.description || "")}</textarea>
+
+      </div>
+
+    </div>
+
+  `;
+
+  entry
+    .querySelector(".remove-btn")
+    .addEventListener("click",()=>{
+      entry.remove();
+    });
+
+  experienceContainer.appendChild(entry);
+
+}
+
+
+document
+  .getElementById("addExperience")
+  .addEventListener("click",()=>{
+    addExperience();
+  });
+
+
+/* =========================================================
+   PROJECTS
+========================================================= */
+
+function addProject(data={}){
+
+  const entry=document.createElement("div");
+
+  entry.className="entry";
+
+  entry.innerHTML=`
+
+    <div class="entry-head">
+
+      <span class="entry-title">
+        Professional / Academic Project
+      </span>
+
+      <button
+        type="button"
+        class="remove-btn"
+      >
+        Remove
+      </button>
+
+    </div>
+
+    <div class="field-grid">
+
+      <div class="field">
+
+        <label>Project Name</label>
+
+        <input
+          class="project-name"
+          value="${escapeHTML(data.name || "")}"
+          placeholder="Project name"
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Technologies / Tools</label>
+
+        <input
+          class="project-tech"
+          value="${escapeHTML(data.technologies || "")}"
+          placeholder="Technologies used"
+        >
+
+      </div>
+
+      <div class="field full">
+
+        <label>Project Description & Result</label>
+
+        <textarea
+          class="project-description"
+          placeholder="Explain what you built, your contribution and the result."
+        >${escapeHTML(data.description || "")}</textarea>
+
+      </div>
+
+    </div>
+
+  `;
+
+  entry
+    .querySelector(".remove-btn")
+    .addEventListener("click",()=>{
+      entry.remove();
+    });
+
+  projectsContainer.appendChild(entry);
+
+}
+
+
+document
+  .getElementById("addProject")
+  .addEventListener("click",()=>{
+    addProject();
+  });
+
+
+/* =========================================================
+   EDUCATION
+========================================================= */
+
+function addEducation(data={}){
+
+  const entry=document.createElement("div");
+
+  entry.className="entry";
+
+  entry.innerHTML=`
+
+    <div class="entry-head">
 
+      <span class="entry-title">
+        Education
+      </span>
 
-    /* =========================================
-       LIVE MINI PREVIEW
-    ========================================= */
+      <button
+        type="button"
+        class="remove-btn"
+      >
+        Remove
+      </button>
 
-    function updateMiniPreview() {
+    </div>
 
-      const name =
-        document.getElementById(
-          "fullName"
-        ).value.trim();
+    <div class="field-grid">
 
-      const title =
-        document.getElementById(
-          "jobTitle"
-        ).value.trim();
+      <div class="field">
 
+        <label>Degree / Qualification</label>
 
-      previewName.textContent =
-        name || "Your Name";
+        <input
+          class="edu-degree"
+          value="${escapeHTML(data.degree || "")}"
+          placeholder="e.g. Bachelor of Computer Science"
+        >
 
-      previewTitle.textContent =
-        title || "Professional Title";
+      </div>
 
-    }
+      <div class="field">
 
+        <label>Institute</label>
 
-    document
-      .getElementById("fullName")
-      .addEventListener(
-        "input",
-        updateMiniPreview
-      );
+        <input
+          class="edu-institute"
+          value="${escapeHTML(data.institute || "")}"
+          placeholder="University / College"
+        >
 
+      </div>
 
-    document
-      .getElementById("jobTitle")
-      .addEventListener(
-        "input",
-        updateMiniPreview
-      );
+      <div class="field">
 
+        <label>Dates</label>
 
-    /* =========================================
-       VALIDATION
-    ========================================= */
+        <input
+          class="edu-date"
+          value="${escapeHTML(data.date || "")}"
+          placeholder="2022 – 2026"
+        >
 
-    function showError(message) {
+      </div>
 
-      formMessage.textContent =
-        message;
+      <div class="field">
 
-      formMessage.className =
-        "form-message show error";
+        <label>Grade / CGPA</label>
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+        <input
+          class="edu-grade"
+          value="${escapeHTML(data.grade || "")}"
+          placeholder="Optional"
+        >
 
-    }
+      </div>
 
+    </div>
 
-    function clearError() {
+  `;
 
-      formMessage.textContent =
-        "";
+  entry
+    .querySelector(".remove-btn")
+    .addEventListener("click",()=>{
+      entry.remove();
+    });
 
-      formMessage.className =
-        "form-message";
+  educationContainer.appendChild(entry);
 
-    }
+}
 
 
-    function validateForm() {
+document
+  .getElementById("addEducation")
+  .addEventListener("click",()=>{
+    addEducation();
+  });
 
-      const fullName =
-        document.getElementById(
-          "fullName"
-        ).value.trim();
 
-      const jobTitle =
-        document.getElementById(
-          "jobTitle"
-        ).value.trim();
+/* =========================================================
+   COLLECT EXPERIENCE
+========================================================= */
 
-      const email =
-        document.getElementById(
-          "email"
-        ).value.trim();
+function collectExperience(){
 
+  return [...experienceContainer.querySelectorAll(".entry")]
+    .map(entry=>({
 
-      if (!fullName) {
+      job:entry.querySelector(".exp-job")?.value.trim() || "",
 
-        showError(
-          "Please enter your full name."
-        );
+      company:entry.querySelector(".exp-company")?.value.trim() || "",
 
-        document
-          .getElementById("fullName")
-          .focus();
+      location:entry.querySelector(".exp-location")?.value.trim() || "",
 
-        return false;
-      }
+      date:entry.querySelector(".exp-date")?.value.trim() || "",
 
+      description:
+        entry.querySelector(".exp-description")?.value.trim() || ""
 
-      if (!jobTitle) {
-
-        showError(
-          "Please enter your professional title."
-        );
-
-        document
-          .getElementById("jobTitle")
-          .focus();
-
-        return false;
-      }
-
-
-      if (!email) {
-
-        showError(
-          "Please enter your email address."
-        );
-
-        document
-          .getElementById("email")
-          .focus();
-
-        return false;
-      }
-
-
-      const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-      if (!emailPattern.test(email)) {
-
-        showError(
-          "Please enter a valid email address."
-        );
-
-        document
-          .getElementById("email")
-          .focus();
-
-        return false;
-      }
-
-
-      return true;
-
-    }
-
-
-    /* =========================================
-       FORM SUBMIT
-    ========================================= */
-
-    cvForm.addEventListener(
-      "submit",
-      event => {
-
-        event.preventDefault();
-
-        clearError();
-
-
-        if (!validateForm()) {
-          return;
-        }
-
-
-        const data = {
-
-          category:
-            selectedCategory,
-
-          template:
-            selectedTemplate,
-
-          fullName:
-            document.getElementById(
-              "fullName"
-            ).value.trim(),
-
-          professionalTitle:
-            document.getElementById(
-              "jobTitle"
-            ).value.trim(),
-
-          email:
-            document.getElementById(
-              "email"
-            ).value.trim(),
-
-          phone:
-            document.getElementById(
-              "phone"
-            ).value.trim(),
-
-          location:
-            document.getElementById(
-              "location"
-            ).value.trim(),
-
-          website:
-            document.getElementById(
-              "website"
-            ).value.trim(),
-
-          summary:
-            document.getElementById(
-              "summary"
-            ).value.trim(),
-
-          skills:
-            document.getElementById(
-              "skills"
-            ).value.trim(),
-
-          languages:
-            document.getElementById(
-              "languages"
-            ).value.trim(),
-
-          ...collectCategoryData(),
-
-          experience:
-            collectExperience(),
-
-          education:
-            collectEducation(),
-
-          createdAt:
-            currentCV?.createdAt ||
-            new Date().toISOString()
-
-        };
-
-
-        /*
-          Preserve Firestore document ID
-          when editing an existing CV.
-        */
-
-        if (currentCV?.firestoreId) {
-
-          data.firestoreId =
-            currentCV.firestoreId;
-
-        } else if (currentCV?.id) {
-
-          data.firestoreId =
-            currentCV.id;
-
-        }
-
-
-        localStorage.setItem(
-          "currentCV",
-          JSON.stringify(data)
-        );
-
-
-        localStorage.setItem(
-          "selectedCVCategory",
-          selectedCategory
-        );
-
-
-        localStorage.setItem(
-          "selectedCVTemplate",
-          selectedTemplate
-        );
-
-
-        const button =
-          document.getElementById(
-            "previewButton"
-          );
-
-
-        button.disabled = true;
-
-        button.textContent =
-          "Opening Preview...";
-
-
-        window.location.href =
-          "cv-preview.html";
-
-      }
+    }))
+    .filter(item =>
+      item.job ||
+      item.company ||
+      item.description
     );
 
-
-    /* =========================================
-       NAVIGATION
-    ========================================= */
-
-    document
-      .getElementById("dashboardButton")
-      .addEventListener(
-        "click",
-        () => {
-
-          const confirmed =
-            confirm(
-              "Leave this page? Any unsaved changes will be lost."
-            );
-
-          if (confirmed) {
-            window.location.href =
-              "dashboard.html";
-          }
-
-        }
-      );
+}
 
 
-    document
-      .getElementById("myCVsButton")
-      .addEventListener(
-        "click",
-        () => {
+/* =========================================================
+   COLLECT PROJECTS
+========================================================= */
 
-          const confirmed =
-            confirm(
-              "Leave this page? Any unsaved changes will be lost."
-            );
+function collectProjects(){
 
-          if (confirmed) {
-            window.location.href =
-              "my-cvs.html";
-          }
+  return [...projectsContainer.querySelectorAll(".entry")]
+    .map(entry=>({
 
-        }
-      );
+      name:
+        entry.querySelector(".project-name")?.value.trim() || "",
 
+      technologies:
+        entry.querySelector(".project-tech")?.value.trim() || "",
 
-    document
-      .getElementById("changeTemplateButton")
-      .addEventListener(
-        "click",
-        () => {
+      description:
+        entry.querySelector(".project-description")?.value.trim() || ""
 
-          localStorage.setItem(
-            "selectedCVCategory",
-            selectedCategory
-          );
-
-          localStorage.removeItem(
-            "selectedCVTemplate"
-          );
-
-          /*
-            Preserve current CV when editing.
-            It will remain in localStorage.
-          */
-
-          window.location.href =
-            "templates.html";
-
-        }
-      );
-
-
-    document
-      .getElementById("cancelButton")
-      .addEventListener(
-        "click",
-        () => {
-
-          const confirmed =
-            confirm(
-              "Cancel and return to your dashboard?"
-            );
-
-          if (confirmed) {
-
-            localStorage.removeItem(
-              "currentCV"
-            );
-
-            window.location.href =
-              "dashboard.html";
-          }
-
-        }
-      );
-
-
-    /* =========================================
-       INITIALIZE
-    ========================================= */
-
-    setupCategory();
-
-    loadBasicInformation();
-
-    loadExperience();
-
-    loadEducation();
-
-    updateMiniPreview();
-
-
-    console.log(
-      "CVBuilder professional CV form initialized."
+    }))
+    .filter(item =>
+      item.name ||
+      item.description
     );
 
-  </script>
+}
+
+
+/* =========================================================
+   COLLECT EDUCATION
+========================================================= */
+
+function collectEducation(){
+
+  return [...educationContainer.querySelectorAll(".entry")]
+    .map(entry=>({
+
+      degree:
+        entry.querySelector(".edu-degree")?.value.trim() || "",
+
+      institute:
+        entry.querySelector(".edu-institute")?.value.trim() || "",
+
+      date:
+        entry.querySelector(".edu-date")?.value.trim() || "",
+
+      grade:
+        entry.querySelector(".edu-grade")?.value.trim() || ""
+
+    }))
+    .filter(item =>
+      item.degree ||
+      item.institute
+    );
+
+}
+
+
+/* =========================================================
+   COLLECT ROLE DATA
+========================================================= */
+
+function collectRoleData(){
+
+  const data={};
+
+  document
+    .querySelectorAll('[id^="role_"]')
+    .forEach(field=>{
+
+      const key =
+        field.id.replace("role_","");
+
+      data[key]=field.value.trim();
+
+    });
+
+  return data;
+
+}
+
+
+/* =========================================================
+   LOAD EXISTING CV
+========================================================= */
+
+function loadExistingCV(){
+
+  if(!currentCV){
+    return;
+  }
+
+  const setValue=(id,value)=>{
+
+    const element=document.getElementById(id);
+
+    if(element && value !== undefined){
+      element.value=value || "";
+    }
+
+  };
+
+
+  setValue("fullName",currentCV.fullName);
+  setValue("jobTitle",currentCV.professionalTitle);
+  setValue("email",currentCV.email);
+  setValue("phone",currentCV.phone);
+  setValue("location",currentCV.location);
+  setValue("linkedin",currentCV.linkedin);
+  setValue("website",currentCV.website);
+  setValue("portfolio",currentCV.portfolio);
+  setValue("summary",currentCV.summary);
+  setValue("certifications",currentCV.certifications);
+  setValue("achievements",currentCV.achievements);
+  setValue("languages",currentCV.languages);
+
+
+  /* ROLE FIELDS */
+
+  const roleData =
+    currentCV.roleData || {};
+
+  Object.entries(roleData).forEach(([key,value])=>{
+
+    const field =
+      document.getElementById(`role_${key}`);
+
+    if(field){
+      field.value=value || "";
+    }
+
+  });
+
+
+  /* EXPERIENCE */
+
+  if(Array.isArray(currentCV.experience)){
+
+    experienceContainer.innerHTML="";
+
+    currentCV.experience.forEach(item=>{
+      addExperience(item);
+    });
+
+  }
+
+
+  /* PROJECTS */
+
+  if(Array.isArray(currentCV.projects)){
+
+    projectsContainer.innerHTML="";
+
+    currentCV.projects.forEach(item=>{
+      addProject(item);
+    });
+
+  }
+
+
+  /* EDUCATION */
+
+  if(Array.isArray(currentCV.education)){
+
+    educationContainer.innerHTML="";
+
+    currentCV.education.forEach(item=>{
+      addEducation(item);
+    });
+
+  }
+
+}
+
+
+/* =========================================================
+   FORM SUBMIT
+========================================================= */
+
+form.addEventListener("submit",async(event)=>{
+
+  event.preventDefault();
+
+  clearMessage();
+
+
+  const fullName =
+    document.getElementById("fullName").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const jobTitle =
+    document.getElementById("jobTitle").value.trim();
+
+  const summary =
+    document.getElementById("summary").value.trim();
+
+
+  if(!fullName){
+
+    showMessage(
+      "Please enter your full name.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(!email){
+
+    showMessage(
+      "Please enter your professional email.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(!jobTitle){
+
+    showMessage(
+      "Please enter your professional title.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if(!summary){
+
+    showMessage(
+      "Please add your professional summary.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const cvData={
+
+    ...(currentCV || {}),
+
+    category:selectedCategory,
+
+    categoryName:
+      categoryNames[selectedCategory] ||
+      selectedCategory,
+
+    role:selectedRole,
+
+    template:selectedTemplate,
+
+    fullName,
+
+    professionalTitle:jobTitle,
+
+    email,
+
+    phone:
+      document.getElementById("phone").value.trim(),
+
+    location:
+      document.getElementById("location").value.trim(),
+
+    linkedin:
+      document.getElementById("linkedin").value.trim(),
+
+    website:
+      document.getElementById("website").value.trim(),
+
+    portfolio:
+      document.getElementById("portfolio").value.trim(),
+
+    summary,
+
+    roleData:collectRoleData(),
+
+    experience:collectExperience(),
+
+    projects:collectProjects(),
+
+    education:collectEducation(),
+
+    certifications:
+      document.getElementById("certifications").value.trim(),
+
+    achievements:
+      document.getElementById("achievements").value.trim(),
+
+    languages:
+      document.getElementById("languages").value.trim(),
+
+    updatedAt:
+      new Date().toISOString(),
+
+    createdAt:
+      currentCV?.createdAt ||
+      new Date().toISOString()
+
+  };
+
+
+  if(currentCV?.firestoreId){
+
+    cvData.firestoreId=
+      currentCV.firestoreId;
+
+  }
+
+
+  localStorage.setItem(
+    "currentCV",
+    JSON.stringify(cvData)
+  );
+
+
+  showMessage(
+    "CV information saved. Opening your professional preview...",
+    "success"
+  );
+
+
+  setTimeout(()=>{
+
+    window.location.href="cv-preview.html";
+
+  },500);
+
+});
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+document
+  .getElementById("dashboardButton")
+  .addEventListener("click",()=>{
+    window.location.href="dashboard.html";
+  });
+
+
+document
+  .getElementById("myCVsButton")
+  .addEventListener("click",()=>{
+    window.location.href="my-cvs.html";
+  });
+
+
+document
+  .getElementById("backButton")
+  .addEventListener("click",()=>{
+    window.location.href="templates.html";
+  });
+
+
+document
+  .getElementById("changeTemplateButton")
+  .addEventListener("click",()=>{
+    window.location.href="templates.html";
+  });
+
+
+document
+  .getElementById("cancelButton")
+  .addEventListener("click",()=>{
+
+    if(confirm("Leave the CV builder? Unsaved changes will not be saved.")){
+      window.location.href="dashboard.html";
+    }
+
+  });
+
+
+/* =========================================================
+   LIVE MINI PREVIEW
+========================================================= */
+
+document
+  .getElementById("jobTitle")
+  .addEventListener("input",(event)=>{
+
+    document.getElementById("miniTitle").style.width =
+      event.target.value
+        ? Math.min(
+            80,
+            Math.max(25,event.target.value.length * 2.2)
+          ) + "%"
+        : "45%";
+
+  });
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+function showMessage(message,type){
+
+  formMessage.textContent=message;
+
+  formMessage.className=
+    `form-message show ${type}`;
+
+}
+
+
+function clearMessage(){
+
+  formMessage.textContent="";
+
+  formMessage.className=
+    "form-message";
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+</script>
 
 </body>
-                  </html>
+  </html>
