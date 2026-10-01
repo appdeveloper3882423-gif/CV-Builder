@@ -4,199 +4,158 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Choose CV Template | CVBuilder</title>
+  <title>Choose Template | CVBuilder</title>
+
+  <link rel="stylesheet" href="style.css">
 
   <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --text: #0f172a;
-      --muted: #64748b;
-      --bg: #f8fafc;
-      --white: #ffffff;
-      --border: #e2e8f0;
-      --success: #16a34a;
-      --danger: #dc2626;
-      --shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
-      --radius: 18px;
-    }
+    /* =========================================
+       TEMPLATE SELECTOR
+    ========================================= */
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+    .templates-page {
       min-height: 100vh;
+      background: #f7f9fc;
     }
 
-    button {
-      font-family: inherit;
-    }
-
-    /* NAVBAR */
-
-    .navbar {
-      height: 72px;
-      background: rgba(255, 255, 255, 0.96);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
+    .templates-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid #e7ecf3;
+    }
+
+    .templates-nav-inner {
+      width: min(1180px, calc(100% - 32px));
+      min-height: 72px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      text-decoration: none;
+      color: #172033;
       font-size: 22px;
       font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
     }
 
-    .brand-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 17px;
+    .brand span {
+      color: #2563eb;
     }
 
     .nav-actions {
       display: flex;
+      gap: 10px;
       align-items: center;
-      gap: 12px;
     }
 
-    .nav-button {
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--text);
-      padding: 10px 16px;
+    .nav-btn {
+      border: 1px solid #dce3ed;
+      background: #fff;
+      color: #34445a;
+      padding: 10px 15px;
       border-radius: 10px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.2s ease;
     }
 
-    .nav-button:hover {
-      border-color: var(--primary);
-      color: var(--primary);
+    .nav-btn:hover {
+      border-color: #2563eb;
+      color: #2563eb;
     }
 
-    /* MAIN */
+    .nav-btn.primary {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
 
-    .page {
-      width: min(1250px, 92%);
-      margin: 0 auto;
+    .nav-btn.primary:hover {
+      background: #1d4ed8;
+    }
+
+    .templates-container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
       padding: 42px 0 70px;
     }
 
     .page-header {
       text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .page-header .eyebrow {
-      display: inline-block;
-      padding: 7px 13px;
-      background: #eff6ff;
-      color: var(--primary);
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 12px;
+      max-width: 720px;
+      margin: 0 auto 35px;
     }
 
     .page-header h1 {
-      font-size: clamp(30px, 5vw, 44px);
-      margin-bottom: 10px;
+      margin: 0 0 10px;
+      color: #172033;
+      font-size: clamp(30px, 5vw, 42px);
       letter-spacing: -1px;
     }
 
     .page-header p {
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 680px;
-      margin: auto;
-      line-height: 1.7;
+      margin: 0;
+      color: #6d7b90;
+      line-height: 1.65;
+      font-size: 15px;
     }
 
-    /* CATEGORY */
+    /* =========================================
+       CATEGORY SELECTOR
+    ========================================= */
 
-    .section-heading {
-      margin-bottom: 17px;
-    }
-
-    .section-heading h2 {
-      font-size: 21px;
-      margin-bottom: 5px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 14px;
+    .section-title {
+      margin: 0 0 16px;
+      color: #172033;
+      font-size: 20px;
     }
 
     .category-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 13px;
+      gap: 12px;
       margin-bottom: 42px;
     }
 
     .category-card {
-      background: white;
-      border: 2px solid var(--border);
-      border-radius: 15px;
-      padding: 18px 13px;
+      border: 1px solid #e0e7f0;
+      background: #fff;
+      border-radius: 13px;
+      padding: 17px 12px;
       cursor: pointer;
-      transition: 0.2s ease;
       text-align: center;
-      min-height: 125px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
+      transition: 0.2s ease;
+      user-select: none;
     }
 
     .category-card:hover {
+      border-color: #93b4f7;
       transform: translateY(-2px);
-      border-color: #93c5fd;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
     }
 
     .category-card.active {
-      border-color: var(--primary);
+      border-color: #2563eb;
       background: #eff6ff;
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.12);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.08);
     }
 
     .category-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 9px;
+      border-radius: 11px;
       background: #f1f5f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
     }
 
     .category-card.active .category-icon {
@@ -204,300 +163,325 @@
     }
 
     .category-name {
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.3;
+      color: #34445a;
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.35;
     }
 
-    /* TEMPLATE AREA */
+    .category-card.active .category-name {
+      color: #1d4ed8;
+    }
 
-    .template-header {
+    /* =========================================
+       SELECTED CATEGORY
+    ========================================= */
+
+    .selected-category {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
       gap: 20px;
       margin-bottom: 20px;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid #e3e9f1;
+      border-radius: 14px;
     }
 
-    .selected-category-label {
-      color: var(--primary);
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 5px;
+    .selected-category-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .selected-category-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      background: #eff6ff;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+    }
+
+    .selected-category h2 {
+      margin: 0 0 3px;
+      color: #172033;
+      font-size: 17px;
+    }
+
+    .selected-category p {
+      margin: 0;
+      color: #7a8799;
+      font-size: 12px;
     }
 
     .template-count {
-      color: var(--muted);
-      font-size: 13px;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
     }
+
+    /* =========================================
+       TEMPLATE GRID
+    ========================================= */
 
     .templates-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+      gap: 22px;
     }
 
     .template-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      background: #fff;
+      border: 1px solid #e1e7ef;
+      border-radius: 17px;
       overflow: hidden;
-      box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
-      transition: 0.25s ease;
+      box-shadow: 0 5px 20px rgba(20, 35, 60, 0.04);
+      transition: 0.22s ease;
     }
 
     .template-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow);
-      border-color: #bfdbfe;
+      transform: translateY(-4px);
+      border-color: #b9cdf4;
+      box-shadow: 0 14px 30px rgba(20, 35, 60, 0.09);
     }
 
     .template-preview {
-      height: 280px;
-      background: #e2e8f0;
-      padding: 18px;
-      overflow: hidden;
-    }
-
-    .resume-paper {
-      background: white;
-      width: 100%;
-      height: 100%;
-      border-radius: 5px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-      padding: 15px;
-      overflow: hidden;
+      height: 235px;
+      padding: 25px;
+      background: #f4f7fb;
       position: relative;
+      overflow: hidden;
     }
 
-    .preview-header {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 13px;
-    }
-
-    .preview-avatar {
-      width: 43px;
-      height: 43px;
-      background: #dbeafe;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .preview-lines {
-      flex: 1;
-    }
-
-    .line {
-      height: 5px;
-      background: #cbd5e1;
+    .template-paper {
+      width: 185px;
+      height: 205px;
+      background: #fff;
+      margin: auto;
       border-radius: 4px;
-      margin-bottom: 6px;
+      box-shadow: 0 8px 24px rgba(20, 35, 60, 0.13);
+      position: relative;
+      overflow: hidden;
     }
 
-    .line.dark {
-      background: #64748b;
-      width: 75%;
+    /* ATS */
+
+    .preview-ats .paper-top {
+      height: 34px;
+      background: #172033;
+      padding: 9px 12px;
+      box-sizing: border-box;
     }
 
-    .line.short {
-      width: 48%;
+    .preview-ats .paper-name {
+      width: 65%;
+      height: 5px;
+      background: #fff;
+      border-radius: 3px;
     }
 
-    .line.tiny {
-      width: 30%;
+    .preview-ats .paper-content {
+      padding: 13px;
     }
 
-    .preview-section {
-      margin-top: 14px;
+    /* Modern */
+
+    .preview-modern .paper-top {
+      height: 55px;
+      background: #2563eb;
+      padding: 13px;
+      box-sizing: border-box;
     }
 
-    .preview-title {
-      height: 7px;
+    .preview-modern .paper-name {
+      width: 70%;
+      height: 6px;
+      background: #fff;
+      border-radius: 3px;
+    }
+
+    .preview-modern .paper-content {
+      padding: 12px;
+    }
+
+    /* Creative */
+
+    .preview-creative .paper-side {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 31%;
+      background: #172033;
+    }
+
+    .preview-creative .paper-content {
+      margin-left: 31%;
+      padding: 13px 10px;
+    }
+
+    .preview-creative .paper-name {
+      width: 78%;
+      height: 6px;
       background: #2563eb;
       border-radius: 3px;
-      width: 34%;
-      margin-bottom: 8px;
     }
 
-    .preview-content {
-      height: 5px;
-      background: #e2e8f0;
+    /* Minimal */
+
+    .preview-minimal .paper-content {
+      padding: 18px;
+    }
+
+    .preview-minimal .paper-name {
+      width: 75%;
+      height: 7px;
+      background: #172033;
+      border-radius: 3px;
+      margin-bottom: 9px;
+    }
+
+    /* Corporate */
+
+    .preview-corporate .paper-top {
+      height: 45px;
+      background: #334155;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+
+    .preview-corporate .paper-name {
+      width: 70%;
+      height: 6px;
+      background: #fff;
+      border-radius: 3px;
+    }
+
+    .preview-corporate .paper-content {
+      padding: 13px;
+    }
+
+    /* Academic */
+
+    .preview-academic .paper-content {
+      padding: 15px;
+    }
+
+    .preview-academic .paper-name {
+      width: 65%;
+      height: 6px;
+      background: #2563eb;
       border-radius: 3px;
       margin-bottom: 5px;
     }
 
-    .preview-content:nth-child(2) {
-      width: 95%;
+    .preview-academic .paper-line {
+      height: 2px;
+      background: #d4dce7;
+      margin: 8px 0;
     }
 
-    .preview-content:nth-child(3) {
-      width: 84%;
+    /* Generic lines */
+
+    .paper-line {
+      height: 3px;
+      background: #dce3ec;
+      border-radius: 3px;
+      margin: 7px 0;
     }
 
-    .preview-content:nth-child(4) {
-      width: 70%;
+    .paper-line.short {
+      width: 58%;
     }
 
-    /* TEMPLATE STYLES */
-
-    .resume-paper.modern {
-      border-top: 7px solid #2563eb;
+    .paper-line.medium {
+      width: 78%;
     }
 
-    .resume-paper.modern .preview-title {
-      background: #2563eb;
+    .paper-line.long {
+      width: 94%;
     }
 
-    .resume-paper.creative {
-      background: linear-gradient(90deg, #111827 0 29%, #ffffff 29%);
+    .paper-heading {
+      width: 42%;
+      height: 4px;
+      background: #718096;
+      border-radius: 3px;
+      margin: 13px 0 7px;
     }
 
-    .resume-paper.creative .preview-header {
-      margin-left: 32%;
-    }
-
-    .resume-paper.creative .preview-section {
-      margin-left: 32%;
-    }
-
-    .resume-paper.creative .preview-title {
-      background: #7c3aed;
-    }
-
-    .resume-paper.ats .preview-title {
-      background: #111827;
-    }
-
-    .resume-paper.ats .preview-avatar {
-      border-radius: 4px;
-      background: #e5e7eb;
-    }
-
-    .resume-paper.corporate {
-      border-left: 7px solid #0f766e;
-    }
-
-    .resume-paper.corporate .preview-title {
-      background: #0f766e;
-    }
-
-    .resume-paper.academic {
-      border-top: 5px solid #7c3aed;
-    }
-
-    .resume-paper.academic .preview-title {
-      background: #7c3aed;
-    }
-
-    .resume-paper.minimal .preview-title {
-      background: #475569;
-    }
-
-    .resume-paper.minimal .preview-avatar {
-      display: none;
-    }
-
-    .resume-paper.minimal .preview-header {
-      margin-bottom: 20px;
+    .preview-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.94);
+      color: #536277;
+      font-size: 9px;
+      font-weight: 800;
+      box-shadow: 0 3px 10px rgba(20,35,60,0.08);
     }
 
     .template-info {
-      padding: 20px;
+      padding: 18px;
     }
 
-    .template-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .template-name {
+    .template-info h3 {
+      margin: 0 0 7px;
+      color: #172033;
       font-size: 18px;
-      font-weight: 800;
     }
 
-    .template-tag {
-      font-size: 10px;
-      background: #eff6ff;
-      color: var(--primary);
-      padding: 5px 8px;
-      border-radius: 999px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .template-description {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .template-info p {
       min-height: 42px;
-      margin-bottom: 16px;
+      margin: 0;
+      color: #748196;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
-    .use-template {
+    .use-template-btn {
       width: 100%;
-      border: none;
-      background: var(--primary);
-      color: white;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
+      height: 40px;
+      margin-top: 16px;
+      border: 1px solid #2563eb;
+      border-radius: 9px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 750;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.2s ease;
     }
 
-    .use-template:hover {
-      background: var(--primary-dark);
+    .use-template-btn:hover {
+      background: #1d4ed8;
     }
 
-    /* EMPTY */
-
-    .empty-templates {
-      background: white;
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 55px 20px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    /* LOADING */
+    /* =========================================
+       LOGIN LOADING
+    ========================================= */
 
     .page-loading {
-      position: fixed;
-      inset: 0;
-      background: rgba(255, 255, 255, 0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-
-    .page-loading.active {
-      display: flex;
-    }
-
-    .loading-box {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 25px 30px;
-      box-shadow: var(--shadow);
+      min-height: 60vh;
+      display: grid;
+      place-items: center;
       text-align: center;
     }
 
     .spinner {
-      width: 35px;
-      height: 35px;
-      border: 4px solid #dbeafe;
-      border-top-color: var(--primary);
+      width: 36px;
+      height: 36px;
+      border: 3px solid #e3e9f2;
+      border-top-color: #2563eb;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 0 auto 12px;
+      margin: 0 auto 14px;
     }
 
     @keyframes spin {
@@ -506,35 +490,14 @@
       }
     }
 
-    /* TOAST */
+    /* =========================================
+       RESPONSIVE
+    ========================================= */
 
-    .toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      background: #0f172a;
-      color: white;
-      padding: 13px 17px;
-      border-radius: 10px;
-      font-size: 14px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(15px);
-      pointer-events: none;
-      transition: 0.25s;
-      z-index: 1000;
-    }
+    @media (max-width: 1000px) {
 
-    .toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 1050px) {
       .category-grid {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
       }
 
       .templates-grid {
@@ -543,75 +506,74 @@
     }
 
     @media (max-width: 760px) {
-      .navbar {
-        height: 65px;
-        padding: 0 4%;
+
+      .templates-nav-inner {
+        min-height: 64px;
       }
 
       .brand {
         font-size: 19px;
       }
 
-      .brand-icon {
-        width: 34px;
-        height: 34px;
-      }
-
-      .nav-button {
-        padding: 9px 12px;
-        font-size: 12px;
-      }
-
-      .page {
-        width: 94%;
-        padding-top: 30px;
+      .nav-btn.dashboard-btn {
+        display: none;
       }
 
       .category-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      .templates-container {
+        padding-top: 30px;
+      }
+
+      .selected-category {
+        align-items: flex-start;
       }
 
       .templates-grid {
         grid-template-columns: 1fr;
       }
 
-      .template-header {
-        align-items: flex-start;
-        flex-direction: column;
+      .template-preview {
+        height: 250px;
       }
     }
 
     @media (max-width: 430px) {
-      .category-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 9px;
+
+      .templates-nav-inner,
+      .templates-container {
+        width: calc(100% - 22px);
       }
 
-      .category-card {
-        min-height: 112px;
-        padding: 12px 8px;
+      .nav-actions {
+        gap: 6px;
       }
 
-      .category-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 19px;
-      }
-
-      .category-name {
-        font-size: 12px;
-      }
-
-      .template-preview {
-        height: 250px;
+      .nav-btn {
+        padding: 9px 10px;
+        font-size: 11px;
       }
 
       .page-header h1 {
         font-size: 30px;
       }
 
-      .page-header p {
-        font-size: 14px;
+      .category-grid {
+        gap: 9px;
+      }
+
+      .category-card {
+        padding: 14px 8px;
+      }
+
+      .selected-category {
+        padding: 15px;
+      }
+
+      .template-count {
+        display: none;
       }
     }
   </style>
@@ -620,164 +582,140 @@
 <body>
 
   <!-- NAVBAR -->
+  <header class="templates-nav">
 
-  <nav class="navbar">
-    <a href="dashboard.html" class="brand">
-      <span class="brand-icon">CV</span>
-      <span>CVBuilder</span>
-    </a>
+    <div class="templates-nav-inner">
 
-    <div class="nav-actions">
-      <button class="nav-button" id="backDashboard">
-        Dashboard
-      </button>
+      <a href="dashboard.html" class="brand">
+        CV<span>Builder</span>
+      </a>
+
+      <div class="nav-actions">
+
+        <button
+          class="nav-btn dashboard-btn"
+          id="dashboardButton">
+          Dashboard
+        </button>
+
+        <button
+          class="nav-btn"
+          id="myCVsButton">
+          My CVs
+        </button>
+
+      </div>
+
     </div>
-  </nav>
+
+  </header>
 
 
   <!-- PAGE -->
+  <main class="templates-page">
 
-  <main class="page">
+    <div class="templates-container">
 
-    <header class="page-header">
-      <span class="eyebrow">Step 1 of 3</span>
+      <!-- HEADER -->
+      <section class="page-header">
 
-      <h1>Choose Your CV Template</h1>
+        <h1>Choose Your CV Template</h1>
 
-      <p>
-        Select your professional category first. We will show you templates
-        designed specifically for your field.
-      </p>
-    </header>
+        <p>
+          Select your professional category first.
+          You will then see templates designed specifically
+          for your career field.
+        </p>
+
+      </section>
 
 
-    <!-- CATEGORY -->
+      <!-- CATEGORY -->
+      <section>
 
-    <section>
+        <h2 class="section-title">
+          1. Select Your Category
+        </h2>
 
-      <div class="section-heading">
-        <h2>Select Your Category</h2>
-        <p>Choose the category that best matches your professional profile.</p>
-      </div>
-
-      <div class="category-grid" id="categoryGrid">
-
-        <div class="category-card" data-category="IT / Software">
-          <div class="category-icon">💻</div>
-          <div class="category-name">IT / Software</div>
+        <div
+          class="category-grid"
+          id="categoryGrid">
         </div>
 
-        <div class="category-card" data-category="Business">
-          <div class="category-icon">💼</div>
-          <div class="category-name">Business</div>
-        </div>
-
-        <div class="category-card" data-category="Banking & Finance">
-          <div class="category-icon">🏦</div>
-          <div class="category-name">Banking & Finance</div>
-        </div>
-
-        <div class="category-card" data-category="Medical">
-          <div class="category-icon">⚕️</div>
-          <div class="category-name">Medical</div>
-        </div>
-
-        <div class="category-card" data-category="Teaching">
-          <div class="category-icon">🎓</div>
-          <div class="category-name">Teaching</div>
-        </div>
-
-        <div class="category-card" data-category="Graphic Design">
-          <div class="category-icon">🎨</div>
-          <div class="category-name">Graphic Design</div>
-        </div>
-
-        <div class="category-card" data-category="Engineering">
-          <div class="category-icon">⚙️</div>
-          <div class="category-name">Engineering</div>
-        </div>
-
-        <div class="category-card" data-category="Student / Fresh Graduate">
-          <div class="category-icon">📚</div>
-          <div class="category-name">Student / Fresh Graduate</div>
-        </div>
-
-        <div class="category-card" data-category="Marketing & Sales">
-          <div class="category-icon">📈</div>
-          <div class="category-name">Marketing & Sales</div>
-        </div>
-
-        <div class="category-card" data-category="Other">
-          <div class="category-icon">📄</div>
-          <div class="category-name">Other</div>
-        </div>
-
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- TEMPLATES -->
+      <!-- SELECTED CATEGORY -->
+      <section
+        class="selected-category"
+        id="selectedCategoryBox">
 
-    <section id="templateSection">
+        <div class="selected-category-left">
 
-      <div class="template-header">
-
-        <div>
-          <div class="section-heading" style="margin-bottom:0;">
-            <h2>Available Templates</h2>
-            <p id="selectedCategoryLabel">
-              Select a category to view available templates.
-            </p>
+          <div
+            class="selected-category-icon"
+            id="selectedCategoryIcon">
+            💻
           </div>
+
+          <div>
+
+            <h2 id="selectedCategoryName">
+              IT / Software
+            </h2>
+
+            <p id="selectedCategoryDescription">
+              Professional CV templates for technology careers.
+            </p>
+
+          </div>
+
         </div>
 
-        <div class="template-count" id="templateCount"></div>
-
-      </div>
-
-
-      <div class="templates-grid" id="templatesGrid">
-
-        <div class="empty-templates">
-          <h3 style="margin-bottom:8px;color:#0f172a;">
-            Choose a category
-          </h3>
-
-          <p>
-            Category-specific CV templates will appear here.
-          </p>
+        <div
+          class="template-count"
+          id="templateCount">
+          5 Templates
         </div>
 
-      </div>
+      </section>
 
-    </section>
+
+      <!-- TEMPLATES -->
+      <section>
+
+        <h2 class="section-title">
+          2. Select Your Template
+        </h2>
+
+        <div
+          class="templates-grid"
+          id="templatesGrid">
+        </div>
+
+      </section>
+
+    </div>
 
   </main>
 
 
-  <!-- LOADING -->
+  <!-- AUTH CHECK LOADING -->
+  <div
+    class="page-loading"
+    id="pageLoading">
 
-  <div class="page-loading" id="pageLoading">
-
-    <div class="loading-box">
+    <div>
 
       <div class="spinner"></div>
 
-      <strong>Opening CV Builder...</strong>
-
-      <p style="margin-top:6px;color:#64748b;font-size:13px;">
-        Please wait
-      </p>
+      <div>
+        Checking your account...
+      </div>
 
     </div>
 
   </div>
-
-
-  <!-- TOAST -->
-
-  <div class="toast" id="toast"></div>
 
 
   <script type="module">
@@ -789,411 +727,423 @@
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 
-    /* --------------------------------
-       ELEMENTS
-    -------------------------------- */
+    /* =========================================
+       CATEGORY DATA
+    ========================================= */
 
-    const categoryCards =
-      document.querySelectorAll(".category-card");
+    const categories = {
 
-    const templatesGrid =
-      document.getElementById("templatesGrid");
+      IT: {
+        name: "IT / Software",
+        icon: "💻",
+        description:
+          "Professional CV templates for software, technology and IT careers."
+      },
 
-    const selectedCategoryLabel =
-      document.getElementById("selectedCategoryLabel");
+      Business: {
+        name: "Business",
+        icon: "💼",
+        description:
+          "Professional layouts for business, management and corporate careers."
+      },
 
-    const templateCount =
-      document.getElementById("templateCount");
+      Banking: {
+        name: "Banking & Finance",
+        icon: "🏦",
+        description:
+          "Structured CV templates for banking, accounting and finance professionals."
+      },
 
-    const backDashboard =
-      document.getElementById("backDashboard");
+      Medical: {
+        name: "Medical",
+        icon: "⚕️",
+        description:
+          "Clean professional templates for medical and healthcare careers."
+      },
 
-    const pageLoading =
-      document.getElementById("pageLoading");
+      Teaching: {
+        name: "Teaching",
+        icon: "📚",
+        description:
+          "Academic and professional CV templates for teachers and educators."
+      },
 
-    const toast =
-      document.getElementById("toast");
+      Design: {
+        name: "Graphic Design",
+        icon: "🎨",
+        description:
+          "Creative templates for designers, artists and visual professionals."
+      },
+
+      Engineering: {
+        name: "Engineering",
+        icon: "⚙️",
+        description:
+          "Technical CV templates for engineering and project-based careers."
+      },
+
+      Student: {
+        name: "Student / Fresh Graduate",
+        icon: "🎓",
+        description:
+          "Modern templates for students, interns and fresh graduates."
+      },
+
+      Marketing: {
+        name: "Marketing & Sales",
+        icon: "📈",
+        description:
+          "Professional templates for marketing, sales and digital careers."
+      },
+
+      Other: {
+        name: "Other",
+        icon: "📄",
+        description:
+          "Flexible professional templates for any career field."
+      }
+
+    };
 
 
-    /* --------------------------------
+    /* =========================================
        TEMPLATE DATA
-    -------------------------------- */
+    ========================================= */
 
     const templates = {
 
-      "IT / Software": [
+      IT: [
 
         {
           name: "ATS Developer",
-          tag: "ATS Friendly",
           type: "ats",
           description:
-            "Clean and structured layout designed for software and technical job applications."
+            "ATS-friendly layout designed for developers and software professionals."
         },
 
         {
           name: "Modern Tech",
-          tag: "Modern",
           type: "modern",
           description:
-            "Modern technology-focused design with a clean professional visual hierarchy."
+            "Clean modern design with a strong technology-focused visual structure."
         },
 
         {
           name: "Software Engineer",
-          tag: "Professional",
           type: "corporate",
           description:
-            "Professional layout for software engineers, developers and technical specialists."
+            "Professional engineering layout for software engineers and developers."
         },
 
         {
           name: "Minimal Professional",
-          tag: "Minimal",
           type: "minimal",
           description:
-            "Simple and distraction-free CV layout focused on your skills and experience."
+            "Simple and focused design that keeps your skills and experience clear."
         },
 
         {
           name: "Creative Developer",
-          tag: "Creative",
           type: "creative",
           description:
-            "Creative technology CV for developers who want a more distinctive presentation."
+            "Creative technology template for developers who want a modern visual CV."
         }
 
       ],
 
 
-      "Business": [
+      Business: [
 
         {
-          name: "Business Executive",
-          tag: "Executive",
+          name: "Business Professional",
           type: "corporate",
           description:
-            "Professional executive layout for business managers and leadership roles."
+            "Classic business layout for management and professional positions."
         },
 
         {
-          name: "Corporate Professional",
-          tag: "Corporate",
+          name: "Modern Executive",
           type: "modern",
           description:
-            "Clean corporate CV design for business professionals."
+            "Modern executive design with a polished professional appearance."
         },
 
         {
-          name: "Business Modern",
-          tag: "Modern",
+          name: "Corporate Leader",
+          type: "corporate",
+          description:
+            "Structured layout for managers, executives and business leaders."
+        },
+
+        {
+          name: "Minimal Business",
           type: "minimal",
           description:
-            "Modern and organized layout for business and management careers."
-        },
-
-        {
-          name: "Management ATS",
-          tag: "ATS Friendly",
-          type: "ats",
-          description:
-            "ATS-friendly format focused on business achievements and management experience."
+            "Minimal business design focused on clarity and professional experience."
         }
 
       ],
 
 
-      "Banking & Finance": [
+      Banking: [
 
         {
           name: "Corporate Finance",
-          tag: "Corporate",
           type: "corporate",
           description:
-            "Professional finance CV designed for corporate and financial institutions."
+            "Professional finance template for corporate and financial careers."
         },
 
         {
           name: "Banking Professional",
-          tag: "Banking",
-          type: "modern",
+          type: "corporate",
           description:
-            "Structured CV design for banking professionals and financial specialists."
+            "Structured banking CV designed for financial institutions."
         },
 
         {
-          name: "Executive Finance",
-          tag: "Executive",
-          type: "minimal",
+          name: "Executive",
+          type: "modern",
           description:
-            "Elegant professional layout for experienced finance and banking professionals."
+            "Premium executive layout for senior finance professionals."
         },
 
         {
           name: "ATS Finance",
-          tag: "ATS Friendly",
           type: "ats",
           description:
-            "Simple ATS-friendly format focused on finance skills, certifications and experience."
+            "ATS-friendly finance template designed for recruitment systems."
         }
 
       ],
 
 
-      "Medical": [
+      Medical: [
 
         {
           name: "Medical Professional",
-          tag: "Professional",
           type: "corporate",
           description:
-            "Clean medical CV for doctors, healthcare professionals and clinical specialists."
+            "Clean professional design for doctors and healthcare professionals."
         },
 
         {
           name: "Clinical CV",
-          tag: "Clinical",
-          type: "modern",
-          description:
-            "Structured format for clinical experience, qualifications and specialization."
-        },
-
-        {
-          name: "Medical Academic",
-          tag: "Academic",
-          type: "academic",
-          description:
-            "Academic-focused CV for medical students, researchers and educators."
-        },
-
-        {
-          name: "Medical ATS",
-          tag: "ATS Friendly",
           type: "ats",
           description:
-            "ATS-friendly medical CV focused on qualifications and professional experience."
+            "Structured clinical CV layout for healthcare and clinical roles."
+        },
+
+        {
+          name: "Modern Healthcare",
+          type: "modern",
+          description:
+            "Modern healthcare design with a clean professional presentation."
+        },
+
+        {
+          name: "Minimal Medical",
+          type: "minimal",
+          description:
+            "Simple medical CV focused on qualifications and clinical experience."
         }
 
       ],
 
 
-      "Teaching": [
+      Teaching: [
 
         {
           name: "Professional Teacher",
-          tag: "Professional",
           type: "corporate",
           description:
-            "Professional CV design for teachers, instructors and education professionals."
+            "Professional CV layout for teachers and education professionals."
         },
 
         {
           name: "Academic CV",
-          tag: "Academic",
           type: "academic",
           description:
-            "Academic layout for educators, lecturers and academic professionals."
+            "Academic-focused design for educators, lecturers and researchers."
         },
 
         {
           name: "Modern Educator",
-          tag: "Modern",
           type: "modern",
           description:
-            "Modern and organized design for teachers and education specialists."
+            "Modern educator template with a clean and organized structure."
         },
 
         {
           name: "Simple Teacher",
-          tag: "Simple",
           type: "minimal",
           description:
-            "Simple and readable teacher CV with a strong focus on experience and skills."
+            "Simple and readable CV for teachers and education professionals."
         }
 
       ],
 
 
-      "Graphic Design": [
+      Design: [
 
         {
           name: "Creative Portfolio",
-          tag: "Creative",
           type: "creative",
           description:
-            "Creative portfolio-style CV for designers and visual professionals."
+            "Creative visual CV designed for graphic designers and creative professionals."
         },
 
         {
           name: "Designer Modern",
-          tag: "Modern",
           type: "modern",
           description:
-            "Modern visual CV designed for creative professionals."
+            "Modern designer layout with a strong visual presentation."
         },
 
         {
           name: "Minimal Creative",
-          tag: "Minimal",
           type: "minimal",
           description:
-            "Minimalist design that keeps your creative profile clean and professional."
+            "Minimal creative CV that keeps your work and skills easy to scan."
         },
 
         {
           name: "Professional Designer",
-          tag: "Professional",
           type: "corporate",
           description:
-            "Professional designer CV with a balanced creative and business presentation."
+            "Professional design for designers working with agencies and companies."
         }
 
       ],
 
 
-      "Engineering": [
+      Engineering: [
 
         {
           name: "Engineering Professional",
-          tag: "Professional",
           type: "corporate",
           description:
-            "Professional engineering CV for technical and engineering careers."
-        },
-
-        {
-          name: "Technical Engineer",
-          tag: "Technical",
-          type: "modern",
-          description:
-            "Technical layout focused on engineering skills, projects and experience."
-        },
-
-        {
-          name: "Engineering ATS",
-          tag: "ATS Friendly",
-          type: "ats",
-          description:
-            "ATS-friendly engineering CV designed for structured technical applications."
+            "Professional engineering template for technical careers."
         },
 
         {
           name: "Modern Engineer",
-          tag: "Modern",
-          type: "minimal",
+          type: "modern",
           description:
-            "Modern clean CV for engineers and technical specialists."
+            "Modern engineering CV with a clean professional structure."
+        },
+
+        {
+          name: "Technical ATS",
+          type: "ats",
+          description:
+            "ATS-friendly engineering layout focused on technical qualifications."
+        },
+
+        {
+          name: "Project Engineer",
+          type: "corporate",
+          description:
+            "Project-focused CV design for engineering professionals."
         }
 
       ],
 
 
-      "Student / Fresh Graduate": [
+      Student: [
 
         {
-          name: "Graduate Starter",
-          tag: "Graduate",
+          name: "Fresh Graduate",
           type: "modern",
           description:
-            "Professional CV designed for students and fresh graduates entering the job market."
-        },
-
-        {
-          name: "Student ATS",
-          tag: "ATS Friendly",
-          type: "ats",
-          description:
-            "ATS-friendly student CV focused on education, projects and internships."
+            "Modern CV template designed for students and fresh graduates."
         },
 
         {
           name: "Academic Student",
-          tag: "Academic",
           type: "academic",
           description:
-            "Academic design for students applying for internships, scholarships or programs."
+            "Academic layout for students applying for education opportunities."
         },
 
         {
-          name: "Fresh Graduate",
-          tag: "Professional",
+          name: "Modern Student",
+          type: "creative",
+          description:
+            "Fresh modern design for students, interns and entry-level applicants."
+        },
+
+        {
+          name: "Simple Graduate",
           type: "minimal",
           description:
-            "Clean graduate CV highlighting education, projects, skills and achievements."
+            "Simple professional CV for graduates entering the job market."
         }
 
       ],
 
 
-      "Marketing & Sales": [
+      Marketing: [
 
         {
           name: "Marketing Professional",
-          tag: "Professional",
           type: "modern",
           description:
-            "Modern CV for marketing specialists, sales professionals and growth teams."
+            "Professional marketing CV designed to highlight campaigns and results."
         },
 
         {
           name: "Sales Executive",
-          tag: "Executive",
           type: "corporate",
           description:
-            "Professional sales CV focused on achievements, experience and business impact."
+            "Business-focused layout for sales executives and professionals."
         },
 
         {
           name: "Digital Marketing",
-          tag: "Digital",
           type: "creative",
           description:
-            "Creative layout for digital marketers and campaign specialists."
+            "Modern creative template for digital marketing professionals."
         },
 
         {
-          name: "Marketing ATS",
-          tag: "ATS Friendly",
-          type: "ats",
+          name: "Creative Marketing",
+          type: "creative",
           description:
-            "ATS-friendly format for marketing and sales job applications."
+            "Visual marketing CV designed for creative and advertising roles."
         }
 
       ],
 
 
-      "Other": [
+      Other: [
 
         {
-          name: "Professional General",
-          tag: "Professional",
+          name: "General Professional",
           type: "corporate",
           description:
-            "Versatile professional CV suitable for a wide range of careers."
+            "Versatile professional CV suitable for many different career fields."
         },
 
         {
-          name: "Modern General",
-          tag: "Modern",
+          name: "Modern Professional",
           type: "modern",
           description:
-            "Modern general-purpose CV with a clean professional structure."
+            "Modern professional template with a clean and flexible structure."
         },
 
         {
-          name: "Minimal General",
-          tag: "Minimal",
+          name: "ATS Professional",
+          type: "ats",
+          description:
+            "ATS-friendly general CV for online job applications."
+        },
+
+        {
+          name: "Minimal Professional",
           type: "minimal",
           description:
-            "Simple and flexible CV layout suitable for different professions."
-        },
-
-        {
-          name: "Creative General",
-          tag: "Creative",
-          type: "creative",
-          description:
-            "Distinctive general CV design for professionals who want a creative presentation."
+            "Minimal CV focused on readability and professional information."
         }
 
       ]
@@ -1201,340 +1151,426 @@
     };
 
 
-    /* --------------------------------
-       AUTH CHECK
-    -------------------------------- */
+    /* =========================================
+       ELEMENTS
+    ========================================= */
 
-    onAuthStateChanged(auth, (user) => {
+    const categoryGrid =
+      document.getElementById("categoryGrid");
 
-      if (!user) {
-        window.location.href = "index.html";
-        return;
-      }
+    const templatesGrid =
+      document.getElementById("templatesGrid");
 
-      console.log(
-        "Authenticated user:",
-        user.email || user.uid
+    const selectedCategoryName =
+      document.getElementById("selectedCategoryName");
+
+    const selectedCategoryDescription =
+      document.getElementById("selectedCategoryDescription");
+
+    const selectedCategoryIcon =
+      document.getElementById("selectedCategoryIcon");
+
+    const templateCount =
+      document.getElementById("templateCount");
+
+    const pageLoading =
+      document.getElementById("pageLoading");
+
+
+    let selectedCategory =
+      localStorage.getItem("selectedCVCategory") ||
+      "IT";
+
+
+    /* =========================================
+       RENDER CATEGORIES
+    ========================================= */
+
+    function renderCategories() {
+
+      categoryGrid.innerHTML = "";
+
+      Object.entries(categories).forEach(
+        ([key, category]) => {
+
+          const card =
+            document.createElement("div");
+
+          card.className =
+            "category-card";
+
+          if (key === selectedCategory) {
+            card.classList.add("active");
+          }
+
+
+          card.innerHTML = `
+
+            <div class="category-icon">
+              ${category.icon}
+            </div>
+
+            <div class="category-name">
+              ${category.name}
+            </div>
+
+          `;
+
+
+          card.addEventListener(
+            "click",
+            () => {
+
+              selectedCategory = key;
+
+              localStorage.setItem(
+                "selectedCVCategory",
+                key
+              );
+
+              localStorage.removeItem(
+                "selectedCVTemplate"
+              );
+
+              renderCategories();
+              renderSelectedCategory();
+              renderTemplates();
+
+            }
+          );
+
+
+          categoryGrid.appendChild(card);
+
+        }
       );
-
-      restorePreviousCategory();
-
-    });
-
-
-    /* --------------------------------
-       SELECT CATEGORY
-    -------------------------------- */
-
-    categoryCards.forEach((card) => {
-
-      card.addEventListener("click", () => {
-
-        const category =
-          card.dataset.category;
-
-        selectCategory(category);
-
-      });
-
-    });
-
-
-    function selectCategory(category) {
-
-      categoryCards.forEach((card) => {
-
-        card.classList.toggle(
-          "active",
-          card.dataset.category === category
-        );
-
-      });
-
-      localStorage.setItem(
-        "selectedCVCategory",
-        category
-      );
-
-      renderTemplates(category);
-
-      document
-        .getElementById("templateSection")
-        .scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-
     }
 
 
-    /* --------------------------------
-       RENDER TEMPLATES
-    -------------------------------- */
+    /* =========================================
+       RENDER SELECTED CATEGORY
+    ========================================= */
 
-    function renderTemplates(category) {
+    function renderSelectedCategory() {
+
+      const category =
+        categories[selectedCategory];
 
       const categoryTemplates =
-        templates[category] || [];
+        templates[selectedCategory] || [];
 
-      selectedCategoryLabel.textContent =
-        `${category} templates`;
+
+      selectedCategoryIcon.textContent =
+        category.icon;
+
+      selectedCategoryName.textContent =
+        category.name;
+
+      selectedCategoryDescription.textContent =
+        category.description;
 
       templateCount.textContent =
-        `${categoryTemplates.length} templates available`;
+        `${categoryTemplates.length} Templates`;
+    }
+
+
+    /* =========================================
+       TEMPLATE PREVIEW
+    ========================================= */
+
+    function templatePreview(type) {
+
+      let content = "";
+
+
+      if (type === "creative") {
+
+        content = `
+
+          <div class="paper-side"></div>
+
+          <div class="paper-content">
+
+            <div class="paper-name"></div>
+
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line short"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line medium"></div>
+            <div class="paper-line long"></div>
+
+          </div>
+
+        `;
+
+      } else if (type === "modern") {
+
+        content = `
+
+          <div class="paper-top">
+            <div class="paper-name"></div>
+          </div>
+
+          <div class="paper-content">
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line short"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line medium"></div>
+            <div class="paper-line long"></div>
+
+          </div>
+
+        `;
+
+      } else if (type === "corporate") {
+
+        content = `
+
+          <div class="paper-top">
+            <div class="paper-name"></div>
+          </div>
+
+          <div class="paper-content">
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line short"></div>
+            <div class="paper-line long"></div>
+
+          </div>
+
+        `;
+
+      } else if (type === "academic") {
+
+        content = `
+
+          <div class="paper-content">
+
+            <div class="paper-name"></div>
+
+            <div class="paper-line medium"></div>
+
+            <div class="paper-line"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line short"></div>
+
+          </div>
+
+        `;
+
+      } else {
+
+        content = `
+
+          <div class="paper-content">
+
+            <div class="paper-name"></div>
+
+            <div class="paper-line medium"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+            <div class="paper-line short"></div>
+
+            <div class="paper-heading"></div>
+
+            <div class="paper-line long"></div>
+            <div class="paper-line medium"></div>
+
+          </div>
+
+        `;
+      }
+
+
+      return content;
+    }
+
+
+    /* =========================================
+       RENDER TEMPLATES
+    ========================================= */
+
+    function renderTemplates() {
 
       templatesGrid.innerHTML = "";
 
-      if (!categoryTemplates.length) {
 
-        templatesGrid.innerHTML = `
-          <div class="empty-templates">
-            <h3 style="margin-bottom:8px;color:#0f172a;">
-              No templates available
-            </h3>
-
-            <p>
-              Please select another category.
-            </p>
-          </div>
-        `;
-
-        return;
-      }
+      const categoryTemplates =
+        templates[selectedCategory] || [];
 
 
-      categoryTemplates.forEach((template, index) => {
+      categoryTemplates.forEach(
+        (template, index) => {
 
-        const card =
-          document.createElement("article");
+          const card =
+            document.createElement("article");
 
-        card.className = "template-card";
+          card.className =
+            "template-card";
 
-        card.innerHTML = `
 
-          <div class="template-preview">
+          card.innerHTML = `
 
-            <div class="resume-paper ${template.type}">
+            <div class="template-preview preview-${template.type}">
 
-              <div class="preview-header">
+              <div class="template-paper">
 
-                <div class="preview-avatar"></div>
-
-                <div class="preview-lines">
-
-                  <div class="line dark"></div>
-                  <div class="line short"></div>
-                  <div class="line tiny"></div>
-
-                </div>
+                ${templatePreview(template.type)}
 
               </div>
 
-
-              <div class="preview-section">
-
-                <div class="preview-title"></div>
-
-                <div class="preview-content"></div>
-                <div class="preview-content"></div>
-                <div class="preview-content"></div>
-
-              </div>
-
-
-              <div class="preview-section">
-
-                <div class="preview-title"></div>
-
-                <div class="preview-content"></div>
-                <div class="preview-content"></div>
-                <div class="preview-content"></div>
-
-              </div>
-
-
-              <div class="preview-section">
-
-                <div class="preview-title"></div>
-
-                <div class="preview-content"></div>
-                <div class="preview-content"></div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <div class="template-info">
-
-            <div class="template-top">
-
-              <div class="template-name">
-                ${escapeHTML(template.name)}
-              </div>
-
-              <div class="template-tag">
-                ${escapeHTML(template.tag)}
-              </div>
+              <span class="preview-badge">
+                ${index === 0 ? "Popular" : "Professional"}
+              </span>
 
             </div>
 
 
-            <div class="template-description">
-              ${escapeHTML(template.description)}
+            <div class="template-info">
+
+              <h3>
+                ${template.name}
+              </h3>
+
+              <p>
+                ${template.description}
+              </p>
+
+              <button
+                class="use-template-btn"
+                data-template="${template.name}">
+                Use This Template
+              </button>
+
             </div>
 
-
-            <button
-              class="use-template"
-              data-template="${escapeHTML(template.name)}"
-            >
-              Use This Template
-            </button>
-
-          </div>
-
-        `;
+          `;
 
 
-        const button =
-          card.querySelector(".use-template");
+          const button =
+            card.querySelector(
+              ".use-template-btn"
+            );
 
-        button.addEventListener("click", () => {
 
-          chooseTemplate(
-            category,
-            template.name
+          button.addEventListener(
+            "click",
+            () => {
+
+              localStorage.setItem(
+                "selectedCVCategory",
+                selectedCategory
+              );
+
+              localStorage.setItem(
+                "selectedCVTemplate",
+                template.name
+              );
+
+              localStorage.removeItem(
+                "currentCV"
+              );
+
+              window.location.href =
+                "cv-form.html";
+            }
           );
 
-        });
 
+          templatesGrid.appendChild(card);
 
-        templatesGrid.appendChild(card);
-
-      });
-
+        }
+      );
     }
 
 
-    /* --------------------------------
-       CHOOSE TEMPLATE
-    -------------------------------- */
+    /* =========================================
+       NAVIGATION
+    ========================================= */
 
-    function chooseTemplate(
-      category,
-      template
-    ) {
-
-      localStorage.setItem(
-        "selectedCVCategory",
-        category
-      );
-
-      localStorage.setItem(
-        "selectedCVTemplate",
-        template
+    document
+      .getElementById("dashboardButton")
+      .addEventListener(
+        "click",
+        () => {
+          window.location.href =
+            "dashboard.html";
+        }
       );
 
 
-      showToast(
-        `${template} selected`
+    document
+      .getElementById("myCVsButton")
+      .addEventListener(
+        "click",
+        () => {
+          window.location.href =
+            "my-cvs.html";
+        }
       );
 
 
-      pageLoading.classList.add("active");
+    /* =========================================
+       AUTH CHECK
+    ========================================= */
+
+    onAuthStateChanged(
+      auth,
+      (user) => {
+
+        if (!user) {
+
+          window.location.href =
+            "index.html";
+
+          return;
+        }
 
 
-      setTimeout(() => {
-
-        window.location.href =
-          "cv-form.html";
-
-      }, 450);
-
-    }
+        pageLoading.style.display =
+          "none";
 
 
-    /* --------------------------------
-       RESTORE CATEGORY
-    -------------------------------- */
-
-    function restorePreviousCategory() {
-
-      const savedCategory =
-        localStorage.getItem(
-          "selectedCVCategory"
-        );
-
-
-      if (
-        savedCategory &&
-        templates[savedCategory]
-      ) {
-
-        selectCategory(
-          savedCategory
-        );
-
-      }
-
-    }
-
-
-    /* --------------------------------
-       DASHBOARD
-    -------------------------------- */
-
-    backDashboard.addEventListener(
-      "click",
-      () => {
-
-        window.location.href =
-          "dashboard.html";
+        renderCategories();
+        renderSelectedCategory();
+        renderTemplates();
 
       }
     );
-
-
-    /* --------------------------------
-       TOAST
-    -------------------------------- */
-
-    let toastTimer;
-
-    function showToast(message) {
-
-      toast.textContent = message;
-
-      toast.classList.add("show");
-
-      clearTimeout(toastTimer);
-
-      toastTimer = setTimeout(() => {
-
-        toast.classList.remove("show");
-
-      }, 2200);
-
-    }
-
-
-    /* --------------------------------
-       HTML ESCAPE
-    -------------------------------- */
-
-    function escapeHTML(value) {
-
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
-    }
 
   </script>
 
