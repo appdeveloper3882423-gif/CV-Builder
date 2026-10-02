@@ -1,0 +1,30 @@
+CVBuilder deployment checklist
+
+1. Replace the existing repository files with this package.
+2. Confirm firebase-config.js contains your Firebase web app config.
+3. Firebase Authentication:
+   - Enable Email/Password.
+   - Enable Google.
+4. Firebase Authentication > Settings > Authorized domains:
+   - Add your Vercel production domain.
+5. Firestore:
+   - Create/enable Firestore Database.
+   - Publish firestore.rules.
+6. GitHub:
+   - Commit and push all files.
+7. Vercel:
+   - Redeploy from the GitHub repository.
+8. Test:
+   - Create account.
+   - Google login.
+   - Dashboard.
+   - Category.
+   - Job role.
+   - Role-specific template.
+   - Fill CV.
+   - Preview.
+   - Save CV.
+   - Return to dashboard.
+   - Edit CV.
+   - Delete CV.
+   - Download PDF.
