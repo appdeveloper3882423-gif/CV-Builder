@@ -1,15 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-
-import {
-  getAuth
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
-
-import {
-  getFirestore
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBlz6jMOYuJzWVd7pLTyAR8lkBJbAHYq40",
+  apiKey: "AIzaSyBlz6jMOYuJZwvD7pLTyAR8lkBJbAHYq40",
   authDomain: "cvbuilder-13804.firebaseapp.com",
   projectId: "cvbuilder-13804",
   storageBucket: "cvbuilder-13804.firebasestorage.app",
@@ -18,12 +12,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-export {
-  app,
-  auth,
-  db
-};
+export { app, auth, db };
