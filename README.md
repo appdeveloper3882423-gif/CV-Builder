@@ -82,3 +82,32 @@ Each CV stores:
 - languages
 - createdAt
 - updatedAt
+
+## International / Global CV Templates
+
+The template selector now includes three universal international-ready options for every job role:
+- Global ATS Professional — clean single-column, standard-heading structure for online applications.
+- Global Executive — polished leadership/corporate presentation.
+- Global Modern — contemporary professional layout with readable hierarchy.
+
+Use the Global ATS option when the employer uses an ATS or the application portal emphasizes resume parsing. Use Global Executive or Global Modern when a recruiter-facing PDF is appropriate. Country-specific requirements can vary, so the candidate should follow the employer's application instructions.
+
+## International CV standard
+The builder includes Global ATS Professional, Global Executive and Global Modern templates. Use Global ATS for online applications where ATS parsing is important; use Executive or Modern when a recruiter-facing visual presentation is appropriate. The builder keeps role-specific sections, standard headings, readable typography, A4 PDF output and separate label/value styling.
+
+
+## Professional Product Features
+- Global ATS Professional, Global Executive and Global Modern CV templates
+- Universal role-detail rendering with semi-bold labels and normal values
+- ATS readiness checker with optional job-description keyword matching
+- Job Description → Tailor My CV recommendations
+- Honest, non-generative recommendations: the system never invents qualifications or experience
+
+### Recommended public launch flow
+1. User creates account.
+2. User selects category, job role and template.
+3. User completes role-specific CV information.
+4. User previews and saves the CV.
+5. User runs ATS Checker.
+6. User optionally pastes a target job description into Tailor My CV.
+7. User updates the CV truthfully and downloads the final PDF.
