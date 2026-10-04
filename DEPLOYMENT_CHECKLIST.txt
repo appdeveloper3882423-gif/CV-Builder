@@ -28,3 +28,11 @@ CVBuilder deployment checklist
    - Edit CV.
    - Delete CV.
    - Download PDF.
+
+
+NEW PROFESSIONAL FEATURES
+- Ensure ats-checker.html is uploaded to the repository root.
+- Ensure job-tailor.html is uploaded to the repository root.
+- Dashboard contains ATS Checker and Tailor for Job buttons.
+- Preview contains ATS Check and Tailor for Job buttons.
+- Firestore rules remain user-scoped.
