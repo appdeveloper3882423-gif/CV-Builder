@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -13,6 +13,12 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+// Keep users signed in until they explicitly choose Logout.
+// Firebase Web Auth normally uses local persistence by default; this makes
+// that behavior explicit for CVBuilder.
+setPersistence(auth, browserLocalPersistence).catch(error => {
+  console.warn("Could not enable local auth persistence:", error);
+});
 const db = getFirestore(app);
 
 export { app, auth, db };
