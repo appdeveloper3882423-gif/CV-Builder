@@ -23,7 +23,16 @@
 import {auth,db} from "./firebase-config.js";
 import {onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 import {addDoc,collection,doc,setDoc} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-const $=id=>document.getElementById(id);let data={};try{data=JSON.parse(localStorage.getItem("currentCV")||"{}")}catch{}
+const $=id=>document.getElementById(id);
+let data={};
+try{data=JSON.parse(localStorage.getItem("currentCV")||"{}")}catch{}
+const hasRealData=!!(
+ data.fullName||data.professionalTitle||data.email||data.phone||data.location||data.linkedin||data.github||data.website||data.portfolio||
+ data.summary||Object.values(data.roleData||{}).some(v=>String(v??"").trim())||
+ (data.experience||[]).length||(data.projects||[]).length||(data.education||[]).length||
+ data.certifications||data.achievements||data.skills||data.languages
+);
+if(!hasRealData) location.replace("cv-form.html");
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function lines(v){return String(v||"").split(/\n/).map(x=>x.trim()).filter(Boolean)}
 function roleProfile(){
@@ -50,7 +59,10 @@ function render(){
  $("cvName").textContent=data.fullName||"Your Name";$("cvTitle").textContent=data.professionalTitle||data.role||"Professional";
  const contacts=[data.email,data.phone,data.location,data.linkedin,data.github,data.website,data.portfolio].filter(Boolean);$("contact").textContent=contacts.join("  |  ");
  $("summary").textContent=data.summary||"";
+ $("summarySection").style.display=data.summary?"block":"none";
+ const roleValues=Object.values(data.roleData||{}).filter(v=>String(v??"").trim());
  $("profileTitle").textContent=roleProfile();$("roleProfile").innerHTML=buildRoleText();
+ $("roleProfile").closest(".section").style.display=roleValues.length?"block":"none";
  const exp=$("experience");exp.innerHTML="";(data.experience||[]).forEach(x=>{const d=document.createElement("div");d.className="entry";d.innerHTML=`<div class="entry-head"><div class="entry-title">${esc(x.job)}</div><div class="entry-date">${esc(x.date)}</div></div><div class="entry-sub">${esc(x.company)}${x.location?" · "+esc(x.location):""}</div><div class="entry-desc">${esc(x.description)}</div>`;exp.appendChild(d)});
  $("experienceSection").style.display=(data.experience||[]).length?"block":"none";
  const proj=$("projects");proj.innerHTML="";(data.projects||[]).forEach(x=>{const d=document.createElement("div");d.className="entry";d.innerHTML=`<div class="project-name">${esc(x.name)}</div><div class="project-tech">${esc(x.technologies)}</div><div class="entry-desc">${esc(x.description)}</div>`;proj.appendChild(d)});$("projectsSection").style.display=(data.projects||[]).length?"block":"none";
