@@ -68,4 +68,13 @@ $("googleLoginButton")?.addEventListener("click",async()=>{
     await signInWithPopup(auth,provider);location.href="dashboard.html";
   }catch(err){msg(firebaseMessage(err));btn.disabled=false;btn.textContent="Continue with Google";}
 });
-onAuthStateChanged(auth,user=>{if(user) console.log("Signed in:",user.email||user.uid);});
+onAuthStateChanged(auth,user=>{
+  if(user){
+    console.log("Signed in:",user.email||user.uid);
+    // If the visitor is already authenticated, open their dashboard/profile
+    // instead of showing the public login page again.
+    if(location.pathname.endsWith("/index.html") || location.pathname.endsWith("/")){
+      location.replace("dashboard.html");
+    }
+  }
+});
