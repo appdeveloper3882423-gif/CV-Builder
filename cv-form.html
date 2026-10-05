@@ -132,6 +132,14 @@ function roleData(){
  return Object.fromEntries([...document.querySelectorAll("[data-role-key]")].map(i=>[i.dataset.roleKey,i.value.trim()]));
 }
 function splitLines(v){return v.split(/\n|,/).map(x=>x.trim()).filter(Boolean)}
+function collectDraft(){
+ const draft={...current,category,role,template,
+  fullName:$("fullName").value.trim(),professionalTitle:$("professionalTitle").value.trim(),email:$("email").value.trim(),phone:$("phone").value.trim(),location:$("location").value.trim(),
+  linkedin:$("linkedin").value.trim(),github:$("github").value.trim(),website:$("website").value.trim(),portfolio:$("portfolio").value.trim(),summary:$("summary").value.trim(),
+  roleData:roleData(),experience:collect("experienceContainer",["job","company","date","location","description"]),projects:collect("projectsContainer",["name","technologies","description"]),education:collect("educationContainer",["degree","institute","date","grade"]),
+  certifications:$("certifications").value.trim(),achievements:$("achievements").value.trim(),skills:$("skills").value.trim(),languages:$("languages").value.trim(),updatedAt:new Date().toISOString(),createdAt:current.createdAt||new Date().toISOString()};
+ localStorage.setItem("currentCV",JSON.stringify(draft)); return draft;
+}
 function fill(id,v){if($(id))$(id).value=v||""}
 function load(){
  const d=current;
@@ -150,14 +158,14 @@ $("professionalTitle").oninput=e=>$("previewTitle").textContent=e.target.value||
 $("changeTemplateButton").onclick=()=>location.href="templates.html";$("dashboardButton").onclick=()=>location.href="dashboard.html";$("cancelButton").onclick=()=>location.href="dashboard.html";
 $("previewButton").onclick=()=>{if($("cvForm").reportValidity())$("cvForm").requestSubmit()};
 $("cvForm").onsubmit=e=>{
- e.preventDefault();const data={
-  ...current,category,role,template,
-  fullName:$("fullName").value.trim(),professionalTitle:$("professionalTitle").value.trim(),email:$("email").value.trim(),phone:$("phone").value.trim(),location:$("location").value.trim(),
-  linkedin:$("linkedin").value.trim(),github:$("github").value.trim(),website:$("website").value.trim(),portfolio:$("portfolio").value.trim(),summary:$("summary").value.trim(),
-  roleData:roleData(),experience:collect("experienceContainer",["job","company","date","location","description"]),projects:collect("projectsContainer",["name","technologies","description"]),education:collect("educationContainer",["degree","institute","date","grade"]),
-  certifications:$("certifications").value.trim(),achievements:$("achievements").value.trim(),skills:$("skills").value.trim(),languages:$("languages").value.trim(),updatedAt:new Date().toISOString(),createdAt:current.createdAt||new Date().toISOString()
- };
- localStorage.setItem("currentCV",JSON.stringify(data));localStorage.setItem("selectedCVCategory",category);localStorage.setItem("selectedCVRole",role);localStorage.setItem("selectedCVTemplate",template);location.href="cv-preview.html";
+ e.preventDefault();
+ const data=collectDraft();
+ localStorage.setItem("currentCV",JSON.stringify(data));
+ localStorage.setItem("selectedCVCategory",category);
+ localStorage.setItem("selectedCVRole",role);
+ localStorage.setItem("selectedCVTemplate",template);
+ location.href="cv-preview.html";
 };
+document.addEventListener("input",()=>{try{collectDraft()}catch(error){console.warn("Draft autosave skipped:",error)}});
 load();onAuthStateChanged(auth,u=>{if(!u)location.href="index.html"});
 </script></body></html>
